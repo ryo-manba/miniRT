@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/16 14:54:45 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 16:01:11 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/11/25 22:33:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static	ssize_t	find_newline(char *memo)
+static	int	find_newline(char *memo)
 {
-	ssize_t	i;
+	int	i;
 
 	i = 0;
 	if (memo == NULL)
@@ -28,7 +28,7 @@ static	ssize_t	find_newline(char *memo)
 	return (-1);
 }
 
-static	int	get_split(char **memo, char **line, ssize_t newline_pos)
+static	int	get_split(char **memo, char **line, int newline_pos)
 {
 	char	*tmp;
 
@@ -40,9 +40,9 @@ static	int	get_split(char **memo, char **line, ssize_t newline_pos)
 	return (1);
 }
 
-static	int	check_memo(char **memo, char **line, ssize_t read_sz)
+static	int	check_memo(char **memo, char **line, int read_sz)
 {
-	ssize_t	newline_pos;
+	int	newline_pos;
 
 	if (read_sz < 0)
 		return (-1);
@@ -55,21 +55,20 @@ static	int	check_memo(char **memo, char **line, ssize_t read_sz)
 		*memo = NULL;
 		return (0);
 	}
-	*line = NULL;
+	*line = ft_strdup("");
 	return (0);
 }
 
-// variant: return NULL instead of "" after reached EOF.
 int	get_next_line(int fd, char **line)
 {
 	static char	*memo[MAX_FD];
 	char		*buf;
-	ssize_t		newline_pos;
+	int			newline_pos;
 	ssize_t		read_sz;
 
 	if (fd < 0 || MAX_FD < fd || line == NULL || BUFFER_SIZE <= 0)
 		return (-1);
-	buf = (char *)malloc(sizeof(char) * ((size_t)BUFFER_SIZE + 1));
+	buf = (char *)malloc(sizeof(char) * (size_t)BUFFER_SIZE + 1);
 	if (buf == NULL)
 		return (-1);
 	read_sz = read(fd, buf, BUFFER_SIZE);

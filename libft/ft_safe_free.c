@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   safe_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/07 17:47:30 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/11/25 22:32:49 by rmatsuka         ###   ########.fr       */
+/*   Created: 2021/05/31 08:01:33 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/05/31 08:05:40 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_toupper(int c)
+#include "libft.h"
+
+void	safe_free(void *ptr)
 {
-	if ('a' <= c && c <= 'z')
-		c -= 32;
-	return (c);
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
 }

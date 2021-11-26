@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yokawada <yokawada@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/08 22:32:23 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/09/23 16:01:53 by yokawada         ###   ########.fr       */
+/*   Updated: 2021/11/25 22:28:45 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	*ft_free(char **split_strs, int i)
+static void	*ft_all_free(char **split_strs, size_t i)
 {
 	while (i--)
 	{
@@ -26,7 +26,7 @@ static void	*ft_free(char **split_strs, int i)
 static char	*ft_strcpy(char const *s, char c)
 {
 	char	*dest;
-	int		i;
+	size_t	i;
 
 	i = 0;
 	while (s[i] && s[i] != c)
@@ -44,16 +44,16 @@ static char	*ft_strcpy(char const *s, char c)
 	return (dest);
 }
 
-static int	get_len(char const *s, char c)
+static size_t	get_len(char const *s, char c)
 {
-	int	i;
-	int	cnt;
+	size_t	i;
+	size_t	cnt;
 
 	i = 0;
 	cnt = 0;
 	if (s[i] && s[i] != c)
 		cnt++;
-	while (i < (int)ft_strlen(s))
+	while (i < ft_strlen(s))
 	{
 		if (s[i] == c && s[i + 1] != c && s[i + 1])
 			cnt++;
@@ -64,7 +64,7 @@ static int	get_len(char const *s, char c)
 
 static void	*get_split(char **split_strs, char const *s, char c)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (*s)
@@ -75,7 +75,7 @@ static void	*get_split(char **split_strs, char const *s, char c)
 		{
 			split_strs[i] = ft_strcpy(s, c);
 			if (split_strs[i] == NULL)
-				return (ft_free(split_strs, i));
+				return (ft_all_free(split_strs, i));
 			i++;
 			while (*s && *s != c)
 				s++;
@@ -88,7 +88,7 @@ static void	*get_split(char **split_strs, char const *s, char c)
 char	**ft_split(char const *s, char c)
 {
 	char	**split_strs;
-	int		split_len;
+	size_t	split_len;
 
 	if (s == NULL)
 		return (NULL);

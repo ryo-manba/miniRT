@@ -1,44 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr.c                                        :+:      :+:    :+:   */
+/*   free_strjoin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmatsuka <rmatsuka@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/08 20:43:42 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/04/13 11:40:27 by rmatsuka         ###   ########.fr       */
+/*   Created: 2021/04/20 19:44:06 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/05/31 07:59:25 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static void	chmin(size_t *n1, size_t n2)
-{
-	if (*n1 > n2)
-		*n1 = n2;
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*free_strjoin(char *s1, char *s2)
 {
 	char	*str;
-	size_t	i;
-	size_t	s_len;
+	size_t	s1_len;
+	size_t	s2_len;
 
-	if (s == NULL)
+	if (s1 == NULL && s2 == NULL)
 		return (NULL);
-	s_len = ft_strlen(s);
-	if (s_len <= start)
-		len = 0;
-	chmin(&len, (s_len - start + 1));
-	str = (char *)malloc(len + 1);
+	if (s1 == NULL)
+		return (ft_strdup(s2));
+	if (s2 == NULL)
+		return (ft_strdup(s1));
+	s1_len = ft_strlen(s1);
+	s2_len = ft_strlen(s2);
+	str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 1));
 	if (str == NULL)
 		return (NULL);
-	i = 0;
-	while (len--)
-	{
-		str[i] = s[start + i];
-		i++;
-	}
-	str[i] = '\0';
+	ft_strlcpy(str, s1, s1_len + 1);
+	ft_strlcat(str + s1_len, s2, s2_len + 1);
+	free(s1);
+	s1 = NULL;
 	return (str);
 }
