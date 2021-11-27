@@ -1,34 +1,18 @@
 #include "minirt.h"
 
-static bool	rt_is_valid_file(char *filename)
-{
-	return (true);
-}
-
-static void	rt_plot(void)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < HEIGHT)
-	{
-		while (j < WIDTH)
-		{
-//			my_mlx_pixel_put();
-			j += 1;
-		}
-		i += 1;
-	}
-}
-
-int main(int argc, char **argv)
+int main()
 {
 	void	*mlx;
+	void	*win;
+	t_img	img;
 
-//	plot();
 	mlx = mlx_init();
-	mlx_put_image_to_window(mlx, HEIGHT, WIDTH, "miniRT");
+	win = mlx_new_window(mlx, WIDTH, HEIGHT, "miniRT");
+	img.img = mlx_new_image(mlx, WIDTH, HEIGHT);
+	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
+	my_mlx_pixel_put(&img, WIDTH / 2, HEIGHT / 2, 0xFF0000);
+	mlx_put_image_to_window(mlx, win, img.img, 0, 0);
+	mlx_loop(mlx);
 //	mlx_hook(info.win, 17, 1L << 17, &exit_window, &info);
 	return (0);
 }

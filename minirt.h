@@ -7,9 +7,9 @@
 # include <unistd.h>
 # include <stdbool.h>
 # include <math.h>
-//# include <X11/X.h>
+# include <X11/X.h>
 # include "./libft/libft.h"
-//# include "./minilibx-linux/mlx.h"
+# include "./minilibx-linux/mlx.h"
 
 /* window size */
 # define WIDTH 500
