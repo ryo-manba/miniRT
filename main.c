@@ -36,28 +36,21 @@ static void vec3_init(t_vec3 *vec3)
 static t_vec3	ray_color(t_ray *r)
 {
 	t_vec3 unit_direction = unit_vector(r->direction);
-	unit_direction.y += 1.0;
-	t_vec3 t = vec3_mul_double(unit_direction, 0.5);
-	unit_direction.y -= 1.0;
+	double t = 0.5  *(unit_direction.y + 1.0);
 
-	t_vec3 tmp1 = (vec3_mul_double(t, -1));
-	tmp1.x += 1.0;
-	tmp1.y += 1.0;
-	tmp1.z += 1.0;
+	t_vec3	c1; // 白
+	c1.x = 1.0;
+	c1.y = 1.0;
+	c1.z = 1.0;
 
-	t_vec3 color;
-	color.x = 1.0;
-	color.y = 1.0;
-	color.z = 1.0;
-	tmp1 = vec3_mul(tmp1, color);
-	color.x = 0.5;
-	color.y = 0.7;
-	color.z = 1.0;
-	t_vec3	tmp2 = vec3_mul(t, color);
+	t_vec3 c2; // 青
+	c2.x = 0.5;
+	c2.y = 0.7;
+	c2.z = 1.0;
 
-
-	return (vec3_add(tmp1, tmp2));
-	//return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+	c1 = vec3_mul_double(c1, t);
+	c2 = vec3_mul_double(c2, 1 - t);
+	return (vec3_add(c1, c2));
 }
 
 static void	ray(t_img *img)
@@ -82,10 +75,12 @@ static void	ray(t_img *img)
 
 	t_vec3	lower_left_corner;
 	vec3_init(&lower_left_corner);
+
 	lower_left_corner = vec3_sub(origin, vec3_div_double(horizontal, 2.0));
 	lower_left_corner = vec3_sub(lower_left_corner, vec3_div_double(vertical, 2.0));
 	lower_left_corner.z -= focal_length;
 
+//	printf("%f, %f, %f\n", lower_left_corner.x, lower_left_corner.y, lower_left_corner.z);
 	for (double j = image_height-1; j >= 0; --j) {
 		for (double i = 0; i < image_width; ++i) {
 
@@ -94,10 +89,11 @@ static void	ray(t_img *img)
 
 			t_ray r;
 			r.origin = origin;
-			horizontal = vec3_mul_double(horizontal, u);
-			r.direction = vec3_add(lower_left_corner, horizontal);
-			vertical = vec3_mul_double(vertical, v);
-			r.direction = vec3_add(r.direction, vertical);
+
+			t_vec3 ho = vec3_mul_double(horizontal, u);
+			r.direction = vec3_add(lower_left_corner, ho);
+			t_vec3 ve = vec3_mul_double(vertical, v);
+			r.direction = vec3_add(r.direction, ve);
 			r.direction = vec3_sub(r.direction, origin);
 
 			t_vec3 ray_c = ray_color(&r);
@@ -106,7 +102,7 @@ static void	ray(t_img *img)
 			rgb.r = ray_c.x * 255.999;
 			rgb.g = ray_c.y * 255.999;
 			rgb.b = ray_c.z * 255.999;
-			
+
 			int color = create_trgb(0, rgb.r, rgb.g, rgb.b);
 			my_mlx_pixel_put(img, i, j, color);
 		}
