@@ -1,45 +1,43 @@
 #include "minirt.h"
+#include "vec3.h"
 
-void	plot(t_img *img, int color)
+void plot(t_img *img)
 {
-	int	i;
-	int	j;
+	t_rgb	rgb;
+	const int image_width = WIDTH;
+	const int image_height = HEIGHT;
 
-	i = 0;
-	while (i < HEIGHT)
-	{
-		j = 0;
-		while (j < WIDTH)
-		{
+//	for (double j = image_height-1; j >= 0; --j) {
+	for (double j = 0; j <= image_height; ++j) {
+//		fprintf(stderr, "Scanlines remining: %d", (int)j);
+//		fflush(stderr);
+		for (double i = 0; i < image_width; ++i) {
+			rgb.r = (255.99 * i / (image_width-1));
+			rgb.g = (255.99 * i / (image_height-1));
+			rgb.b = (255.99 * 0.25);
+			int color = create_trgb(0, rgb.r, rgb.g, rgb.b);
 			my_mlx_pixel_put(img, i, j, color);
-			j += 1;
 		}
-		i += 1;
 	}
 }
 
-#define T 0
-#define R 0
-#define G 255
-#define B 255
+static int	exit_window(t_info *info)
+{
+	mlx_destroy_window(info->mlx, info->win);
+	exit(0);
+}
 
 int main()
 {
-	void	*mlx;
-	void	*win;
-	t_img	img;
-	int		color;
+	t_info	info;
 
-	mlx = mlx_init();
-	win = mlx_new_window(mlx, WIDTH, HEIGHT, "miniRT");
-	img.img = mlx_new_image(mlx, WIDTH, HEIGHT);
-	img.addr = mlx_get_data_addr(img.img, &img.bpp, &img.line_len, &img.endian);
-	color = create_trgb(T, R, G, B);
-	color = add_shade(0.25f, color);
-//	color = get_opposite(color);
-	plot(&img, color);
-	mlx_put_image_to_window(mlx, win, img.img, 0, 0);
-	mlx_loop(mlx);
-//	mlx_hook(info.win, 17, 1L << 17, &exit_window, &info);
+	info.mlx = mlx_init();
+	info.win = mlx_new_window(info.mlx, WIDTH, HEIGHT, "miniRT");
+	info.img.img = mlx_new_image(info.mlx, WIDTH, HEIGHT);
+	info.img.addr = mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.line_len, &info.img.endian);
+	plot(&info.img);
+	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
+	mlx_hook(info.win, 17, 1L << 17, &exit_window, &info);
+	mlx_loop(info.mlx);
 	return (0);
 }

@@ -70,6 +70,13 @@ typedef struct s_rgb {
 	int	b;
 }	t_rgb;
 
+typedef struct s_info
+{
+	void	*mlx;
+	void	*win;
+	t_img	img;
+} t_info;
+
 /* hooks */
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
