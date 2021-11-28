@@ -6,6 +6,8 @@ X11			:=	/usr/X11/include
 LIBFT		:=	libft
 SRCS		:=	main.c \
 				mlx_utils.c \
+				vec3_utils.c \
+				vec3_operator.c \
 				color.c \
 
 OBJS		:=	$(SRCS:.c=.o)
