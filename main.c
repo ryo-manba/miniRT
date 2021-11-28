@@ -9,8 +9,6 @@ void plot(t_img *img)
 	const int image_height = HEIGHT;
 
 	for (double j = 0; j <= image_height; ++j) {
-//		fprintf(stderr, "Scanlines remining: %d", (int)j);
-//		fflush(stderr);
 		for (double i = 0; i < image_width; ++i) {
 			rgb.r = (255.999 * (i / (image_width-1)));
 			rgb.g = (255.999 * (j / (image_height-1)));
@@ -36,18 +34,7 @@ static void vec3_init(t_vec3 *vec3)
 
 //  return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
 static t_vec3	ray_color(t_ray *r)
-{ 
-	int	a = r->origin.x;
-	int	b = r->origin.y;
-	int	c = r->origin.z;
-	int x = r->direction.x;
-	int y = r->direction.y;
-	int z = r->direction.z;
-
-//	printf("origin: %d, %d, %d\n", a, b, c);
-//	printf("ray: %d, %d, %d\n", x, y, z);
-
-
+{
 	t_vec3 unit_direction = unit_vector(r->direction);
 	unit_direction.y += 1.0;
 	t_vec3 t = vec3_mul_double(unit_direction, 0.5);
@@ -68,8 +55,6 @@ static t_vec3	ray_color(t_ray *r)
 	color.z = 1.0;
 	t_vec3	tmp2 = vec3_mul(t, color);
 
-	t_vec3 	debug = vec3_add(tmp1, tmp2);
-//	printf("x = %f, y = %f, z = %f\n", debug.x, debug.y, debug.z);
 
 	return (vec3_add(tmp1, tmp2));
 	//return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
@@ -122,10 +107,7 @@ static void	ray(t_img *img)
 			rgb.g = ray_c.y * 255.999;
 			rgb.b = ray_c.z * 255.999;
 			
-//			printf("dir_x = %f, dir_y = %f, dir_z = %f\n", r.direction.x, r.direction.y, r.direction.z);
-//			printf("r = %d, g = %d, b = %d\n", rgb.r, rgb.g, rgb.b);
 			int color = create_trgb(0, rgb.r, rgb.g, rgb.b);
-//			printf("color = %d\n", color);
 			my_mlx_pixel_put(img, i, j, color);
 		}
 	}
