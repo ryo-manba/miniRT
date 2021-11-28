@@ -73,4 +73,10 @@ typedef struct s_rgb {
 /* hooks */
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
+/* color */
+int create_trgb(int t, int r, int g, int b);
+int	get_trgb(int trgb, int shift);
+int	add_shade(double distance, int color);
+int	get_opposite(int color);
+
 #endif

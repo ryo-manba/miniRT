@@ -5,7 +5,9 @@ INC			=	-I$(X11) -I$(MLX) -I$(LIBFT)
 X11			:=	/usr/X11/include
 LIBFT		:=	libft
 SRCS		:=	main.c \
-				mlx_utils.c
+				mlx_utils.c \
+				color.c \
+
 OBJS		:=	$(SRCS:.c=.o)
 MLX			:=	minilibx-linux
 LIBS		:=	-L$(LIBFT) -L$(MLX) -lmlx_Darwin -L/$(X11)/../lib -lXext -lX11 -lm
@@ -35,5 +37,8 @@ fclean: clean
 bonus: all
 
 re: fclean all
+
+test: $(NAME)
+	./$(NAME)
 
 .PHONY: all clean fclean re bonus
