@@ -14,8 +14,8 @@
 # include "vec3.h"
 
 /* window size */
-# define WIDTH 500
-# define HEIGHT 500
+//# define WIDTH 500
+//# define HEIGHT 500
 
 /* keycode */
 # ifdef __linux__

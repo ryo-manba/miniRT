@@ -2,22 +2,9 @@
 #include "rt_scene.h"
 #include "vec3.h"
 
-void plot(t_img *img)
-{
-	t_rgb	rgb;
-	const int image_width = WIDTH;
-	const int image_height = HEIGHT;
-
-	for (double j = 0; j <= image_height; ++j) {
-		for (double i = 0; i < image_width; ++i) {
-			rgb.r = (255.999 * (i / (image_width-1)));
-			rgb.g = (255.999 * (j / (image_height-1)));
-			rgb.b = (255.999 * 0.25);
-			int color = create_trgb(0, rgb.r, rgb.g, rgb.b);
-			my_mlx_pixel_put(img, i, j, color);
-		}
-	}
-}
+#define ASPECT_RATIO (double)16.0 / 9.0
+#define HEIGHT 250
+#define WIDTH HEIGHT * ASPECT_RATIO
 
 static int	exit_window(t_info *info)
 {
@@ -25,39 +12,30 @@ static int	exit_window(t_info *info)
 	exit(0);
 }
 
-static void vec3_init(t_vec3 *vec3)
+static void vec3_init(t_vec3 *vec3, double x, double y, double z)
 {
-	vec3->x = 0;
-	vec3->y = 0;
-	vec3->z = 0;
+	vec3->x = x;
+	vec3->y = y;
+	vec3->z = z;
 }
 
-//  return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
 static t_vec3	ray_color(t_ray *r)
 {
-	t_vec3	point3;
+	const t_vec3	unit_direction = unit_vector(r->direction);
+	t_vec3			point3;
+	t_vec3			c1; // 白
+	t_vec3			c2; // 青
+	double			t;
 
-	vec3_init(&point3);
-	point3.z = -1;
-	if (hit_sphere(&point3, 0.5, r))
+	vec3_init(&point3, 0, 0, -1.0);
+	if (hit_sphere(&point3, 0.5, r)) // 球とヒットした場合
 	{
-		vec3_init(&point3);
-		point3.x = 1;
-		return (point3);
+		vec3_init(&point3, 1, 0, 0);
+		return (point3); // rgbの割合を返す
 	}
-	t_vec3 unit_direction = unit_vector(r->direction);
-	double t = 0.5  *(unit_direction.y + 1.0);
-
-	t_vec3	c1; // 白
-	c1.x = 1.0;
-	c1.y = 1.0;
-	c1.z = 1.0;
-
-	t_vec3 c2; // 青
-	c2.x = 0.5;
-	c2.y = 0.7;
-	c2.z = 1.0;
-
+	t = 0.5  * (unit_direction.y + 1.0);
+	vec3_init(&c1, 1.0, 1.0, 1.0);
+	vec3_init(&c2, 0.5, 0.7, 1.0);
 	c1 = vec3_mul_double(c1, t);
 	c2 = vec3_mul_double(c2, 1 - t);
 	return (vec3_add(c1, c2));
@@ -78,50 +56,49 @@ static int	rgb_to_color(t_rgb *rgb)
 	return (create_trgb(0, rgb->r, rgb->g, rgb->b));
 }
 
+static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, t_vec3 *vertical, t_img *img)
+{
+	double	i;
+	double	j;
+	double	u;
+	double	v;
+
+	j = 0;
+	while (j < HEIGHT)
+	{
+		i = 0;
+		while (i < WIDTH)
+		{
+			u = i / (WIDTH-1);
+			v = j / (HEIGHT-1);
+			ray->direction = vec3_sub(vec3_add(vec3_add(*lower_left_corner, vec3_mul_double(*horizontal, u)),
+												vec3_mul_double(*vertical, v)), ray->origin);
+			t_vec3	ray_c = ray_color(ray);
+			t_rgb	rgb = vec3_to_rgb(&ray_c);
+			my_mlx_pixel_put(img, i, j, rgb_to_color(&rgb));
+			i += 1;
+		}
+		j += 1;
+	}
+}
+
 static void	ray(t_img *img)
 {
-	const double	aspect_ratio = 16.0 / 9.0;
-	const int		image_width = WIDTH; // 384
-	const int		image_height = HEIGHT; // image_width / aspect_ratio
-	double 			viewport_height = 2.0;
-	double 			viewport_width = aspect_ratio * viewport_height;
-	double 			focal_length = 1.0;
-	t_vec3			origin;
+	const double 	viewport_height = 2.0;
+	const double 	viewport_width = ASPECT_RATIO * viewport_height;
+	const double 	focal_length = 1.0;
 	t_vec3			horizontal;
 	t_vec3			vertical;
+	t_vec3			lower_left_corner;
+	t_ray			ray;
 
-	vec3_init(&origin);
-	vec3_init(&horizontal);
-	horizontal.x = viewport_width;
-	vec3_init(&vertical);
-	vertical.y = viewport_height;
-
-	t_vec3	lower_left_corner;
-	vec3_init(&lower_left_corner);
-
-	lower_left_corner = vec3_sub(origin, vec3_div_double(horizontal, 2.0));
-	lower_left_corner = vec3_sub(lower_left_corner, vec3_div_double(vertical, 2.0));
+	vec3_init(&ray.origin, 0, 0, 0);
+	vec3_init(&horizontal, viewport_width, 0, 0);
+	vec3_init(&vertical, 0, viewport_height, 0);
+	lower_left_corner = vec3_sub(vec3_sub(ray.origin, vec3_div_double(horizontal, 2.0)),
+					 	vec3_div_double(vertical, 2.0));
 	lower_left_corner.z -= focal_length;
-	for (double j = image_height-1; j >= 0; --j) {
-		for (double i = 0; i < image_width; ++i) {
-
-			double u = i / (image_width-1);
-			double v = j / (image_height-1);
-
-			t_ray r;
-			r.origin = origin;
-			t_vec3 ho = vec3_mul_double(horizontal, u);
-			r.direction = vec3_add(lower_left_corner, ho);
-			t_vec3 ve = vec3_mul_double(vertical, v);
-			r.direction = vec3_add(r.direction, ve);
-			r.direction = vec3_sub(r.direction, origin);
-
-			t_vec3	ray_c = ray_color(&r);
-			t_rgb	rgb = vec3_to_rgb(&ray_c);
-			int color = rgb_to_color(&rgb);
-			my_mlx_pixel_put(img, i, j, color);
-		}
-	}
+	ray_loop(&ray, &lower_left_corner, &horizontal, &vertical, img);
 }
 
 int main()
@@ -132,7 +109,6 @@ int main()
 	info.win = mlx_new_window(info.mlx, WIDTH, HEIGHT, "miniRT");
 	info.img.img = mlx_new_image(info.mlx, WIDTH, HEIGHT);
 	info.img.addr = mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.line_len, &info.img.endian);
-//	plot(&info.img);
 	ray(&info.img);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
 	mlx_hook(info.win, 17, 1L << 17, &exit_window, &info);
