@@ -36,7 +36,7 @@ static void vec3_init(t_vec3 *vec3, double x, double y, double z)
 
 static t_vec3	ray_color(t_ray *r)
 {
-	const t_vec3	unit_direction = unit_vector(r->direction);
+	const t_vec3	unit_direction = mr_unit_vector(r->direction);
 	t_vec3			point3;
 	t_vec3			c1; // 白
 	t_vec3			c2; // 青
@@ -52,9 +52,9 @@ static t_vec3	ray_color(t_ray *r)
 	t = 0.5  * (unit_direction.y + 1.0);
 	vec3_init(&c1, 1.0, 1.0, 1.0);
 	vec3_init(&c2, 0.5, 0.7, 1.0);
-	c1 = vec3_mul_double(c1, t);
-	c2 = vec3_mul_double(c2, 1 - t);
-	return (vec3_add(c1, c2));
+	c1 = mr_vec3_mul_double(c1, t);
+	c2 = mr_vec3_mul_double(c2, 1 - t);
+	return (mr_vec3_add(c1, c2));
 }
 
 static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, t_vec3 *vertical, t_img *img)
@@ -72,8 +72,8 @@ static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, 
 		{
 			u = i / (WIDTH-1);
 			v = j / (HEIGHT-1);
-			ray->direction = vec3_sub(vec3_add(vec3_add(*lower_left_corner, vec3_mul_double(*horizontal, u)),
-												vec3_mul_double(*vertical, v)), ray->origin);
+			ray->direction = mr_vec3_sub(mr_vec3_add(mr_vec3_add(*lower_left_corner, mr_vec3_mul_double(*horizontal, u)),
+												mr_vec3_mul_double(*vertical, v)), ray->origin);
 			t_vec3	ray_c = ray_color(ray);
 			t_rgb	rgb = vec3_to_rgb(&ray_c);
 			my_mlx_pixel_put(img, i, j, rgb_to_color(&rgb));
@@ -96,8 +96,8 @@ static void	ray(t_img *img)
 	vec3_init(&ray.origin, 0, 0, 0);
 	vec3_init(&horizontal, viewport_width, 0, 0);
 	vec3_init(&vertical, 0, viewport_height, 0);
-	lower_left_corner = vec3_sub(vec3_sub(ray.origin, vec3_div_double(horizontal, 2.0)),
-					 	vec3_div_double(vertical, 2.0));
+	lower_left_corner = mr_vec3_sub(mr_vec3_sub(ray.origin, mr_vec3_div_double(horizontal, 2.0)),
+					 	mr_vec3_div_double(vertical, 2.0));
 	lower_left_corner.z -= focal_length;
 	ray_loop(&ray, &lower_left_corner, &horizontal, &vertical, img);
 }

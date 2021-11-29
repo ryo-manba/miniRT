@@ -1,6 +1,6 @@
 #include "mr_vec3.h"
 
-t_vec3  vec3_add(t_vec3 u, t_vec3 v)
+t_vec3	mr_vec3_add(t_vec3 u, t_vec3 v)
 {
 	t_vec3	add;
 
@@ -10,7 +10,7 @@ t_vec3  vec3_add(t_vec3 u, t_vec3 v)
 	return (add);
 }
 
-t_vec3  vec3_sub(t_vec3 u, t_vec3 v)
+t_vec3	mr_vec3_sub(t_vec3 u, t_vec3 v)
 {
 	t_vec3	sub;
 
@@ -20,7 +20,7 @@ t_vec3  vec3_sub(t_vec3 u, t_vec3 v)
 	return (sub);
 }
 
-t_vec3  vec3_mul(t_vec3 u, t_vec3 v)
+t_vec3	mr_vec3_mul(t_vec3 u, t_vec3 v)
 {
 	t_vec3	mul;
 
@@ -30,12 +30,12 @@ t_vec3  vec3_mul(t_vec3 u, t_vec3 v)
 	return (mul);
 }
 
-double  vec3_dot(t_vec3 u, t_vec3 v)
+double	mr_vec3_dot(t_vec3 u, t_vec3 v)
 {
 	return ((u.x * v.x) + (u.y * v.y) + (u.z * v.z));
 }
 
-t_vec3	vec3_cross(t_vec3 u, t_vec3 v)
+t_vec3	mr_vec3_cross(t_vec3 u, t_vec3 v)
 {
 	t_vec3	cross;
 
