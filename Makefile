@@ -9,6 +9,7 @@ SRCS		:=	main.c \
 				vec3_utils.c \
 				vec3_operator.c \
 				color.c \
+				sphere.c
 
 OBJS		:=	$(SRCS:.c=.o)
 MLX			:=	minilibx-linux

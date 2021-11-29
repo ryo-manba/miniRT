@@ -67,4 +67,8 @@ int	get_trgb(int trgb, int shift);
 int	add_shade(double distance, int color);
 int	get_opposite(int color);
 
+/* sphere */
+bool	hit_sphere(const t_vec3 *center, double radius, const t_ray *ray);
+
+
 #endif

@@ -35,6 +35,16 @@ static void vec3_init(t_vec3 *vec3)
 //  return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
 static t_vec3	ray_color(t_ray *r)
 {
+	t_vec3	point3;
+
+	vec3_init(&point3);
+	point3.z = -1;
+	if (hit_sphere(&point3, 0.5, r))
+	{
+		vec3_init(&point3);
+		point3.x = 1;
+		return (point3);
+	}
 	t_vec3 unit_direction = unit_vector(r->direction);
 	double t = 0.5  *(unit_direction.y + 1.0);
 
@@ -53,13 +63,26 @@ static t_vec3	ray_color(t_ray *r)
 	return (vec3_add(c1, c2));
 }
 
+static t_rgb vec3_to_rgb(t_vec3 *vec3)
+{
+	t_rgb	rgb;
+
+	rgb.r = vec3->x * 255.999;
+	rgb.g = vec3->y * 255.999;
+	rgb.b = vec3->z * 255.999;
+	return (rgb);
+}
+
+static int	rgb_to_color(t_rgb *rgb)
+{
+	return (create_trgb(0, rgb->r, rgb->g, rgb->b));
+}
+
 static void	ray(t_img *img)
 {
 	const double	aspect_ratio = 16.0 / 9.0;
-//	const int		image_width = 384;
-	const int		image_width = WIDTH;
-//	const int		image_height = image_width / aspect_ratio;
-	const int		image_height = HEIGHT;
+	const int		image_width = WIDTH; // 384
+	const int		image_height = HEIGHT; // image_width / aspect_ratio
 	double 			viewport_height = 2.0;
 	double 			viewport_width = aspect_ratio * viewport_height;
 	double 			focal_length = 1.0;
@@ -79,8 +102,6 @@ static void	ray(t_img *img)
 	lower_left_corner = vec3_sub(origin, vec3_div_double(horizontal, 2.0));
 	lower_left_corner = vec3_sub(lower_left_corner, vec3_div_double(vertical, 2.0));
 	lower_left_corner.z -= focal_length;
-
-//	printf("%f, %f, %f\n", lower_left_corner.x, lower_left_corner.y, lower_left_corner.z);
 	for (double j = image_height-1; j >= 0; --j) {
 		for (double i = 0; i < image_width; ++i) {
 
@@ -89,25 +110,18 @@ static void	ray(t_img *img)
 
 			t_ray r;
 			r.origin = origin;
-
 			t_vec3 ho = vec3_mul_double(horizontal, u);
 			r.direction = vec3_add(lower_left_corner, ho);
 			t_vec3 ve = vec3_mul_double(vertical, v);
 			r.direction = vec3_add(r.direction, ve);
 			r.direction = vec3_sub(r.direction, origin);
 
-			t_vec3 ray_c = ray_color(&r);
-
-			t_rgb rgb;
-			rgb.r = ray_c.x * 255.999;
-			rgb.g = ray_c.y * 255.999;
-			rgb.b = ray_c.z * 255.999;
-
-			int color = create_trgb(0, rgb.r, rgb.g, rgb.b);
+			t_vec3	ray_c = ray_color(&r);
+			t_rgb	rgb = vec3_to_rgb(&ray_c);
+			int color = rgb_to_color(&rgb);
 			my_mlx_pixel_put(img, i, j, color);
 		}
 	}
-
 }
 
 int main()
