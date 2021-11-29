@@ -11,7 +11,7 @@
 # include "./libft/libft.h"
 # include "./minilibx-linux/mlx.h"
 # include "rt_scene.h"
-# include "vec3.h"
+# include "mr_vec3.h"
 
 /* window size */
 //# define WIDTH 500
@@ -68,7 +68,7 @@ int	add_shade(double distance, int color);
 int	get_opposite(int color);
 
 /* sphere */
-bool	hit_sphere(const t_vec3 *center, double radius, const t_ray *ray);
+double	rt_hit_sphere(const t_vec3 *center, double radius, const t_ray *ray);
 
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef RT_SCENE_H
 # define RT_SCENE_H
 
-#include "vec3.h"
+#include "mr_vec3.h"
 // mr -> main, hook
 // rt -> raytracing
 // read, rendaring, others

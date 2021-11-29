@@ -1,6 +1,6 @@
 #include "minirt.h"
 #include "rt_scene.h"
-#include "vec3.h"
+#include "mr_vec3.h"
 
 #define ASPECT_RATIO (double)16.0 / 9.0
 #define HEIGHT 250
@@ -10,6 +10,21 @@ static int	exit_window(t_info *info)
 {
 	mlx_destroy_window(info->mlx, info->win);
 	exit(0);
+}
+
+static t_rgb vec3_to_rgb(t_vec3 *vec3)
+{
+	t_rgb	rgb;
+
+	rgb.r = vec3->x * 255.999;
+	rgb.g = vec3->y * 255.999;
+	rgb.b = vec3->z * 255.999;
+	return (rgb);
+}
+
+static int	rgb_to_color(t_rgb *rgb)
+{
+	return (create_trgb(0, rgb->r, rgb->g, rgb->b));
 }
 
 static void vec3_init(t_vec3 *vec3, double x, double y, double z)
@@ -28,7 +43,8 @@ static t_vec3	ray_color(t_ray *r)
 	double			t;
 
 	vec3_init(&point3, 0, 0, -1.0);
-	if (hit_sphere(&point3, 0.5, r)) // 球とヒットした場合
+	t =  rt_hit_sphere(&point3, 0.5, r); // 球とヒットした場合
+	if (t > 0.0)
 	{
 		vec3_init(&point3, 1, 0, 0);
 		return (point3); // rgbの割合を返す
@@ -39,21 +55,6 @@ static t_vec3	ray_color(t_ray *r)
 	c1 = vec3_mul_double(c1, t);
 	c2 = vec3_mul_double(c2, 1 - t);
 	return (vec3_add(c1, c2));
-}
-
-static t_rgb vec3_to_rgb(t_vec3 *vec3)
-{
-	t_rgb	rgb;
-
-	rgb.r = vec3->x * 255.999;
-	rgb.g = vec3->y * 255.999;
-	rgb.b = vec3->z * 255.999;
-	return (rgb);
-}
-
-static int	rgb_to_color(t_rgb *rgb)
-{
-	return (create_trgb(0, rgb->r, rgb->g, rgb->b));
 }
 
 static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, t_vec3 *vertical, t_img *img)
