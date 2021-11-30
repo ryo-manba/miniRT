@@ -8,8 +8,9 @@ SRCS		:=	main.c \
 				mr_mlx_utils.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
-				color.c \
-				rt_sphere.c
+				rt_color.c \
+				rt_sphere.c \
+				rt_diffuse.c \
 
 OBJS		:=	$(SRCS:.c=.o)
 MLX			:=	minilibx-linux

@@ -32,13 +32,13 @@
 void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
 
 /* color */
-int create_trgb(int t, int r, int g, int b);
-int	get_trgb(int trgb, int shift);
-int	add_shade(double distance, int color);
-int	get_opposite(int color);
+int rt_create_trgb(int t, int r, int g, int b);
+int	rt_get_trgb(int trgb, int shift);
+int	rt_add_shade(double distance, int color);
+int	rt_get_opposite(int color);
 
 /* mr_sphere */
-double	rt_hit_sphere(const t_vec3 *center, double radius, const t_ray *ray);
+bool	rt_hit_sphere(const t_vec3 *center, double radius, const t_ray *ray, t_hit_record *rec);
 
 
 #endif

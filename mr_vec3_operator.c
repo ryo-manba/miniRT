@@ -44,3 +44,10 @@ t_vec3	mr_vec3_cross(t_vec3 u, t_vec3 v)
 	cross.z = u.x * v.y - u.y * v.x;
 	return (cross);
 }
+
+void mr_vec3_init(t_vec3 *vec3, double x, double y, double z)
+{
+	vec3->x = x;
+	vec3->y = y;
+	vec3->z = z;
+}

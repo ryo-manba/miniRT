@@ -58,4 +58,11 @@ typedef struct	s_ray
 	t_vec3	direction;
 } t_ray;
 
+typedef struct	s_hit_record
+{
+	t_vec3	p;
+	t_vec3	normal;
+	double	t;
+}	t_hit_record;
+
 #endif

@@ -22,4 +22,6 @@ t_vec3	mr_unit_vector(t_vec3 v);
 double	mr_vec3_length(t_vec3 v);
 double	mr_vec3_length_squared(t_vec3 v);
 
+void mr_vec3_init(t_vec3 *vec3, double x, double y, double z);
+
 #endif

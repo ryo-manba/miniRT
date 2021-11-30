@@ -1,0 +1,15 @@
+gcc -Werror -Wall -Wextra -I/usr/X11/include -Iminilibx-linux -Ilibft   -c -o main.o main.c
+make -C minilibx-linux
+./configure
+[96m[1mconfigure[0m [[92minfo[0m] : Found X11 include path directory: /usr/X11/include
+[96m[1mconfigure[0m [[92minfo[0m] : Generate "makefile.gen" from template "makefile.mk"
+[96m[1mconfigure[0m [[92minfo[0m] : Generate "test/makefile.gen" from template "test/makefile.mk"
+[96m[1mconfigure[0m [[92minfo[0m] : Execute "make all" from file "makefile.gen"
+make[2]: Nothing to be done for `all'.
+[96m[1mconfigure[0m [[92minfo[0m] : Execute "make all" from file "test/makefile.gen"
+make[2]: Nothing to be done for `all'.
+gcc -Werror -Wall -Wextra -I/usr/X11/include -Iminilibx-linux -Ilibft main.o mr_mlx_utils.o mr_vec3_utils.o mr_vec3_operator.o rt_color.o rt_sphere.o rt_diffuse.o -Llibft -Lminilibx-linux -lmlx_Darwin -L//usr/X11/include/../lib -lXext -lX11 -lm -o miniRT
+./miniRT
+0.639949
+0.783969
+1.000000
