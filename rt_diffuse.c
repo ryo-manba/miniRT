@@ -24,19 +24,6 @@ t_vec3	rt_random(double min, double max)
 	return (random);
 }
 
-t_vec3	rt_random_in_unit_sphere()
-{
-	while (true)
-	{
-		t_vec3	p = rt_random(-1, 1);
-		if (mr_vec3_length_squared(p) >= 1) // 単位球面よりも大きかった場合
-		{
-			continue;
-		}
-		return (p);
-	}
-}
-
 t_vec3	rt_random_unit_vector()
 {
 	double	a = rt_random_double(0, 2 * PI);

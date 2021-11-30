@@ -7,13 +7,12 @@
 #define HEIGHT 250
 #define WIDTH HEIGHT * ASPECT_RATIO
 
-
-static int	exit_window(t_info *info)
+/*
+static void	vec3_debug(t_vec3 *vec)
 {
-	mlx_destroy_window(info->mlx, info->win);
-	exit(0);
+	printf("x = %f, y= %f, z = %f",vec->x,vec->y,vec->z);
 }
-
+*/
 static t_rgb vec3_to_rgb(t_vec3 *vec3)
 {
 	t_rgb	rgb;
@@ -27,6 +26,13 @@ static t_rgb vec3_to_rgb(t_vec3 *vec3)
 static int	rgb_to_color(t_rgb *rgb)
 {
 	return (rt_create_trgb(0, rgb->r, rgb->g, rgb->b));
+}
+
+// 光源の強さ * cosθ
+int	rt_lamberdian(t_vec3 *light)
+{
+	(void)light;
+	return (0);
 }
 
 static t_vec3	ray_color(t_ray *r, int depth)
@@ -45,13 +51,32 @@ static t_vec3	ray_color(t_ray *r, int depth)
 	}
 
 	mr_vec3_init(&point3, 0, 0, -1.0);
+
 	if (rt_hit_sphere(&point3, 0.5, r, &rec)) // 球とヒットした場合
 	{
+
 		t_vec3	target = mr_vec3_add(mr_vec3_add(rec.p, rec.normal), rt_random_unit_vector());
 		t_ray	ray;
 		ray.origin = rec.p;
 		ray.direction = mr_vec3_sub(target, rec.p);
 		return (mr_vec3_mul_double(ray_color(&ray, depth - 1), 0.5));
+
+		// ライトまでのベクトルを求めて、途中でobjectがあるかを判定する
+		//　光源位置ベクトル　- 衝突点
+		// light_vec - point3
+		// t_ray	ray;
+		// ray.origin = r.direction;
+		// ray.direction = mr_vec3_sub(light_vec, r.direction);
+
+		// if (rt_hit_sphere(&point3, 0.5, ray, &rec)) // 各オブジェクトとの衝突判定
+		// {
+		// 	;
+		// }
+		// else // 何にも衝突しなかった場合
+		// {
+		// 	rt_lamberdian(NULL);　
+		// }
+
 	}
 
 	unit_direction = mr_unit_vector(r->direction);
@@ -83,8 +108,10 @@ static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, 
 			ray->direction = mr_vec3_sub(mr_vec3_add(mr_vec3_add(*lower_left_corner, mr_vec3_mul_double(*horizontal, u)),
 												mr_vec3_mul_double(*vertical, v)), ray->origin);
 			t_vec3	ray_c = ray_color(ray, depth);
+
+
 			t_rgb	rgb = vec3_to_rgb(&ray_c);
-			my_mlx_pixel_put(img, i, j, rgb_to_color(&rgb));
+			mr_mlx_pixel_put(img, i, j, rgb_to_color(&rgb));
 			i += 1;
 		}
 		j += 1;
@@ -120,7 +147,7 @@ int main()
 	info.img.addr = mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.line_len, &info.img.endian);
 	ray(&info.img);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
-	mlx_hook(info.win, 17, 1L << 17, &exit_window, &info);
+	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);
 	mlx_loop(info.mlx);
 	return (0);
 }

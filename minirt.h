@@ -29,7 +29,9 @@
 # define WHITE 0xffffff
 
 /* hooks */
-void	my_mlx_pixel_put(t_img *img, int x, int y, int color);
+void	mr_mlx_pixel_put(t_img *img, int x, int y, int color);
+int		mr_exit_window(t_info *info);
+
 
 /* color */
 int rt_create_trgb(int t, int r, int g, int b);
