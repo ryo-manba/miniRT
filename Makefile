@@ -5,8 +5,12 @@ INC			=	-I$(X11) -I$(MLX) -I$(LIBFT)
 X11			:=	/usr/X11/include
 LIBFT		:=	libft
 SRCS		:=	main.c \
-				mlx_utils.c \
-				color.c \
+				mr_mlx_utils.c \
+				mr_vec3_utils.c \
+				mr_vec3_operator.c \
+				rt_color.c \
+				rt_sphere.c \
+				rt_diffuse.c \
 
 OBJS		:=	$(SRCS:.c=.o)
 MLX			:=	minilibx-linux
