@@ -6,12 +6,12 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:37:12 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 11:37:12 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/01 14:23:16 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RT_FILE_H
-# define RT_FILE_H
+#ifndef RD_FILE_H
+# define RD_FILE_H
 
 # include <unistd.h>
 # include <fcntl.h>

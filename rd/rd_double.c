@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:15 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 11:36:16 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/01 14:29:39 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ bool	rd_is_finite(const double val)
 	return (((u.ull >> 52) & fullbit) != fullbit);
 }
 
-double	rd_str_to_double(const char* str)
+double	rd_str_to_double(const char *str)
 {
 	double	val;
 	double	sign;

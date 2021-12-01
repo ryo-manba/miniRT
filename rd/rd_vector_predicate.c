@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:02 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 11:36:02 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/01 14:24:38 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ bool	rd_is_unit_vector(const char *str)
 	rd_vectorize(str, &vec);
 	if (!rd_is_finite(vec.x))
 		return (false);
-	r2 = vec.x * vec.x + vec.y	 * vec.y + vec.z * vec.z;
+	r2 = vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
 	r2 = r2 - 1;
 	if (r2 < 0)
 		r2 = -r2;
