@@ -26,10 +26,16 @@ int main(int argc, char **argv)
 		printf("%s\n", lines[i]);
 		words = ft_split(lines[i], ' ');
 		debug_rd_print_words(words);
-		t_element_type etype = rd_detect_element_type((const char**)words);
+		t_element_type etype = rd_detect_element_type((const char **)words);
 		printf("%d\n", etype);
+		t_element *el = rd_extract_element(etype, (const char **)words);
+		if (el)
+			debug_rd_print_element(el);
+		rd_free_strarray(words);
+		free(el);
 		i += 1;
 	}
+	rd_free_strarray(lines);
 
 	(void)argc;
 	printf("%d\n", rd_is_vector(argv[1]));
