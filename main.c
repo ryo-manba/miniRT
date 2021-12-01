@@ -6,13 +6,9 @@
 #define ASPECT_RATIO (double)16.0 / 9.0
 #define HEIGHT 250
 #define WIDTH HEIGHT * ASPECT_RATIO
+#define EPS 1e-9
 
-/*
-static void	vec3_debug(t_vec3 *vec)
-{
-	printf("x = %f, y= %f, z = %f",vec->x,vec->y,vec->z);
-}
-*/
+
 static t_rgb vec3_to_rgb(t_vec3 *vec3)
 {
 	t_rgb	rgb;
@@ -31,53 +27,60 @@ static int	rgb_to_color(t_rgb *rgb)
 // 光源の強さ * cosθ
 int	rt_lamberdian(t_vec3 *light)
 {
-	(void)light;
+	(void)light;	
 	return (0);
 }
 
-static t_vec3	ray_color(t_ray *r, int depth)
+static t_vec3	ray_color(t_ray *r)
 {
 	t_vec3	unit_direction = mr_unit_vector(r->direction);
-	t_vec3			point3;
+	t_vec3			center;
 	t_vec3			c1; // 白
 	t_vec3			c2; // 青
 	double			t;
 	t_hit_record	rec;
 
-	if (depth <= 0)
+
+//	mr_vec3_init(&center, 0, 0, -1.0);
+
+//	t_vec3 point;
+//	mr_vec3_init(&point, -0.6, 0, -1.0);
+//
+//	t_vec3 point2;
+//	mr_vec3_init(&point2, 0.0, 100, -1.0);
+
+
+	mr_vec3_init(&center, 0, 0, -1.0);
+	if (rt_hit_sphere(&center, 0.5, r, &rec)) // 球とヒットした場合
 	{
-		mr_vec3_init(&point3, 0, 0, 0);
-		return (point3);
+		// 法線ベクトルを求める
+		t_vec3 tmp1 = mr_vec3_sub(rec.p, center);
+		tmp1 = mr_unit_vector(tmp1);
+
+		// cosθを求める
+		t_vec3 tmp2 = rec.normal;
+		double cos = mr_vec3_dot(tmp1, tmp2);
+
+		double x = cos * 0.1; // cos * 輝度
+		return (mr_vec3_mul_double(rec.p, x));
 	}
+	// else if (rt_hit_sphere(&point, 0.5, r, &rec))
+	// {
+	// 	t_vec3	target = mr_vec3_add(mr_vec3_add(rec.p, rec.normal), rt_random_unit_vector());
+	// 	t_ray	ray;
+	// 	ray.origin = rec.p;
+	// 	ray.direction = mr_vec3_sub(target, rec.p);
+	// 	return (mr_vec3_mul_double(ray_color(&ray, depth - 1), 0.3 + EPS));
 
-	mr_vec3_init(&point3, 0, 0, -1.0);
-
-	if (rt_hit_sphere(&point3, 0.5, r, &rec)) // 球とヒットした場合
-	{
-
-		t_vec3	target = mr_vec3_add(mr_vec3_add(rec.p, rec.normal), rt_random_unit_vector());
-		t_ray	ray;
-		ray.origin = rec.p;
-		ray.direction = mr_vec3_sub(target, rec.p);
-		return (mr_vec3_mul_double(ray_color(&ray, depth - 1), 0.5));
-
-		// ライトまでのベクトルを求めて、途中でobjectがあるかを判定する
-		//　光源位置ベクトル　- 衝突点
-		// light_vec - point3
-		// t_ray	ray;
-		// ray.origin = r.direction;
-		// ray.direction = mr_vec3_sub(light_vec, r.direction);
-
-		// if (rt_hit_sphere(&point3, 0.5, ray, &rec)) // 各オブジェクトとの衝突判定
-		// {
-		// 	;
-		// }
-		// else // 何にも衝突しなかった場合
-		// {
-		// 	rt_lamberdian(NULL);　
-		// }
-
-	}
+	// } 
+	// else if (rt_hit_sphere(&point2, 99, r, &rec))
+	// {
+	// 	t_vec3	target = mr_vec3_add(mr_vec3_add(rec.p, rec.normal), rt_random_unit_vector());
+	// 	t_ray	ray;
+	// 	ray.origin = rec.p;
+	// 	ray.direction = mr_vec3_sub(target, rec.p);
+	// 	return (mr_vec3_mul_double(ray_color(&ray, depth - 1), 0.9 + EPS));
+	// }
 
 	unit_direction = mr_unit_vector(r->direction);
 	t = 0.5  * (unit_direction.y + 1.0);
@@ -95,20 +98,22 @@ static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, 
 	double	j;
 	double	u;
 	double	v;
-	int depth = 50;
-
+	
 	j = 0;
 	while (j < HEIGHT)
 	{
 		i = 0;
 		while (i < WIDTH)
 		{
-			u = i / (WIDTH-1);
-			v = j / (HEIGHT-1);
-			ray->direction = mr_vec3_sub(mr_vec3_add(mr_vec3_add(*lower_left_corner, mr_vec3_mul_double(*horizontal, u)),
-												mr_vec3_mul_double(*vertical, v)), ray->origin);
-			t_vec3	ray_c = ray_color(ray, depth);
+			u = i / (WIDTH-1);  // [0,1]
+			v = j / (HEIGHT-1); // [0,1]
+			// rayの方向ベクトル = (viewportの左下 + (水平方向ベクトル * u)) + (垂直方向ベクトル * v)) - rayの原点)
+			ray->direction = mr_vec3_sub(
+							mr_vec3_add(mr_vec3_add(*lower_left_corner, mr_vec3_mul_double(*horizontal, u)),
+							mr_vec3_mul_double(*vertical, v)),
+							ray->origin);
 
+			t_vec3 ray_c = ray_color(ray);
 
 			t_rgb	rgb = vec3_to_rgb(&ray_c);
 			mr_mlx_pixel_put(img, i, j, rgb_to_color(&rgb));

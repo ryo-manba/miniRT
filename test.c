@@ -52,11 +52,11 @@ void	plot(t_img *img, int color)
 		{
 			if (is_in_circle(i, j))
 			{
-				my_mlx_pixel_put(img, i, j, color);
+				mr_mlx_pixel_put(img, i, j, color);
 			}
 			else
 			{
-				my_mlx_pixel_put(img, i, j, rt_get_opposite(color));
+				mr_mlx_pixel_put(img, i, j, rt_get_opposite(color));
 			}
 			j += 1;
 		}
@@ -64,7 +64,7 @@ void	plot(t_img *img, int color)
 	}
 }
 
-static int	exit_window(t_info *info)
+static int	mr_exit_window(t_info *info)
 {
 	mlx_destroy_window(info->mlx, info->win);
 	exit(0);
@@ -82,7 +82,7 @@ int main()
 	color = rt_create_trgb(T, R, G, B);
 	plot(&info.img, color);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
-	mlx_hook(info.win, 17, 1L << 17, &exit_window, &info);
+	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);
 	mlx_loop(info.mlx);
 	return (0);
 }
