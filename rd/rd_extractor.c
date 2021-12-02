@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 12:23:39 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/01 17:53:42 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ static const t_element_info_extractor	g_plane_extractors[] = {
 
 static bool	extract_seq(
 	const char **words,
-	void **addrs,
-	const t_element_info_extractor *extractors)
+	const t_element_info_extractor *extractors,
+	void **addrs)
 {
 	size_t	i;
 
@@ -101,28 +101,24 @@ static bool	extract_element(
 	const char **words)
 {
 	if (el->etype == RD_ET_AMBIENT)
-		return (extract_seq(words, (void *[]){&(el->ratio), &(el->color)},
-			g_ambient_extractors));
+		return (extract_seq(words, g_ambient_extractors,
+				(void *[]){&(el->ratio), &(el->color)}));
 	if (el->etype == RD_ET_CAMERA)
-		return (extract_seq(words, (void *[]){&(el->position), &(el->direction),
-				&(el->fov)},
-			g_camera_extractors));
+		return (extract_seq(words, g_camera_extractors,
+				(void *[]){&(el->position), &(el->direction), &(el->fov)}));
 	if (el->etype == RD_ET_LIGHT)
-		return (extract_seq(words, (void *[]){&(el->position), &(el->ratio),
-				&(el->color)},
-			g_light_extractors));
+		return (extract_seq(words, g_light_extractors,
+				(void *[]){&(el->position), &(el->ratio), &(el->color)}));
 	if (el->etype == RD_ET_SPHERE)
-		return (extract_seq(words, (void *[]){&(el->position), &(el->radius),
-				&(el->color)},
-			g_sphere_extractors));
+		return (extract_seq(words, g_sphere_extractors,
+				(void *[]){&(el->position), &(el->radius), &(el->color)}));
 	if (el->etype == RD_ET_PLANE)
-		return (extract_seq(words, (void *[]){&(el->position), &(el->direction),
-				&(el->color)},
-			g_plane_extractors));
+		return (extract_seq(words, g_plane_extractors,
+				(void *[]){&(el->position), &(el->direction), &(el->color)}));
 	if (el->etype == RD_ET_CYLINDER)
-		return (extract_seq(words, (void *[]){&(el->position), &(el->direction),
-				&(el->diameter), &(el->height), &(el->color)},
-			g_cylinder_extractors));
+		return (extract_seq(words, g_cylinder_extractors,
+				(void *[]){&(el->position), &(el->direction),
+				&(el->diameter), &(el->height), &(el->color)}));
 	return (false);
 }
 

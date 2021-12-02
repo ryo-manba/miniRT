@@ -1,44 +1,19 @@
+#include "mr_read.h"
 #include "rd_read.h"
 
-int main(int argc, char **argv)
+int main()
 {
-	char	*content;
-	char	**lines;
+	t_scene	scene;
 
-	content = rd_read_file_content("test.rt");
-	if (!content)
+	if (rd_read_scene("test.rt", &scene) == false)
 	{
 		printf("Error\n");
 		return (1);
 	}
+	printf("ambient:\t"); debug_rd_print_element_list(scene.ambient); printf("\n");
+	printf("camera: \t"); debug_rd_print_element_list(scene.camera); printf("\n");
+	printf("lights: \t"); debug_rd_print_element_array(scene.lights); printf("\n");
+	printf("objects:\t"); debug_rd_print_element_array(scene.objects); printf("\n");
 
-	lines = ft_split(content, '\n');
-	if (!lines)
-	{
-		printf("Error\n");
-		return (1);
-	}
-	size_t	i;
-	char **words;
-	i = 0;
-	while (lines[i])
-	{
-		printf("%s\n", lines[i]);
-		words = ft_split(lines[i], ' ');
-		debug_rd_print_words(words);
-		t_element_type etype = rd_detect_element_type((const char **)words);
-		printf("%d\n", etype);
-		t_element *el = rd_extract_element(etype, (const char **)words);
-		if (el)
-			debug_rd_print_element(el);
-		rd_free_strarray(words);
-		free(el);
-		i += 1;
-	}
-	rd_free_strarray(lines);
-
-	(void)argc;
-	printf("%d\n", rd_is_vector(argv[1]));
-	printf("%d\n", rd_is_unit_vector(argv[1]));
-	printf("%d\n", rd_is_color_vector(argv[1]));
+	rd_destroy_scene(&scene);
 }

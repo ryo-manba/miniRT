@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 14:28:33 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/01 21:58:39 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,10 @@ static bool	line_matches_predicates(
 	size_t	i;
 
 	i = 0;
+	if (!words)
+	{
+		return (false);
+	}
 	while (words[i + 1])
 	{
 		if (!(predicates[i])(words[i + 1]))
@@ -70,6 +74,8 @@ static bool	line_matches_predicates(
 
 t_element_type	rd_detect_element_type(const char **words)
 {
+	if (!words)
+		return (RD_ET_UNEXPECTED);
 	if (ft_strcmp(words[0], RD_ID_AMBIENT) == 0
 		&& line_matches_predicates(words, g_ambient_predicates))
 		return (RD_ET_AMBIENT);
