@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 21:58:39 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/02 23:22:25 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,14 @@ static bool	line_matches_predicates(
 	}
 	while (words[i + 1])
 	{
-		if (!(predicates[i])(words[i + 1]))
+		if (!predicates[i] || !(predicates[i])(words[i + 1]))
 		{
 			return (false);
 		}
 		i += 1;
 	}
+	if (predicates[i])
+		return (false);
 	return (true);
 }
 
