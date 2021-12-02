@@ -31,65 +31,46 @@ int	rt_lamberdian(t_vec3 *light)
 	return (0);
 }
 
+static t_vec3	sky_blue(t_vec3 direction)
+{
+	const t_vec3 c1 = {1.0, 1.0, 1.0}; // 白
+	const t_vec3 c2 = {0.5, 0.7, 1.0}; // 青
+	const t_vec3 unit_direction = mr_unit_vector(direction);
+	const double t = 0.5  * (unit_direction.y + 1.0);
+
+	return (mr_vec3_add(
+			mr_vec3_mul_double(c1, t),
+			mr_vec3_mul_double(c2, 1 - t)));
+}
+
 static t_vec3	ray_color(t_ray *r)
 {
-	t_vec3	unit_direction = mr_unit_vector(r->direction);
 	t_vec3			center;
-	t_vec3			c1; // 白
-	t_vec3			c2; // 青
-	double			t;
 	t_hit_record	rec;
 
-
-//	mr_vec3_init(&center, 0, 0, -1.0);
-
-//	t_vec3 point;
-//	mr_vec3_init(&point, -0.6, 0, -1.0);
-//
-//	t_vec3 point2;
-//	mr_vec3_init(&point2, 0.0, 100, -1.0);
-
-
-	mr_vec3_init(&center, 0, 0, -1.0);
+	mr_vec3_init(&center, 0, 0, -1.0); 		  // 球の中心
 	if (rt_hit_sphere(&center, 0.5, r, &rec)) // 球とヒットした場合
 	{
 		// 法線ベクトルを求める
 		t_vec3 tmp1 = mr_vec3_sub(rec.p, center);
+//		t_vec3 tmp1 = mr_vec3_sub(r->direction, center);
 		tmp1 = mr_unit_vector(tmp1);
 
+//		vec3_debug(&t);
+//		vec3_debug(&rec.p);
+		
+//		vec3_debug(&tmp1);
+//		vec3_debug(&tmp1);
+//		exit(1);
 		// cosθを求める
-		t_vec3 tmp2 = rec.normal;
+//		t_vec3 tmp1 = mr_vec3_sub(rec.p, center);
+		t_vec3 tmp2 = mr_unit_vector(r->direction);
 		double cos = mr_vec3_dot(tmp1, tmp2);
 
-		double x = cos * 0.1; // cos * 輝度
+		double x = cos * 0.5; // cos * 輝度
 		return (mr_vec3_mul_double(rec.p, x));
 	}
-	// else if (rt_hit_sphere(&point, 0.5, r, &rec))
-	// {
-	// 	t_vec3	target = mr_vec3_add(mr_vec3_add(rec.p, rec.normal), rt_random_unit_vector());
-	// 	t_ray	ray;
-	// 	ray.origin = rec.p;
-	// 	ray.direction = mr_vec3_sub(target, rec.p);
-	// 	return (mr_vec3_mul_double(ray_color(&ray, depth - 1), 0.3 + EPS));
-
-	// } 
-	// else if (rt_hit_sphere(&point2, 99, r, &rec))
-	// {
-	// 	t_vec3	target = mr_vec3_add(mr_vec3_add(rec.p, rec.normal), rt_random_unit_vector());
-	// 	t_ray	ray;
-	// 	ray.origin = rec.p;
-	// 	ray.direction = mr_vec3_sub(target, rec.p);
-	// 	return (mr_vec3_mul_double(ray_color(&ray, depth - 1), 0.9 + EPS));
-	// }
-
-	unit_direction = mr_unit_vector(r->direction);
-	t = 0.5  * (unit_direction.y + 1.0);
-	mr_vec3_init(&c1, 1.0, 1.0, 1.0);
-	mr_vec3_init(&c2, 0.5, 0.7, 1.0);
-	c1 = mr_vec3_mul_double(c1, t);
-	c2 = mr_vec3_mul_double(c2, 1 - t);
-
-	return (mr_vec3_add(c1, c2));
+	return (sky_blue(r->direction));
 }
 
 static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, t_vec3 *vertical, t_img *img)
