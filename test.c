@@ -56,7 +56,7 @@ void	plot(t_img *img, int color)
 			}
 			else
 			{
-				my_mlx_pixel_put(img, i, j, get_opposite(color));
+				my_mlx_pixel_put(img, i, j, rt_get_opposite(color));
 			}
 			j += 1;
 		}
@@ -79,7 +79,7 @@ int main()
 	info.win = mlx_new_window(info.mlx, WIDTH, HEIGHT, "miniRT");
 	info.img.img = mlx_new_image(info.mlx, WIDTH, HEIGHT);
 	info.img.addr = mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.line_len, &info.img.endian);
-	color = create_trgb(T, R, G, B);
+	color = rt_create_trgb(T, R, G, B);
 	plot(&info.img, color);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
 	mlx_hook(info.win, 17, 1L << 17, &exit_window, &info);
