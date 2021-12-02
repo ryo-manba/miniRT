@@ -78,7 +78,7 @@ static t_vec3	ray_color(t_ray *r)
 	return (sky_blue(r->direction));
 }
 
-static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, t_vec3 *vertical, t_img *img)
+static void	ray_loop(t_ray *ray, t_vec3 *vp_lower_left_corner, t_vec3 *horizontal, t_vec3 *vertical, t_img *img)
 {
 	double	i;
 	double	j;
@@ -99,7 +99,7 @@ static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, 
 				mr_vec3_add(
 					mr_vec3_mul_double(*vertical, v), mr_vec3_mul_double(*horizontal, u)
 				),
-				*lower_left_corner
+				*vp_lower_left_corner
 			);
 			ray->direction = mr_vec3_sub(
 								ray_cross_screen, ray->origin
@@ -119,25 +119,30 @@ static void	ray(t_img *img)
 {
 	const double 	viewport_height = 2.0;
 	const double 	viewport_width = ASPECT_RATIO * viewport_height;
+	const double 	viewport_z = 0;
 	const double 	focal_length = 1.0;
 	t_vec3			horizontal; // ビューポート幅ベクトル
 	t_vec3			vertical; // ビューポート高さベクトル
-	t_vec3			lower_left_corner; // ビューポート左下隅
+	t_vec3			vp_lower_left_corner; // ビューポート左下隅
+	t_vec3			vp_center; // ビューポート中心
 	t_vec3			coordinate_origin; // 座標原点
 	t_ray			ray;
 
 	mr_vec3_init(&coordinate_origin, 0, 0, 0);
-	mr_vec3_init(&ray.origin, 0, 0, -focal_length);
-	mr_vec3_init(&horizontal, viewport_width, 0, 0);
-	mr_vec3_init(&vertical, 0, viewport_height, 0);
-	lower_left_corner = mr_vec3_sub(
+	vp_center = coordinate_origin;
+	vp_center.z = viewport_z;
+	ray.origin = vp_center;
+	ray.origin.z -= focal_length;
+	mr_vec3_init(&horizontal, viewport_width, 0, viewport_z);
+	mr_vec3_init(&vertical, 0, viewport_height, viewport_z);
+	vp_lower_left_corner = mr_vec3_sub(
 		mr_vec3_sub(
-			coordinate_origin, mr_vec3_div_double(horizontal, 2)
+			vp_center, mr_vec3_div_double(horizontal, 2)
 		),
 		mr_vec3_div_double(vertical, 2)
 	);
-	// lower_left_corner.z -= focal_length;
-	ray_loop(&ray, &lower_left_corner, &horizontal, &vertical, img);
+	// vp_lower_left_corner.z -= focal_length;
+	ray_loop(&ray, &vp_lower_left_corner, &horizontal, &vertical, img);
 }
 
 int main()
