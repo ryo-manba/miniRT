@@ -48,11 +48,11 @@ static t_vec3	ray_color(t_ray *r)
 	t_vec3			center;
 	t_hit_record	rec;
 
-	mr_vec3_init(&center, 0, 0, -1.0); 		  // 球の中心
-	if (rt_hit_sphere(&center, 0.5, r, &rec)) // 球とヒットした場合
+	mr_vec3_init(&center, 0, 0, 5.0); 		  // 球の中心
+	if (rt_hit_sphere(&center, 4.5, r, &rec)) // 球とヒットした場合
 	{
 		// 法線ベクトルを求める
-		t_vec3 tmp1 = mr_vec3_sub(rec.p, center);
+		t_vec3 tmp1 = rec.p;
 //		t_vec3 tmp1 = mr_vec3_sub(r->direction, center);
 		tmp1 = mr_unit_vector(tmp1);
 
@@ -64,11 +64,16 @@ static t_vec3	ray_color(t_ray *r)
 //		exit(1);
 		// cosθを求める
 //		t_vec3 tmp1 = mr_vec3_sub(rec.p, center);
-		t_vec3 tmp2 = mr_unit_vector(r->direction);
+		t_vec3 tmp2 = mr_unit_vector(rec.normal);
+		
 		double cos = mr_vec3_dot(tmp1, tmp2);
-
 		double x = cos * 0.5; // cos * 輝度
-		return (mr_vec3_mul_double(rec.p, x));
+		t_vec3 base_color = { 1, 1, 1 };
+		t_vec3 c = mr_vec3_mul_double(base_color, x);
+		c.x = fabs(c.x);
+		c.y = fabs(c.y);
+		c.z = fabs(c.z);
+		return (c);
 	}
 	return (sky_blue(r->direction));
 }
@@ -86,14 +91,20 @@ static void	ray_loop(t_ray *ray, t_vec3 *lower_left_corner, t_vec3 *horizontal, 
 		i = 0;
 		while (i < WIDTH)
 		{
-			u = i / (WIDTH-1);  // [0,1]
-			v = j / (HEIGHT-1); // [0,1]
+			u = i / (WIDTH);  // [0,1]
+			v = j / (HEIGHT); // [0,1]
 			// rayの方向ベクトル = (viewportの左下 + (水平方向ベクトル * u)) + (垂直方向ベクトル * v)) - rayの原点)
-			ray->direction = mr_vec3_sub(
-							mr_vec3_add(mr_vec3_add(*lower_left_corner, mr_vec3_mul_double(*horizontal, u)),
-							mr_vec3_mul_double(*vertical, v)),
-							ray->origin);
 
+			t_vec3 ray_cross_screen = mr_vec3_add(
+				mr_vec3_add(
+					mr_vec3_mul_double(*vertical, v), mr_vec3_mul_double(*horizontal, u)
+				),
+				*lower_left_corner
+			);
+			ray->direction = mr_vec3_sub(
+								ray_cross_screen, ray->origin
+							);
+			// vec3_debug(&ray->direction);
 			t_vec3 ray_c = ray_color(ray);
 
 			t_rgb	rgb = vec3_to_rgb(&ray_c);
@@ -109,17 +120,23 @@ static void	ray(t_img *img)
 	const double 	viewport_height = 2.0;
 	const double 	viewport_width = ASPECT_RATIO * viewport_height;
 	const double 	focal_length = 1.0;
-	t_vec3			horizontal;
-	t_vec3			vertical;
-	t_vec3			lower_left_corner;
+	t_vec3			horizontal; // ビューポート幅ベクトル
+	t_vec3			vertical; // ビューポート高さベクトル
+	t_vec3			lower_left_corner; // ビューポート左下隅
+	t_vec3			coordinate_origin; // 座標原点
 	t_ray			ray;
 
-	mr_vec3_init(&ray.origin, 0, 0, 0);
+	mr_vec3_init(&coordinate_origin, 0, 0, 0);
+	mr_vec3_init(&ray.origin, 0, 0, -focal_length);
 	mr_vec3_init(&horizontal, viewport_width, 0, 0);
 	mr_vec3_init(&vertical, 0, viewport_height, 0);
-	lower_left_corner = mr_vec3_sub(mr_vec3_sub(ray.origin, mr_vec3_div_double(horizontal, 2.0)),
-					 	mr_vec3_div_double(vertical, 2.0));
-	lower_left_corner.z -= focal_length;
+	lower_left_corner = mr_vec3_sub(
+		mr_vec3_sub(
+			coordinate_origin, mr_vec3_div_double(horizontal, 2)
+		),
+		mr_vec3_div_double(vertical, 2)
+	);
+	// lower_left_corner.z -= focal_length;
 	ray_loop(&ray, &lower_left_corner, &horizontal, &vertical, img);
 }
 
