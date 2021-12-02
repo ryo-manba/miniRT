@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/02 10:38:49 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/02 23:53:03 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <stdio.h>
+# include <math.h>
 # include "../mr_vec3.h"
 # include "../libft/libft.h"
 # include "mr_read.h"
