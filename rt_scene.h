@@ -15,9 +15,9 @@ typedef struct s_img {
 }			t_img;
 
 typedef struct s_rgb {
-	int	r;
-	int	g;
-	int	b;
+	double	r;
+	double	g;
+	double	b;
 }	t_rgb;
 
 typedef struct s_info
@@ -49,7 +49,7 @@ typedef struct	s_camera
 {
 	t_vec3	coodinates;
 	t_rgb	rgb;
-	int		fov; // 視野角[0,180]
+	double	fov; // 視野角[0,180]
 } t_camera;
 
 typedef struct	s_ray
@@ -63,6 +63,7 @@ typedef struct	s_hit_record
 	t_vec3	p;
 	t_vec3	normal;
 	double	t;
+	bool	hit;
 }	t_hit_record;
 
 #endif

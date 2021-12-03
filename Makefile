@@ -1,15 +1,21 @@
 NAME		:=	miniRT
 CC			:=	gcc
-CFLAGS		=	-Werror -Wall -Wextra $(INC)
+CFLAGS		=	-Werror -Wall -Wextra $(INC) -g -fsanitize=address
 INC			=	-I$(X11) -I$(MLX) -I$(LIBFT)
 X11			:=	/usr/X11/include
 LIBFT		:=	libft
-SRCS		:=	main.c \
+LIBFT_A		:=	$(LIBFT).a
+LIBREAD		:=	libread
+LIBREAD_A	:=	$(LIBREAD).a
+SRCS		:=	debug.c \
+				main.c \
 				mr_mlx_utils.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
 				rt_color.c \
 				rt_sphere.c \
+				rt_plain.c \
+				rt_cylinder.c \
 				rt_diffuse.c \
 
 OBJS		:=	$(SRCS:.c=.o)
@@ -19,15 +25,24 @@ RM 			:=	rm -f
 
 all: $(NAME)
 
-$(NAME): $(MLX) $(OBJS) $(LIBFT)
+$(NAME): $(MLX) $(OBJS) $(LIBFT_A) $(LIBREAD_A)
 	make -C $(MLX)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LIBREAD_A) $(LIBS) -o $(NAME)
 
 $(MLX):
 	git clone https://github.com/42Paris/minilibx-linux.git $(MLX)
 
 $(LIBFT):
 		make -C ./libft
+
+$(LIBFT_A):	$(LIBFT)
+		cp ./libft/$(LIBFT_A) .
+
+$(LIBREAD):
+		make -C ./rd
+
+$(LIBREAD_A):	$(LIBREAD)
+		cp ./rd/$(LIBREAD_A) .
 
 clean:
 	$(RM) $(OBJS)
@@ -36,7 +51,7 @@ cleanlib:
 	make clean -C ./libft
 
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(LIBFT_A) $(LIBREAD_A)
 
 bonus: all
 
