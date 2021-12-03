@@ -63,6 +63,7 @@ typedef struct	s_hit_record
 	t_vec3	p;
 	t_vec3	normal;
 	double	t;
+	bool	hit;
 }	t_hit_record;
 
 #endif

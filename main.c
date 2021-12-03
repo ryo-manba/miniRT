@@ -48,13 +48,21 @@ static t_vec3	ray_color(t_ray *r)
 	t_vec3			center;
 	t_hit_record	rec;
 
-	mr_vec3_init(&center, 0, 0, 5.0); 		  // 球の中心
-	t_vec3	plain_normal = { 1/sqrt(2),0,-1/sqrt(2) };
+	rec.hit = false;
+	mr_vec3_init(&center, 0, 0, 1.5 - 1.5); 		  // 球の中心x
+	t_vec3	plain_normal = { 0, -1/sqrt(2), 1/sqrt(2) };
+	plain_normal = mr_unit_vector(plain_normal);
 	t_element plain;
 	plain.position = center;
 	plain.direction = plain_normal;
+	t_element cylinder;
+	cylinder.position = center;
+	cylinder.direction = plain_normal;	
+	cylinder.diameter = 1/sqrt(2);
+	cylinder.height = 5/sqrt(2);
 	// if (rt_hit_sphere(&center, 4.5, r, &rec)) // 球とヒットした場合
-	if (rt_hit_plain(&plain, r, &rec)) // 平面とヒットした場合
+	// if (rt_hit_plain(&plain, r, &rec)) // 平面とヒットした場合
+	if (rt_hit_cylinder(&cylinder, r, &rec)) // 円柱とヒットした場合
 	{
 		// 法線ベクトルを求める
 		t_vec3 tmp1 = rec.p;
