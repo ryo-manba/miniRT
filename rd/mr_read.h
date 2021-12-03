@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 20:45:06 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/02 10:38:52 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/03 16:55:01 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,5 +55,6 @@ typedef struct s_scene
 
 bool	rd_read_scene(const char *filename, t_scene *scene);
 void	rd_destroy_scene(t_scene *scene);
+double	rd_inf(bool positive);
 
 #endif

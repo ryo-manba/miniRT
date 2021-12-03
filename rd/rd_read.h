@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/02 23:53:03 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/03 16:55:03 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void			rd_free_strarray(char **strs);
 
 double			rd_str_to_double(const char *str);
 bool			rd_is_finite(const double val);
-double			rd_inf(bool positive);
 double			rd_nan(void);
 
 t_element		*rd_extract_element(t_element_type etype,

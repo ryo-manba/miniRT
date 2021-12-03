@@ -12,6 +12,7 @@
 # include "./minilibx-linux/mlx.h"
 # include "rt_scene.h"
 # include "mr_vec3.h"
+# include "rd/mr_read.h"
 
 /* window size */
 //# define WIDTH 500
@@ -43,8 +44,7 @@ int	rt_get_opposite(int color);
 bool	rt_hit_sphere(const t_vec3 *center, double radius, const t_ray *ray, t_hit_record *rec);
 
 bool	rt_hit_plain(
-			const t_vec3 *center,
-			const t_vec3 *normal,
+			t_element *plain,
 			const t_ray *ray,
 			t_hit_record *rec);
 

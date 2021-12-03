@@ -7,15 +7,14 @@ static t_vec3	at(double t, const t_ray *ray)
 }
 
 bool	rt_hit_plain(
-	const t_vec3 *center,
-	const t_vec3 *normal,
+	t_element *el,
 	const t_ray *ray,
 	t_hit_record *rec
 )
 {
-	t_vec3 oc = mr_vec3_sub(*center, ray->origin);
-	double den = mr_vec3_dot(oc, *normal);
-	double num = mr_vec3_dot(ray->direction, *normal);
+	t_vec3 oc = mr_vec3_sub(el->position, ray->origin);
+	double den = mr_vec3_dot(oc, el->direction);
+	double num = mr_vec3_dot(ray->direction, el->direction);
 	if (num == 0)
 		return (false);
 	double t = den / num;
@@ -23,6 +22,6 @@ bool	rt_hit_plain(
 	rec->p = at(rec->t, ray);
 	if (rec->p.z <= 0)
 		return (false);
-	rec->normal = *normal;
+	rec->normal = el->direction;
 	return (true);
 }
