@@ -42,6 +42,12 @@ int	rt_get_opposite(int color);
 /* mr_sphere */
 bool	rt_hit_sphere(const t_vec3 *center, double radius, const t_ray *ray, t_hit_record *rec);
 
+bool	rt_hit_plain(
+			const t_vec3 *center,
+			const t_vec3 *normal,
+			const t_ray *ray,
+			t_hit_record *rec);
+
 
 /* debug */
 void	vec3_debug(t_vec3 *vec);

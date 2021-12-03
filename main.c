@@ -49,7 +49,9 @@ static t_vec3	ray_color(t_ray *r)
 	t_hit_record	rec;
 
 	mr_vec3_init(&center, 0, 0, 5.0); 		  // 球の中心
-	if (rt_hit_sphere(&center, 4.5, r, &rec)) // 球とヒットした場合
+	t_vec3	plain_normal = { 1/sqrt(2),0,-1/sqrt(2) };
+	// if (rt_hit_sphere(&center, 4.5, r, &rec)) // 球とヒットした場合
+	if (rt_hit_plain(&center, &plain_normal, r, &rec)) // 平面とヒットした場合
 	{
 		// 法線ベクトルを求める
 		t_vec3 tmp1 = rec.p;

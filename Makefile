@@ -11,6 +11,7 @@ SRCS		:=	debug.c \
 				mr_vec3_operator.c \
 				rt_color.c \
 				rt_sphere.c \
+				rt_plain.c \
 				rt_diffuse.c \
 
 OBJS		:=	$(SRCS:.c=.o)
