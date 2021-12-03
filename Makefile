@@ -4,7 +4,8 @@ CFLAGS		=	-Werror -Wall -Wextra $(INC)
 INC			=	-I$(X11) -I$(MLX) -I$(LIBFT)
 X11			:=	/usr/X11/include
 LIBFT		:=	libft
-SRCS		:=	main.c \
+SRCS		:=	debug.c \
+				main.c \
 				mr_mlx_utils.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
