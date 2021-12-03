@@ -19,7 +19,7 @@ static void	hit_cylinder_disc(
 		disc.direction = mr_vec3_mul_double(disc.direction, -1);
 	rec->hit = false;
 	disc.position = mr_vec3_add(disc.position, mr_vec3_mul_double(disc.direction, h));
-	if (rt_hit_plain(&disc, ray, rec))
+	if (rt_hit_plane(&disc, ray, rec))
 	{
 		if (mr_vec3_length(mr_vec3_sub(rec->p, disc.position)) < disc.diameter / 2)
 			rec->hit = true;
