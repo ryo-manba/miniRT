@@ -54,6 +54,8 @@ bool	rt_hit_cylinder(
 			const t_ray *ray,
 			t_hit_record *rec);
 
+t_vec3	rt_hit_point(double t, const t_ray *ray);
+
 
 /* debug */
 void	vec3_debug(t_vec3 *vec);

@@ -3,11 +3,6 @@
 
 #define EPS 1e-8
 
-static t_vec3	at(double t, const t_ray *ray)
-{
-	return (mr_vec3_add((ray->origin), (mr_vec3_mul_double(ray->direction, t))));
-}
-
 bool	rt_hit_sphere(
 	const t_element *el,
 	const t_ray *ray,
@@ -36,8 +31,10 @@ bool	rt_hit_sphere(
 			return (false);
 		}
 		rec->t = t;
-		rec->p = at(rec->t, ray);
+		rec->p = rt_hit_point(rec->t, ray);
 		rec->normal = mr_vec3_div_double(mr_vec3_sub(rec->p, el->position), el->radius);
+		rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
+		rec->color = el->color;
 		return (true);
 	}
 	return (false);

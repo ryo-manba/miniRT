@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/03 22:26:19 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/04 12:46:34 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,11 @@ t_element	*rd_extract_element(
 	const char **words)
 {
 	t_element	*el;
+	double		r;
 
 	el = (t_element *)ft_calloc(1, sizeof(t_element));
 	if (!el)
-	{
 		return (NULL);
-	}
 	el->etype = etype;
 	if (!extract_element(el, words))
 	{
@@ -140,5 +139,16 @@ t_element	*rd_extract_element(
 		return (NULL);
 	}
 	el->radius = el->diameter / 2;
+	r = sqrt(el->direction.x * el->direction.x
+		+ el->direction.y * el->direction.y
+		+ el->direction.z * el->direction.z);
+	if (r == 0)
+		r = 1;
+	el->direction.x /= r;
+	el->direction.y /= r;
+	el->direction.z /= r;
+	el->color.x /= 255;
+	el->color.y /= 255;
+	el->color.z /= 255;
 	return (el);
 }

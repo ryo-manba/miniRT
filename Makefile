@@ -17,6 +17,7 @@ SRCS		:=	debug.c \
 				rt_plane.c \
 				rt_cylinder.c \
 				rt_diffuse.c \
+				rt_hit_util.c \
 
 OBJS		:=	$(SRCS:.c=.o)
 MLX			:=	minilibx-linux

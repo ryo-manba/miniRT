@@ -5,7 +5,7 @@
 #include "mr_camera.h"
 
 #define ASPECT_RATIO (double)16.0 / 9.0
-#define HEIGHT 250
+#define HEIGHT 400
 #define WIDTH HEIGHT * ASPECT_RATIO
 #define EPS 1e-9
 
@@ -78,15 +78,12 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene)
 	cylinder.height = 5/sqrt(2);
 	if (rt_hit_object(scene->objects[0], r, &rec))
 	{
-		t_vec3 tmp1 = mr_unit_vector(rec.p);
-		t_vec3 tmp2 = mr_unit_vector(rec.normal);
-		double cos = mr_vec3_dot(tmp1, tmp2);
+
+		double cos = rec.cos;
 		double x = cos * 1; // cos * 輝度
-		t_vec3 base_color = { 1, 1, 1 };
-		t_vec3 c = mr_vec3_mul_double(base_color, x);
-		c.x = fabs(c.x);
-		c.y = fabs(c.y);
-		c.z = fabs(c.z);
+		// t_vec3 base_color = {1, 1, 1};
+		t_vec3 base_color = rec.color;
+		t_vec3 c = mr_vec3_mul_double(base_color, fabs(x));
 		return (c);
 	}
 	return (sky_blue(r->direction));

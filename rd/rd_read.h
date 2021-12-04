@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/03 16:55:03 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/04 12:37:18 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include "../libft/libft.h"
 # include "mr_read.h"
 
-# define RD_EPSILON 1e-7
+# define RD_UNIT_PREDICATE_EPSILON 1e-3
 
 # define RD_ID_AMBIENT	"A"
 # define RD_ID_CAMERA	"C"
