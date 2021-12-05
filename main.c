@@ -59,30 +59,27 @@ static bool	rt_hit_object(
 	return (false);
 }
 
-static t_vec3	ray_color(t_ray *r, t_scene *scene)
+static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 {
-	t_vec3			center;
-	t_hit_record	rec;
+	t_hit_record	*actual;
+	size_t			i;
 
-	rec.hit = false;
-	mr_vec3_init(&center, 0, 0, 1.2); 		  // 球の中心x
-	t_vec3	plain_normal = { 0, -1/sqrt(2), 3/sqrt(2) };
-	plain_normal = mr_unit_vector(plain_normal);
-	t_element plain;
-	plain.position = center;
-	plain.direction = plain_normal;
-	t_element cylinder;
-	cylinder.position = center;
-	cylinder.direction = plain_normal;	
-	cylinder.diameter = 3/sqrt(2);
-	cylinder.height = 5/sqrt(2);
-	if (rt_hit_object(scene->objects[0], r, &rec))
+	actual = NULL;
+	i = 0;
+	while (i < scene->n_objects)
 	{
-
-		double cos = rec.cos;
+		if (rt_hit_object(scene->objects[i], r, &recs[i]))
+		{
+			if (!actual || recs[i].t < actual->t)
+				actual = &recs[i];
+		}
+		i += 1;
+	}
+	if (actual)
+	{
+		double cos = actual->cos;
 		double x = cos * 1; // cos * 輝度
-		// t_vec3 base_color = {1, 1, 1};
-		t_vec3 base_color = rec.color;
+		t_vec3 base_color = actual->color;
 		t_vec3 c = mr_vec3_mul_double(base_color, fabs(x));
 		return (c);
 	}
@@ -104,6 +101,8 @@ static void	ray_loop(
 	t_vec3	vp_lower_left_corner; // ビューポート左下隅
 	t_vec3	vp_center; // ビューポート中心
 	t_ray	ray;
+	t_hit_record	*recs;
+	recs = (t_hit_record *)ft_calloc(scene->n_objects, sizeof(t_hit_record));
 
 	vp_center = (t_vec3){ 0, 0, viewport_z };
 	vp_vertical = (t_vec3){ 0, 0, 0 };
@@ -132,7 +131,7 @@ static void	ray_loop(
 				vp_lower_left_corner
 			);
 			ray.direction = mr_vec3_sub(ray_cross_screen, ray.origin);
-			t_vec3 ray_c = ray_color(&ray, scene);
+			t_vec3 ray_c = ray_color(&ray, scene, recs);
 			t_rgb	rgb = vec3_to_rgb(&ray_c);
 			mr_mlx_pixel_put(img, i, j, rgb_to_color(&rgb));
 			i += 1;
