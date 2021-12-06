@@ -19,7 +19,7 @@ static void	hit_cylinder_disc(
 		disc.direction = mr_vec3_mul_double(disc.direction, -1);
 	rec->hit = false;
 	disc.position = mr_vec3_add(disc.position, mr_vec3_mul_double(disc.direction, h));
-	if (rt_hit_plain(&disc, ray, rec))
+	if (rt_hit_plane(&disc, ray, rec))
 	{
 		if (mr_vec3_length(mr_vec3_sub(rec->p, disc.position)) < disc.diameter / 2)
 			rec->hit = true;
@@ -52,6 +52,7 @@ bool	hit_at(
 			)
 		);
 		rec->normal = mr_unit_vector(mr_vec3_sub(rec->p, axial_center));
+		rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
 	}
 	return (rec->hit);
 }
@@ -87,6 +88,9 @@ bool	rt_hit_cylinder(
 	}
 	if (!hits[2].hit)
 		hits[2].p.z = rd_inf(true);
+	hits[0].color = (t_vec3){ 1, 0, 1 };
+	hits[1].color = (t_vec3){ 1, 1, 0 };
+	hits[2].color = el->color;
 	*rec = hits[0];
 	if (!rec->hit || (hits[1].hit && hits[1].p.z < rec->p.z))
 		*rec = hits[1];

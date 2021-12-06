@@ -41,8 +41,11 @@ int	rt_add_shade(double distance, int color);
 int	rt_get_opposite(int color);
 
 /* mr_sphere */
-bool	rt_hit_sphere(const t_vec3 *center, double radius, const t_ray *ray, t_hit_record *rec);
-bool	rt_hit_plain(
+bool	rt_hit_sphere(
+			const t_element *el,
+			const t_ray *ray,
+			t_hit_record *rec);
+bool	rt_hit_plane(
 			t_element *plain,
 			const t_ray *ray,
 			t_hit_record *rec);
@@ -50,6 +53,8 @@ bool	rt_hit_cylinder(
 			t_element *el,
 			const t_ray *ray,
 			t_hit_record *rec);
+
+t_vec3	rt_hit_point(double t, const t_ray *ray);
 
 
 /* debug */

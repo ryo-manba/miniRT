@@ -1,12 +1,7 @@
 #include "minirt.h"
 #include <limits.h>
 
-static t_vec3	at(double t, const t_ray *ray)
-{
-	return (mr_vec3_add((ray->origin), (mr_vec3_mul_double(ray->direction, t))));
-}
-
-bool	rt_hit_plain(
+bool	rt_hit_plane(
 	t_element *el,
 	const t_ray *ray,
 	t_hit_record *rec
@@ -19,9 +14,11 @@ bool	rt_hit_plain(
 		return (false);
 	double t = den / num;
 	rec->t = t;
-	rec->p = at(rec->t, ray);
+	rec->p = rt_hit_point(rec->t, ray);
 	if (rec->p.z <= 0)
 		return (false);
 	rec->normal = el->direction;
+	rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
+	rec->color = el->color;
 	return (true);
 }

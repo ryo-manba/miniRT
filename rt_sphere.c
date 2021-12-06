@@ -3,17 +3,15 @@
 
 #define EPS 1e-8
 
-static t_vec3	at(double t, const t_ray *ray)
+bool	rt_hit_sphere(
+	const t_element *el,
+	const t_ray *ray,
+	t_hit_record *rec)
 {
-	return (mr_vec3_add((ray->origin), (mr_vec3_mul_double(ray->direction, t))));
-}
-
-bool	rt_hit_sphere(const t_vec3 *center, double radius, const t_ray *ray, t_hit_record *rec)
-{
-	const t_vec3	oc = mr_vec3_sub(ray->origin, *center);
+	const t_vec3	oc = mr_vec3_sub(ray->origin, el->position);
 	const double	a = mr_vec3_length_squared(ray->direction);
 	const double	half_b = mr_vec3_dot(oc, ray->direction);
-	const double	c = mr_vec3_length_squared(oc) - radius * radius;
+	const double	c = mr_vec3_length_squared(oc) - el->radius * el->radius;
 	const double	discriminant = half_b * half_b - a * c;
 
 	if (discriminant > 0) // 交差判定
@@ -33,8 +31,10 @@ bool	rt_hit_sphere(const t_vec3 *center, double radius, const t_ray *ray, t_hit_
 			return (false);
 		}
 		rec->t = t;
-		rec->p = at(rec->t, ray);
-		rec->normal = mr_vec3_div_double(mr_vec3_sub(rec->p, *center), radius);
+		rec->p = rt_hit_point(rec->t, ray);
+		rec->normal = mr_vec3_div_double(mr_vec3_sub(rec->p, el->position), el->radius);
+		rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
+		rec->color = el->color;
 		return (true);
 	}
 	return (false);

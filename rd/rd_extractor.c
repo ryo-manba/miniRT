@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 17:53:42 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/04 12:46:34 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,6 @@ static bool	extract_double_vector(const char *str, void *slot)
 	return (rd_is_finite(vecslot->x));
 }
 
-static const t_element_info_extractor	g_cylinder_extractors[] = {
-	extract_double_vector, // posiiton
-	extract_double_vector, // direction
-	extract_double_scalar, // diameter
-	extract_double_scalar, // height
-	extract_double_vector, // color
-	NULL,
-};
-
 static const t_element_info_extractor	g_ambient_extractors[] = {
 	extract_double_scalar, // ratio
 	extract_double_vector, // color
@@ -67,7 +58,7 @@ static const t_element_info_extractor	g_light_extractors[] = {
 
 static const t_element_info_extractor	g_sphere_extractors[] = {
 	extract_double_vector, // position
-	extract_double_scalar, // radius
+	extract_double_scalar, // diameter
 	extract_double_vector, // color
 	NULL,
 };
@@ -75,6 +66,15 @@ static const t_element_info_extractor	g_sphere_extractors[] = {
 static const t_element_info_extractor	g_plane_extractors[] = {
 	extract_double_vector, // posiiton
 	extract_double_vector, // direction
+	extract_double_vector, // color
+	NULL,
+};
+
+static const t_element_info_extractor	g_cylinder_extractors[] = {
+	extract_double_vector, // posiiton
+	extract_double_vector, // direction
+	extract_double_scalar, // diameter
+	extract_double_scalar, // height
 	extract_double_vector, // color
 	NULL,
 };
@@ -111,7 +111,7 @@ static bool	extract_element(
 				(void *[]){&(el->position), &(el->ratio), &(el->color)}));
 	if (el->etype == RD_ET_SPHERE)
 		return (extract_seq(words, g_sphere_extractors,
-				(void *[]){&(el->position), &(el->radius), &(el->color)}));
+				(void *[]){&(el->position), &(el->diameter), &(el->color)}));
 	if (el->etype == RD_ET_PLANE)
 		return (extract_seq(words, g_plane_extractors,
 				(void *[]){&(el->position), &(el->direction), &(el->color)}));
@@ -127,17 +127,28 @@ t_element	*rd_extract_element(
 	const char **words)
 {
 	t_element	*el;
+	double		r;
 
 	el = (t_element *)ft_calloc(1, sizeof(t_element));
 	if (!el)
-	{
 		return (NULL);
-	}
 	el->etype = etype;
 	if (!extract_element(el, words))
 	{
 		free(el);
 		return (NULL);
 	}
+	el->radius = el->diameter / 2;
+	r = sqrt(el->direction.x * el->direction.x
+		+ el->direction.y * el->direction.y
+		+ el->direction.z * el->direction.z);
+	if (r == 0)
+		r = 1;
+	el->direction.x /= r;
+	el->direction.y /= r;
+	el->direction.z /= r;
+	el->color.x /= 255;
+	el->color.y /= 255;
+	el->color.z /= 255;
 	return (el);
 }

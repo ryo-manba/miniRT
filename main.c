@@ -2,9 +2,10 @@
 #include "rt_scene.h"
 #include "mr_vec3.h"
 #include "mr_utils.h"
+#include "mr_camera.h"
 
 #define ASPECT_RATIO (double)16.0 / 9.0
-#define HEIGHT 250
+#define HEIGHT 400
 #define WIDTH HEIGHT * ASPECT_RATIO
 #define EPS 1e-9
 
@@ -43,61 +44,77 @@ static t_vec3	sky_blue(t_vec3 direction)
 			mr_vec3_mul_double(c2, 1 - t)));
 }
 
-static t_vec3	ray_color(t_ray *r)
+static bool	rt_hit_object(
+	t_element *el,
+	const t_ray *ray,
+	t_hit_record *rec
+)
 {
-	t_vec3			center;
-	t_hit_record	rec;
+	if (el->etype == RD_ET_SPHERE)
+		return (rt_hit_sphere(el, ray, rec));
+	if (el->etype == RD_ET_PLANE)
+		return (rt_hit_plane(el, ray, rec));
+	if (el->etype == RD_ET_CYLINDER)
+		return (rt_hit_cylinder(el, ray, rec));
+	return (false);
+}
 
-	rec.hit = false;
-	mr_vec3_init(&center, 0, 0, 1.5 - 1.5); 		  // 球の中心x
-	t_vec3	plain_normal = { 0, -1/sqrt(2), 1/sqrt(2) };
-	plain_normal = mr_unit_vector(plain_normal);
-	t_element plain;
-	plain.position = center;
-	plain.direction = plain_normal;
-	t_element cylinder;
-	cylinder.position = center;
-	cylinder.direction = plain_normal;	
-	cylinder.diameter = 1/sqrt(2);
-	cylinder.height = 5/sqrt(2);
-	// if (rt_hit_sphere(&center, 4.5, r, &rec)) // 球とヒットした場合
-	// if (rt_hit_plain(&plain, r, &rec)) // 平面とヒットした場合
-	if (rt_hit_cylinder(&cylinder, r, &rec)) // 円柱とヒットした場合
+static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
+{
+	t_hit_record	*actual;
+	size_t			i;
+
+	actual = NULL;
+	i = 0;
+	while (i < scene->n_objects)
 	{
-		// 法線ベクトルを求める
-		t_vec3 tmp1 = rec.p;
-//		t_vec3 tmp1 = mr_vec3_sub(r->direction, center);
-		tmp1 = mr_unit_vector(tmp1);
-
-//		vec3_debug(&t);
-//		vec3_debug(&rec.p);
-		
-//		vec3_debug(&tmp1);
-//		vec3_debug(&tmp1);
-//		exit(1);
-		// cosθを求める
-//		t_vec3 tmp1 = mr_vec3_sub(rec.p, center);
-		t_vec3 tmp2 = mr_unit_vector(rec.normal);
-		
-		double cos = mr_vec3_dot(tmp1, tmp2);
-		double x = cos * 0.5; // cos * 輝度
-		t_vec3 base_color = { 1, 1, 1 };
-		t_vec3 c = mr_vec3_mul_double(base_color, x);
-		c.x = fabs(c.x);
-		c.y = fabs(c.y);
-		c.z = fabs(c.z);
+		if (rt_hit_object(scene->objects[i], r, &recs[i]))
+		{
+			if (!actual || recs[i].t < actual->t)
+				actual = &recs[i];
+		}
+		i += 1;
+	}
+	if (actual)
+	{
+		double cos = actual->cos;
+		double x = cos * 1; // cos * 輝度
+		t_vec3 base_color = actual->color;
+		t_vec3 c = mr_vec3_mul_double(base_color, fabs(x));
 		return (c);
 	}
 	return (sky_blue(r->direction));
 }
 
-static void	ray_loop(t_ray *ray, t_vec3 *vp_lower_left_corner, t_vec3 *horizontal, t_vec3 *vertical, t_img *img)
+static void	ray_loop(
+	t_camerax *camera,
+	t_img *img,
+	t_scene *scene)
 {
+	const double	viewport_z = 0;
 	double	i;
 	double	j;
 	double	u;
 	double	v;
-	
+	t_vec3	vp_horizontal; // ビューポート幅ベクトル
+	t_vec3	vp_vertical; // ビューポート高さベクトル
+	t_vec3	vp_lower_left_corner; // ビューポート左下隅
+	t_vec3	vp_center; // ビューポート中心
+	t_ray	ray;
+	t_hit_record	*recs;
+	recs = (t_hit_record *)ft_calloc(scene->n_objects, sizeof(t_hit_record));
+
+	vp_center = (t_vec3){ 0, 0, viewport_z };
+	vp_vertical = (t_vec3){ 0, 0, 0 };
+	vp_vertical.y = camera->vp_height;
+	vp_horizontal = (t_vec3){ 0, 0, 0 };
+	vp_horizontal.x = camera->vp_width;
+	vp_lower_left_corner = vp_center;
+	vp_lower_left_corner.y -= camera->vp_height / 2;
+	vp_lower_left_corner.x -= camera->vp_width / 2;
+	ray.origin = vp_center;
+	ray.origin.z -= camera->focal_length;
+
 	j = 0;
 	while (j < HEIGHT)
 	{
@@ -107,19 +124,14 @@ static void	ray_loop(t_ray *ray, t_vec3 *vp_lower_left_corner, t_vec3 *horizonta
 			u = i / (WIDTH);  // [0,1]
 			v = j / (HEIGHT); // [0,1]
 			// rayの方向ベクトル = (viewportの左下 + (水平方向ベクトル * u)) + (垂直方向ベクトル * v)) - rayの原点)
-
 			t_vec3 ray_cross_screen = mr_vec3_add(
 				mr_vec3_add(
-					mr_vec3_mul_double(*vertical, v), mr_vec3_mul_double(*horizontal, u)
+					mr_vec3_mul_double(vp_vertical, v), mr_vec3_mul_double(vp_horizontal, u)
 				),
-				*vp_lower_left_corner
+				vp_lower_left_corner
 			);
-			ray->direction = mr_vec3_sub(
-								ray_cross_screen, ray->origin
-							);
-			// vec3_debug(&ray->direction);
-			t_vec3 ray_c = ray_color(ray);
-
+			ray.direction = mr_vec3_sub(ray_cross_screen, ray.origin);
+			t_vec3 ray_c = ray_color(&ray, scene, recs);
 			t_rgb	rgb = vec3_to_rgb(&ray_c);
 			mr_mlx_pixel_put(img, i, j, rgb_to_color(&rgb));
 			i += 1;
@@ -128,45 +140,31 @@ static void	ray_loop(t_ray *ray, t_vec3 *vp_lower_left_corner, t_vec3 *horizonta
 	}
 }
 
-static void	ray(t_img *img)
+static void	ray(t_img *img, t_scene *scene)
 {
-	const double 	viewport_height = 2.0;
-	const double 	viewport_width = ASPECT_RATIO * viewport_height;
-	const double 	viewport_z = 0;
-	const double 	focal_length = 1.0;
-	t_vec3			horizontal; // ビューポート幅ベクトル
-	t_vec3			vertical; // ビューポート高さベクトル
-	t_vec3			vp_lower_left_corner; // ビューポート左下隅
-	t_vec3			vp_center; // ビューポート中心
-	t_vec3			coordinate_origin; // 座標原点
-	t_ray			ray;
+	t_camerax		camera;
 
-	mr_vec3_init(&coordinate_origin, 0, 0, 0);
-	vp_center = coordinate_origin;
-	vp_center.z = viewport_z;
-	ray.origin = vp_center;
-	ray.origin.z -= focal_length;
-	mr_vec3_init(&horizontal, viewport_width, 0, viewport_z);
-	mr_vec3_init(&vertical, 0, viewport_height, viewport_z);
-	vp_lower_left_corner = mr_vec3_sub(
-		mr_vec3_sub(
-			vp_center, mr_vec3_div_double(horizontal, 2)
-		),
-		mr_vec3_div_double(vertical, 2)
-	);
-	// vp_lower_left_corner.z -= focal_length;
-	ray_loop(&ray, &vp_lower_left_corner, &horizontal, &vertical, img);
+	camera.vp_height = 2.0;
+	camera.vp_width = ASPECT_RATIO * camera.vp_height;
+	camera.focal_length = 1.0;
+	ray_loop(&camera, img, scene);
 }
 
-int main()
+int main(int argc, char **argv)
 {
 	t_info	info;
+	t_scene	scene;
 
+	if (argc < 2 || rd_read_scene(argv[1], &scene) == false)
+	{
+		printf("Error\n");
+		return (1);
+	}
 	info.mlx = mlx_init();
 	info.win = mlx_new_window(info.mlx, WIDTH, HEIGHT, "miniRT");
 	info.img.img = mlx_new_image(info.mlx, WIDTH, HEIGHT);
 	info.img.addr = mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.line_len, &info.img.endian);
-	ray(&info.img);
+	ray(&info.img, &scene);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
 	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);
 	mlx_loop(info.mlx);

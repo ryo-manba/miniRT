@@ -64,6 +64,8 @@ typedef struct	s_hit_record
 	t_vec3	normal;
 	double	t;
 	bool	hit;
+	double	cos;
+	t_vec3	color;
 }	t_hit_record;
 
 #endif
