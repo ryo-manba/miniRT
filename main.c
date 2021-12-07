@@ -9,7 +9,6 @@
 #define WIDTH HEIGHT * ASPECT_RATIO
 #define EPS 1e-9
 
-
 static t_rgb vec3_to_rgb(t_vec3 *vec3)
 {
 	t_rgb	rgb;
@@ -24,6 +23,54 @@ static int	rgb_to_color(t_rgb *rgb)
 {
 	return (rt_create_trgb(0, rgb->r, rgb->g, rgb->b));
 }
+
+static double	azimuth_yup(t_vec3 *vec)
+{
+	const double	phi = atan2(vec->x, vec->z);
+	printf("(x,z) = (%f,%f), phi = %f\n", vec->x, vec->z, phi);
+	if (vec->z >= 0)
+		return (phi);
+	return (phi);
+}
+
+static double	elevation_yup(t_vec3 *vec)
+{
+	const double	x = sqrt(vec->x * vec->x + vec->z * vec->z);
+	const double	theta = atan2(vec->y, x);
+	return (theta);
+}
+
+static t_vec3	rot_around_axis(t_vec3 *r, t_vec3 *n, double angle)
+{
+	return mr_vec3_add(
+		mr_vec3_add(
+			mr_vec3_mul_double(*r, cos(angle)),
+			mr_vec3_mul_double(
+				*n,
+				mr_vec3_dot(*n, *r) * (1 - cos(angle))
+			)
+		),
+		mr_vec3_mul_double(
+			mr_vec3_cross(*n, *r),
+			sin(angle)
+		)
+	);
+}
+
+static t_vec3	orient_vector(t_vec3 *v, t_vec3 *orient)
+{
+	t_vec3 az_axis = {0, 1, 0};
+	t_vec3 el_axis = {-1, 0, 0};
+	double az = azimuth_yup(orient);
+	double el = elevation_yup(orient);
+	printf("orient: ");
+	vec3_debug(orient);
+	printf("az = %f, el = %f\n", az, el);
+	t_vec3 v2 = rot_around_axis(v, &az_axis, az);
+	t_vec3 el_axis2 = rot_around_axis(&el_axis, &az_axis, az);
+	return rot_around_axis(&v2, &el_axis2, el);
+}
+
 
 // 光源の強さ * cosθ
 int	rt_lamberdian(t_vec3 *light)
@@ -87,11 +134,10 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 }
 
 static void	ray_loop(
-	t_camerax *camera,
+	t_viewport *camera,
 	t_img *img,
 	t_scene *scene)
 {
-	const double	viewport_z = 0;
 	double	i;
 	double	j;
 	double	u;
@@ -104,16 +150,23 @@ static void	ray_loop(
 	t_hit_record	*recs;
 	recs = (t_hit_record *)ft_calloc(scene->n_objects, sizeof(t_hit_record));
 
-	vp_center = (t_vec3){ 0, 0, viewport_z };
-	vp_vertical = (t_vec3){ 0, 0, 0 };
-	vp_vertical.y = camera->vp_height;
-	vp_horizontal = (t_vec3){ 0, 0, 0 };
-	vp_horizontal.x = camera->vp_width;
+	vp_center = camera->screen_center;
+	vp_vertical = camera->screen_vertical;
+	vp_horizontal = camera->screen_horizontal;
 	vp_lower_left_corner = vp_center;
-	vp_lower_left_corner.y -= camera->vp_height / 2;
-	vp_lower_left_corner.x -= camera->vp_width / 2;
-	ray.origin = vp_center;
-	ray.origin.z -= camera->focal_length;
+	vp_lower_left_corner = mr_vec3_sub(vp_lower_left_corner, mr_vec3_mul_double(vp_horizontal, 0.5));
+	vp_lower_left_corner = mr_vec3_sub(vp_lower_left_corner, mr_vec3_mul_double(vp_vertical, 0.5));
+	ray.origin = camera->camera.coodinates;
+	vec3_debug(&ray.origin);
+	vec3_debug(&camera->camera.coodinates);
+	printf("vp_center: ");
+	vec3_debug(&vp_center);
+	printf("vp_horizontal: ");
+	vec3_debug(&vp_horizontal);
+	printf("vp_vertical: ");
+	vec3_debug(&vp_vertical);
+	printf("vp_lower_left_corner: ");
+	vec3_debug(&vp_lower_left_corner);
 
 	j = 0;
 	while (j < HEIGHT)
@@ -124,14 +177,17 @@ static void	ray_loop(
 			u = i / (WIDTH);  // [0,1]
 			v = j / (HEIGHT); // [0,1]
 			// rayの方向ベクトル = (viewportの左下 + (水平方向ベクトル * u)) + (垂直方向ベクトル * v)) - rayの原点)
-			t_vec3 ray_cross_screen = mr_vec3_add(
+			t_vec3	ray_cross_screen = mr_vec3_add(
 				mr_vec3_add(
 					mr_vec3_mul_double(vp_vertical, v), mr_vec3_mul_double(vp_horizontal, u)
 				),
 				vp_lower_left_corner
 			);
 			ray.direction = mr_vec3_sub(ray_cross_screen, ray.origin);
-			t_vec3 ray_c = ray_color(&ray, scene, recs);
+			ray.pixel_x = i;
+			ray.pixel_y = j;
+			// printf("i = %f, j = %f\n", i, j);
+			t_vec3	ray_c = ray_color(&ray, scene, recs);
 			t_rgb	rgb = vec3_to_rgb(&ray_c);
 			mr_mlx_pixel_put(img, i, j, rgb_to_color(&rgb));
 			i += 1;
@@ -142,11 +198,24 @@ static void	ray_loop(
 
 static void	ray(t_img *img, t_scene *scene)
 {
-	t_camerax		camera;
+	t_viewport		camera;
 
+	ft_bzero(&camera, sizeof(t_camera));
+	camera.camera.coodinates = scene->camera->position;
 	camera.vp_height = 2.0;
 	camera.vp_width = ASPECT_RATIO * camera.vp_height;
-	camera.focal_length = 1.0;
+	camera.focal_length = camera.vp_width / (2 * tan(scene->camera->fov * M_PI / 180 / 2));
+	camera.screen_horizontal.x = camera.vp_width;
+	camera.screen_vertical.y = camera.vp_height;
+	vec3_debug(&camera.screen_horizontal);
+	camera.screen_horizontal = orient_vector(&camera.screen_horizontal, &scene->camera->direction);
+	vec3_debug(&camera.screen_horizontal);
+	vec3_debug(&camera.screen_vertical);
+	camera.screen_vertical = orient_vector(&camera.screen_vertical, &scene->camera->direction);
+	vec3_debug(&camera.screen_vertical);
+	camera.screen_center = mr_vec3_add(scene->camera->position, mr_vec3_mul_double(scene->camera->direction, camera.focal_length));
+	printf("scene->camera->fov = %f\n", scene->camera->fov);
+	printf("camera.focal_length = %f\n", camera.focal_length);
 	ray_loop(&camera, img, scene);
 }
 

@@ -56,6 +56,8 @@ typedef struct	s_ray
 {
 	t_vec3	origin;
 	t_vec3	direction;
+	int		pixel_x;
+	int		pixel_y;
 } t_ray;
 
 typedef struct	s_hit_record

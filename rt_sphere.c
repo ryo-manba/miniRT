@@ -18,11 +18,11 @@ bool	rt_hit_sphere(
 	{
 		double root = sqrt(discriminant);
 		double t = 0;
-		if (((-half_b - root) / a) > EPS)
+		if (((-half_b - root) / a) >= 1)
 		{
 			t = (-half_b - root) / a;
 		}
-		else if (((-half_b + root) / a) > EPS)
+		else if (((-half_b + root) / a) >= 1)
 		{
 			t = (-half_b + root) / a;
 		}
@@ -32,6 +32,8 @@ bool	rt_hit_sphere(
 		}
 		rec->t = t;
 		rec->p = rt_hit_point(rec->t, ray);
+		printf("i = %d, j = %d, t = %f, ", ray->pixel_x, ray->pixel_y, t);
+		vec3_debug(&rec->p);
 		rec->normal = mr_vec3_div_double(mr_vec3_sub(rec->p, el->position), el->radius);
 		rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
 		rec->color = el->color;

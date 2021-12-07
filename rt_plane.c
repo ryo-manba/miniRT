@@ -15,7 +15,7 @@ bool	rt_hit_plane(
 	double t = den / num;
 	rec->t = t;
 	rec->p = rt_hit_point(rec->t, ray);
-	if (rec->p.z <= 0)
+	if (rec->t < 1)
 		return (false);
 	rec->normal = el->direction;
 	rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
