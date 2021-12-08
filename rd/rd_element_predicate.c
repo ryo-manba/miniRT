@@ -6,47 +6,47 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/02 23:22:25 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:56:32 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rd_read.h"
 
 static const t_element_info_predicate	g_ambient_predicates[] = {
-	rd_is_ratio,
-	rd_is_color_vector,
+	rd_word_is_ratio,
+	rd_word_is_color_vector,
 	NULL};
 
 static const t_element_info_predicate	g_camera_predicates[] = {
-	rd_is_vector,
-	rd_is_unit_vector,
-	rd_is_fov_angle,
+	rd_word_is_vector,
+	rd_word_is_unit_vector,
+	rd_word_is_fov_angle,
 	NULL};
 
 static const t_element_info_predicate	g_light_predicates[] = {
-	rd_is_vector,
-	rd_is_ratio,
-	rd_is_color_vector,
+	rd_word_is_vector,
+	rd_word_is_ratio,
+	rd_word_is_color_vector,
 	NULL};
 
 static const t_element_info_predicate	g_sphere_predicates[] = {
-	rd_is_vector,
-	rd_is_positive_real,
-	rd_is_color_vector,
+	rd_word_is_vector,
+	rd_word_is_positive_real,
+	rd_word_is_color_vector,
 	NULL};
 
 static const t_element_info_predicate	g_plane_predicates[] = {
-	rd_is_vector,
-	rd_is_unit_vector,
-	rd_is_color_vector,
+	rd_word_is_vector,
+	rd_word_is_unit_vector,
+	rd_word_is_color_vector,
 	NULL};
 
 static const t_element_info_predicate	g_cylinder_predicates[] = {
-	rd_is_vector,
-	rd_is_unit_vector,
-	rd_is_positive_real,
-	rd_is_positive_real,
-	rd_is_color_vector,
+	rd_word_is_vector,
+	rd_word_is_unit_vector,
+	rd_word_is_positive_real,
+	rd_word_is_positive_real,
+	rd_word_is_color_vector,
 	NULL,
 };
 

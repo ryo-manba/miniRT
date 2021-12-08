@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:53:58 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:56:32 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ void			debug_rd_print_element_array(t_element **element);
 
 t_element_type	rd_detect_element_type(const char **words);
 
-bool			rd_is_positive_real(const char *str);
-bool			rd_is_ratio(const char *str);
-bool			rd_is_fov_angle(const char *str);
-bool			rd_is_vector(const char *str);
-bool			rd_is_unit_vector(const char *str);
-bool			rd_is_color_vector(const char *str);
+bool			rd_word_is_positive_real(const char *str);
+bool			rd_word_is_ratio(const char *str);
+bool			rd_word_is_fov_angle(const char *str);
+bool			rd_word_is_vector(const char *str);
+bool			rd_word_is_unit_vector(const char *str);
+bool			rd_word_is_color_vector(const char *str);
 
 void			rd_vectorize(const char *str, t_vec3 *vector);
 void			rd_free_strarray(char **strs);

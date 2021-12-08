@@ -6,13 +6,13 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:02 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:54:28 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:56:01 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rd_read.h"
 
-bool	rd_is_vector(const char *str)
+bool	rd_word_is_vector(const char *str)
 {
 	t_vec3			vec;
 
@@ -22,7 +22,7 @@ bool	rd_is_vector(const char *str)
 	return (rd_is_finite(vec.x));
 }
 
-bool	rd_is_unit_vector(const char *str)
+bool	rd_word_is_unit_vector(const char *str)
 {
 	t_vec3			vec;
 	double			r2;
@@ -40,7 +40,7 @@ bool	rd_is_unit_vector(const char *str)
 	return (RD_UNIT_PREDICATE_EPSILON > fabs(r2 - 1));
 }
 
-bool	rd_is_color_vector(const char *str)
+bool	rd_word_is_color_vector(const char *str)
 {
 	t_vec3			vec;
 
