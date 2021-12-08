@@ -183,7 +183,15 @@ static void	ray_loop(
 				),
 				vp_lower_left_corner
 			);
-			ray.direction = mr_vec3_sub(ray_cross_screen, ray.origin);
+			if (scene->camera->fov == 0)
+			{
+				ray.origin = mr_vec3_sub(ray_cross_screen, scene->camera->direction);
+				ray.direction = scene->camera->direction;
+			}
+			else
+			{
+				ray.direction = mr_vec3_sub(ray_cross_screen, ray.origin);
+			}
 			ray.pixel_x = i;
 			ray.pixel_y = j;
 			// printf("i = %f, j = %f\n", i, j);
@@ -200,11 +208,14 @@ static void	ray(t_img *img, t_scene *scene)
 {
 	t_viewport		camera;
 
-	ft_bzero(&camera, sizeof(t_camera));
+	ft_bzero(&camera, sizeof(t_viewport));
 	camera.camera.coodinates = scene->camera->position;
 	camera.vp_height = 2.0;
 	camera.vp_width = ASPECT_RATIO * camera.vp_height;
-	camera.focal_length = camera.vp_width / (2 * tan(scene->camera->fov * M_PI / 180 / 2));
+	if (scene->camera->fov == 0)
+		camera.focal_length = 1;
+	else
+		camera.focal_length = camera.vp_width / (2 * tan(scene->camera->fov * M_PI / 180 / 2));
 	camera.screen_horizontal.x = camera.vp_width;
 	camera.screen_vertical.y = camera.vp_height;
 	vec3_debug(&camera.screen_horizontal);
@@ -213,8 +224,9 @@ static void	ray(t_img *img, t_scene *scene)
 	vec3_debug(&camera.screen_vertical);
 	camera.screen_vertical = orient_vector(&camera.screen_vertical, &scene->camera->direction);
 	vec3_debug(&camera.screen_vertical);
+	printf("scene->camera->position: "); vec3_debug(&scene->camera->position);
 	camera.screen_center = mr_vec3_add(scene->camera->position, mr_vec3_mul_double(scene->camera->direction, camera.focal_length));
-	printf("scene->camera->fov = %f\n", scene->camera->fov);
+	printf("scene->camera->fov = %f(%d)\n", scene->camera->fov, scene->camera->fov == 0);
 	printf("camera.focal_length = %f\n", camera.focal_length);
 	ray_loop(&camera, img, scene);
 }

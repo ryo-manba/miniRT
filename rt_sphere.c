@@ -14,7 +14,7 @@ bool	rt_hit_sphere(
 	const double	c = mr_vec3_length_squared(oc) - el->radius * el->radius;
 	const double	discriminant = half_b * half_b - a * c;
 
-	if (discriminant > 0) // 交差判定
+	if (discriminant >= 0) // 交差判定
 	{
 		double root = sqrt(discriminant);
 		double t = 0;
@@ -32,8 +32,6 @@ bool	rt_hit_sphere(
 		}
 		rec->t = t;
 		rec->p = rt_hit_point(rec->t, ray);
-		printf("i = %d, j = %d, t = %f, ", ray->pixel_x, ray->pixel_y, t);
-		vec3_debug(&rec->p);
 		rec->normal = mr_vec3_div_double(mr_vec3_sub(rec->p, el->position), el->radius);
 		rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
 		rec->color = el->color;
