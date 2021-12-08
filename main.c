@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 19:29:23 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 19:47:26 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,11 @@ static bool	rt_hit_object(
 )
 {
 	if (el->etype == RD_ET_SPHERE)
-		return (rt_hit_sphere(el, ray, rec));
+		return (rt_hittest_sphere(el, ray, rec));
 	if (el->etype == RD_ET_PLANE)
-		return (rt_hit_plane(el, ray, rec));
+		return (rt_hittest_plane(el, ray, rec));
 	if (el->etype == RD_ET_CYLINDER)
-		return (rt_hit_cylinder(el, ray, rec));
+		return (rt_hittest_cylinder(el, ray, rec));
 	return (false);
 }
 

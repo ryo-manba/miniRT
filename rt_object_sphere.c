@@ -3,7 +3,7 @@
 
 #define EPS 1e-8
 
-bool	rt_hit_sphere(
+bool	rt_hittest_sphere(
 	const t_element *el,
 	const t_ray *ray,
 	t_hit_record *rec)

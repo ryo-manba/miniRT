@@ -1,5 +1,4 @@
 #include "minirt.h"
-#include <limits.h>
 
 static t_vec3	at(double t, const t_ray *ray)
 {
@@ -20,7 +19,7 @@ static void	hit_cylinder_disc(
 		disc.direction = mr_vec3_mul_double(&disc.direction, -1);
 	rec->hit = false;
 	disc.position = mr_vec3_add(disc.position, mr_vec3_mul_double(&disc.direction, h));
-	if (rt_hit_plane(&disc, ray, rec))
+	if (rt_hittest_plane(&disc, ray, rec))
 	{
 		temp = mr_vec3_sub(rec->p, disc.position);
 		if (mr_vec3_length(&temp) < disc.diameter / 2)
@@ -61,7 +60,7 @@ bool	hit_at(
 	return (rec->hit);
 }
 
-bool	rt_hit_cylinder(
+bool	rt_hittest_cylinder(
 	t_element *el,
 	const t_ray *ray,
 	t_hit_record *rec

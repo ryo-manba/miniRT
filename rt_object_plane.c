@@ -1,7 +1,7 @@
 #include "minirt.h"
 #include <limits.h>
 
-bool	rt_hit_plane(
+bool	rt_hittest_plane(
 	t_element *el,
 	const t_ray *ray,
 	t_hit_record *rec

@@ -1,12 +1,6 @@
 #ifndef MR_VEC3_H
 # define MR_VEC3_H
-
-typedef struct vec3
-{
-	double	x;
-	double	y;
-	double	z;
-}	t_vec3;
+# include "common/mr_common.h"
 
 /* mr_vec3_operator */
 t_vec3	mr_vec3_add(const t_vec3 u, const t_vec3 v);
