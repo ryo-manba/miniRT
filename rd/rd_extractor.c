@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/04 12:46:34 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:53:27 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,8 @@ t_element	*rd_extract_element(
 	}
 	el->radius = el->diameter / 2;
 	r = sqrt(el->direction.x * el->direction.x
-		+ el->direction.y * el->direction.y
-		+ el->direction.z * el->direction.z);
+			+ el->direction.y * el->direction.y
+			+ el->direction.z * el->direction.z);
 	if (r == 0)
 		r = 1;
 	el->direction.x /= r;

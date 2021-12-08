@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:13 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 23:05:51 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:53:05 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,16 @@ void	debug_rd_print_vector(t_vec3 *vec)
 void	debug_rd_print_element(t_element *element)
 {
 	printf("{");
-	printf(" position: "); debug_rd_print_vector(&element->position);
-	printf(" direction: "); debug_rd_print_vector(&element->direction);
+	printf(" position: ");
+	debug_rd_print_vector(&element->position);
+	printf(" direction: ");
+	debug_rd_print_vector(&element->direction);
 	printf(" ratio: %f", element->ratio);
 	printf(" radius: %f", element->radius);
 	printf(" diameter: %f", element->diameter);
 	printf(" height: %f", element->height);
-	printf(" color: "); debug_rd_print_vector(&element->color);
+	printf(" color: ");
+	debug_rd_print_vector(&element->color);
 	printf("}\n");
 }
 

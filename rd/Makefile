@@ -42,3 +42,10 @@ fclean		:	clean
 	$(RM) $(NAME)
 
 re			:	fclean all
+
+.PHONY		:	name norm
+name		: $(NAME)
+	nm -u $(NAME)
+
+norm		:
+	python3 -m norminette

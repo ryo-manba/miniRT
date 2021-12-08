@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/04 12:37:18 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:53:58 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,5 @@ t_element		*rd_extract_element(t_element_type etype,
 					const char **words);
 
 void			rd_destroy_temp_scene(t_temp_scene *temp_scene);
-
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/02 10:19:53 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:52:31 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,29 +29,29 @@ static void	element_addback(t_element **list, t_element *el)
 
 static t_element	*element_from_words(t_temp_scene *scene, const char **words)
 {
-		t_element		*el;
-		t_element_type	etype;
+	t_element		*el;
+	t_element_type	etype;
 
-		etype = rd_detect_element_type(words);
-		if (etype == RD_ET_UNEXPECTED)
-		{
-			rd_print_error("found an unexpected element");
-			return (NULL);
-		}
-		if (etype == RD_ET_AMBIENT && scene->ambient)
-		{
-			rd_print_error("found 2nd ambient");
-			return (NULL);
-		}
-		if (etype == RD_ET_CAMERA && scene->camera)
-		{
-			rd_print_error("found 2nd camera");
-			return (NULL);
-		}
-		el = rd_extract_element(etype, words);
-		if (!el)
-			rd_print_error("failed to extract an element");
-		return (el);
+	etype = rd_detect_element_type(words);
+	if (etype == RD_ET_UNEXPECTED)
+	{
+		rd_print_error("found an unexpected element");
+		return (NULL);
+	}
+	if (etype == RD_ET_AMBIENT && scene->ambient)
+	{
+		rd_print_error("found 2nd ambient");
+		return (NULL);
+	}
+	if (etype == RD_ET_CAMERA && scene->camera)
+	{
+		rd_print_error("found 2nd camera");
+		return (NULL);
+	}
+	el = rd_extract_element(etype, words);
+	if (!el)
+		rd_print_error("failed to extract an element");
+	return (el);
 }
 
 static bool	list_to_array(t_element *list, size_t *n_ptr, t_element ***array)

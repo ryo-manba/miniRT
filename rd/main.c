@@ -10,10 +10,18 @@ int main()
 		printf("Error\n");
 		return (1);
 	}
-	printf("ambient:\t"); debug_rd_print_element_list(scene.ambient); printf("\n");
-	printf("camera: \t"); debug_rd_print_element_list(scene.camera); printf("\n");
-	printf("lights: \t"); debug_rd_print_element_array(scene.lights); printf("\n");
-	printf("objects:\t"); debug_rd_print_element_array(scene.objects); printf("\n");
+	printf("ambient:\t");
+	debug_rd_print_element_list(scene.ambient);
+	printf("\n");
+	printf("camera: \t");
+	debug_rd_print_element_list(scene.camera);
+	printf("\n");
+	printf("lights: \t");
+	debug_rd_print_element_array(scene.lights);
+	printf("\n");
+	printf("objects:\t");
+	debug_rd_print_element_array(scene.objects);
+	printf("\n");
 
 	rd_destroy_scene(&scene);
 }
