@@ -1,7 +1,16 @@
-#include "minirt.h"
-#include <limits.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_object_sphere.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
+/*   Updated: 2021/12/08 20:36:54 by corvvs           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#define EPS 1e-8
+#include "minirt.h"
 
 bool	rt_hittest_sphere(
 	const t_element *el,
@@ -14,31 +23,20 @@ bool	rt_hittest_sphere(
 	const double	c = mr_vec3_length_squared(&oc) - el->radius * el->radius;
 	const double	discriminant = half_b * half_b - a * c;
 
-	if (discriminant >= 0) // 交差判定
-	{
-		double root = sqrt(discriminant);
-		double t = 0;
-		if (((-half_b - root) / a) >= 1)
-		{
-			t = (-half_b - root) / a;
-		}
-		else if (((-half_b + root) / a) >= 1)
-		{
-			t = (-half_b + root) / a;
-		}
-		else
-		{
-			return (false);
-		}
-		rec->t = t;
-		rec->p = rt_hit_point(rec->t, ray);
-		t_vec3	temp;
-		temp = mr_vec3_sub(rec->p, el->position);
-		rec->normal = mr_vec3_div_double(&temp, el->radius);
-		rec->cos = mr_vec3_dot(mr_unit_vector(&ray->direction), rec->normal);
-		rec->color = el->color;
-		return (true);
-	}
-	return (false);
+	if (discriminant < 0)
+		return (false);
+	double root = sqrt(discriminant);
+	rec->t = 0;
+	if (((-half_b - root) / a) >= 1)
+		rec->t = (-half_b - root) / a;
+	else if (((-half_b + root) / a) >= 1)
+		rec->t = (-half_b + root) / a;
+	else
+		return (false);
+	rec->p = rt_hit_point(rec->t, ray);
+	rec->normal = mr_vec3_sub(rec->p, el->position);
+	rec->normal = mr_vec3_div_double(&rec->normal, el->radius);
+	rt_after_hit(el, ray, rec);
+	return (true);
 }
 

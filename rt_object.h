@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:48:46 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 19:56:52 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/08 20:30:00 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ bool			rt_hittest_sphere(
 					const t_ray *ray,
 					t_hit_record *rec);
 bool			rt_hittest_plane(
-					t_element *el,
+					const t_element *el,
 					const t_ray *ray,
 					t_hit_record *rec);
 bool			rt_hittest_cylinder(
-					t_element *el,
+					const t_element *el,
 					const t_ray *ray,
 					t_hit_record *rec);
 
 typedef			t_bool	(t_object_hit_tester)(
-			t_element *el,
+			const t_element *el,
 			const t_ray *ray,
 			t_hit_record *rec);
 

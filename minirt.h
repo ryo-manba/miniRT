@@ -42,6 +42,10 @@ int	rt_add_shade(double distance, int color);
 int	rt_get_opposite(int color);
 
 t_vec3	rt_hit_point(double t, const t_ray *ray);
+void	rt_after_hit(
+	const t_element *el,
+	const t_ray *ray,
+	t_hit_record *rec);
 
 t_vec3	rt_orient_vector(t_vec3 *v, t_vec3 *orient);
 
