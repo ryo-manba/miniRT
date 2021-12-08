@@ -3,7 +3,7 @@
 
 static t_vec3	at(double t, const t_ray *ray)
 {
-	return (mr_vec3_add((ray->origin), (mr_vec3_mul_double(ray->direction, t))));
+	return (mr_vec3_add((ray->origin), (mr_vec3_mul_double(&ray->direction, t))));
 }
 
 static void	hit_cylinder_disc(
@@ -13,15 +13,17 @@ static void	hit_cylinder_disc(
 	bool top)
 {
 	double		h;
+	t_vec3	temp;
 
 	h = disc.height / 2;
 	if (!top)
-		disc.direction = mr_vec3_mul_double(disc.direction, -1);
+		disc.direction = mr_vec3_mul_double(&disc.direction, -1);
 	rec->hit = false;
-	disc.position = mr_vec3_add(disc.position, mr_vec3_mul_double(disc.direction, h));
+	disc.position = mr_vec3_add(disc.position, mr_vec3_mul_double(&disc.direction, h));
 	if (rt_hit_plane(&disc, ray, rec))
 	{
-		if (mr_vec3_length(mr_vec3_sub(rec->p, disc.position)) < disc.diameter / 2)
+		temp = mr_vec3_sub(rec->p, disc.position);
+		if (mr_vec3_length(&temp) < disc.diameter / 2)
 			rec->hit = true;
 	}
 	if (!rec->hit)
@@ -47,12 +49,14 @@ bool	hit_at(
 		t_vec3 axial_center = mr_vec3_add(
 			el->position,
 			mr_vec3_mul_double(
-				el->direction,
+				&el->direction,
 				axial_displacement
 			)
 		);
-		rec->normal = mr_unit_vector(mr_vec3_sub(rec->p, axial_center));
-		rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
+		t_vec3	temp;
+		temp = mr_vec3_sub(rec->p, axial_center);
+		rec->normal = mr_unit_vector(&temp);
+		rec->cos = mr_vec3_dot(mr_unit_vector(&ray->direction), rec->normal);
 	}
 	return (rec->hit);
 }

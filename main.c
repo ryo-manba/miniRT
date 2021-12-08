@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
+/*   Updated: 2021/12/08 19:29:23 by corvvs           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 #include "rt_scene.h"
 #include "mr_vec3.h"
@@ -9,72 +21,21 @@
 #define WIDTH (HEIGHT * ASPECT_RATIO)
 #define EPS 1e-9
 
-static int	vec3_to_color(t_vec3 *v3)
+static int	vec3_to_color(const t_vec3 *v3)
 {
 	return (rt_create_trgb(0, (int)(v3->x * 255), (int)(v3->y * 255), (int)(v3->z * 255)));
 }
 
-static double	azimuth_yup(t_vec3 *vec)
-{
-	const double	phi = atan2(vec->x, vec->z);
-	if (vec->z >= 0)
-		return (phi);
-	return (phi);
-}
-
-static double	elevation_yup(t_vec3 *vec)
-{
-	const double	x = sqrt(vec->x * vec->x + vec->z * vec->z);
-	const double	theta = atan2(vec->y, x);
-	return (theta);
-}
-
-static t_vec3	rot_around_axis(t_vec3 *r, t_vec3 *n, double angle)
-{
-	return mr_vec3_add(
-		mr_vec3_add(
-			mr_vec3_mul_double(*r, cos(angle)),
-			mr_vec3_mul_double(
-				*n,
-				mr_vec3_dot(*n, *r) * (1 - cos(angle))
-			)
-		),
-		mr_vec3_mul_double(
-			mr_vec3_cross(*n, *r),
-			sin(angle)
-		)
-	);
-}
-
-static t_vec3	orient_vector(t_vec3 *v, t_vec3 *orient)
-{
-	t_vec3 az_axis = {0, 1, 0};
-	t_vec3 el_axis = {-1, 0, 0};
-	double az = azimuth_yup(orient);
-	double el = elevation_yup(orient);
-	t_vec3 v2 = rot_around_axis(v, &az_axis, az);
-	t_vec3 el_axis2 = rot_around_axis(&el_axis, &az_axis, az);
-	return rot_around_axis(&v2, &el_axis2, el);
-}
-
-
-// 光源の強さ * cosθ
-int	rt_lamberdian(t_vec3 *light)
-{
-	(void)light;	
-	return (0);
-}
-
-static t_vec3	sky_blue(t_vec3 direction)
+static t_vec3	sky_blue(const t_vec3 direction)
 {
 	const t_vec3 c1 = {1.0, 1.0, 1.0}; // 白
 	const t_vec3 c2 = {0.5, 0.7, 1.0}; // 青
-	const t_vec3 unit_direction = mr_unit_vector(direction);
+	const t_vec3 unit_direction = mr_unit_vector(&direction);
 	const double t = 0.5  * (unit_direction.y + 1.0);
 
 	return (mr_vec3_add(
-			mr_vec3_mul_double(c1, t),
-			mr_vec3_mul_double(c2, 1 - t)));
+			mr_vec3_mul_double(&c1, t),
+			mr_vec3_mul_double(&c2, 1 - t)));
 }
 
 static bool	rt_hit_object(
@@ -113,7 +74,7 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		double cos = actual->cos;
 		double x = cos * 1; // cos * 輝度
 		t_vec3 base_color = actual->color;
-		t_vec3 c = mr_vec3_mul_double(base_color, fabs(x));
+		t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
 		return (c);
 	}
 	return (sky_blue(r->direction));
@@ -138,8 +99,8 @@ static void	ray_loop(
 			// rayの方向ベクトル = (viewportの左下 + (水平方向ベクトル * u)) + (垂直方向ベクトル * v)) - rayの原点)
 			t_vec3	ray_cross_screen = mr_vec3_add(
 				mr_vec3_add(
-					mr_vec3_mul_double(scene->optics.screen_vertical, j / HEIGHT),
-					mr_vec3_mul_double(scene->optics.screen_horizontal, i / WIDTH)
+					mr_vec3_mul_double(&scene->optics.screen_vertical, j / HEIGHT),
+					mr_vec3_mul_double(&scene->optics.screen_horizontal, i / WIDTH)
 				),
 				scene->optics.screen_bottomleft
 			);
@@ -165,27 +126,28 @@ static void	ray_loop(
 
 static void	ray(t_img *img, t_scene *scene)
 {
-	scene->optics.screen_height = 2.0;
-	scene->optics.screen_width = ASPECT_RATIO * scene->optics.screen_height;
+	t_optics	*opt;
+	t_element	*cam;
+
+	opt = &scene->optics;
+	cam = scene->camera;
+	opt->screen_height = 2.0;
+	opt->screen_width = ASPECT_RATIO * opt->screen_height;
 	if (scene->camera->fov == 0)
-		scene->optics.focal_length = 1;
+		opt->focal_length = 1;
 	else
-		scene->optics.focal_length = scene->optics.screen_width / (2 * tan(scene->camera->fov * M_PI / 180 / 2));
-	scene->optics.screen_horizontal.x = scene->optics.screen_width;
-	scene->optics.screen_vertical.y = scene->optics.screen_height;
-	scene->optics.screen_horizontal = orient_vector(&scene->optics.screen_horizontal, &scene->camera->direction);
-	scene->optics.screen_vertical = orient_vector(&scene->optics.screen_vertical, &scene->camera->direction);
-	scene->optics.screen_center = mr_vec3_add(
-									scene->camera->position,
-									mr_vec3_mul_double(scene->camera->direction, scene->optics.focal_length)
-								);
-	scene->optics.screen_bottomleft = mr_vec3_sub(
+		opt->focal_length = opt->screen_width / (2 * tan(cam->fov * M_PI / 180 / 2));
+	opt->screen_horizontal.x = opt->screen_width;
+	opt->screen_vertical.y = opt->screen_height;
+	opt->screen_horizontal = rt_orient_vector(&opt->screen_horizontal, &cam->direction);
+	opt->screen_vertical = rt_orient_vector(&opt->screen_vertical, &cam->direction);
+	opt->screen_center = mr_vec3_add(cam->position,
+							mr_vec3_mul_double(&cam->direction, opt->focal_length));
+	opt->screen_bottomleft = mr_vec3_sub(
 										mr_vec3_sub(
-											scene->optics.screen_center,
-											mr_vec3_mul_double(scene->optics.screen_horizontal, 0.5)
-										),
-										mr_vec3_mul_double(scene->optics.screen_vertical, 0.5)
-									);
+											opt->screen_center,
+											mr_vec3_mul_double(&opt->screen_horizontal, 0.5)
+										), mr_vec3_mul_double(&opt->screen_vertical, 0.5));
 	ray_loop(img, scene);
 }
 

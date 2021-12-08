@@ -18,7 +18,7 @@ bool	rt_hit_plane(
 	if (rec->t < 1)
 		return (false);
 	rec->normal = el->direction;
-	rec->cos = mr_vec3_dot(mr_unit_vector(ray->direction), rec->normal);
+	rec->cos = mr_vec3_dot(mr_unit_vector(&ray->direction), rec->normal);
 	rec->color = el->color;
 	return (true);
 }
