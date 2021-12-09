@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:36:54 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/09 10:55:02 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,9 @@ bool	rt_hittest_sphere(
 	else
 		return (false);
 	rec->p = rt_hit_point(rec->t, ray);
+	rec->hit = true;
 	rec->normal = mr_vec3_sub(rec->p, el->position);
-	rec->normal = mr_vec3_div_double(&rec->normal, el->radius);
+	rec->normal = mr_unit_vector(&rec->normal);
 	rt_after_hit(el, ray, rec);
 	return (true);
 }

@@ -1,5 +1,5 @@
 CC			:=	gcc
-CFLAGS		:=	-Wall -Wextra -Werror -g
+CFLAGS		:=	-Wall -Wextra -Werror -g -fsanitize=address
 NAME		:=	libread.a
 SRCS		:=	rd_file.c \
 				rd_error.c \
@@ -42,3 +42,10 @@ fclean		:	clean
 	$(RM) $(NAME)
 
 re			:	fclean all
+
+.PHONY		:	name norm
+name		: $(NAME)
+	nm -u $(NAME)
+
+norm		:
+	python3 -m norminette
