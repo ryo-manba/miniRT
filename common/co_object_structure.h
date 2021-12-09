@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:03:22 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/09 03:04:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CO_OBJECT_STRUCTURE_H
 
 # include "co_geometric_structure.h"
+# include <stdlib.h>
 
 typedef enum e_element_type
 {
@@ -39,6 +40,7 @@ typedef struct s_element
 	double				height;
 	double				fov;
 	struct s_element	*next;
+	size_t				id;
 }	t_element;
 
 #endif
