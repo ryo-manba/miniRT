@@ -7,7 +7,6 @@ int main()
 
 	if (rd_read_scene("test.rt", &scene) == false)
 	{
-		printf("Error\n");
 		return (1);
 	}
 	printf("ambient:\t");

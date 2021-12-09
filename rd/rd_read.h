@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:56:32 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/09 09:59:46 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,20 @@
 # define RD_ID_PLANE	"pl"
 # define RD_ID_CYLINDER	"cy"
 
+typedef struct s_file_cursor
+{
+	size_t	line_number;
+	char	*symbol;
+	size_t	word_number;
+}	t_file_cursor;
+
 typedef struct s_temp_scene
 {
-	t_element	*ambient;
-	t_element	*camera;
-	t_element	*light_list;
-	t_element	*object_list;
+	t_element		*ambient;
+	t_element		*camera;
+	t_element		*light_list;
+	t_element		*object_list;
+	t_file_cursor	cur;
 }	t_temp_scene;
 
 typedef union u_ull_double
@@ -44,24 +52,25 @@ typedef union u_ull_double
 	double				dbl;
 }	t_ull_double;
 
-typedef bool	(*t_element_info_predicate)(const char*);
+typedef bool	(*t_element_info_predicate)(t_file_cursor *, const char*);
 typedef bool	(*t_element_info_extractor)(const char*, void*);
 
 bool			rd_print_error(const char *error);
+bool			rd_print_error_cur(t_file_cursor *cur, const char *error);
 char			*rd_read_file_content(const char *filename);
 void			debug_rd_print_words(char **words);
 void			debug_rd_print_element(t_element *element);
 void			debug_rd_print_element_list(t_element *element);
 void			debug_rd_print_element_array(t_element **element);
 
-t_element_type	rd_detect_element_type(const char **words);
+t_element_type	rd_detect_element_type(t_temp_scene *scene, const char **words);
 
-bool			rd_word_is_positive_real(const char *str);
-bool			rd_word_is_ratio(const char *str);
-bool			rd_word_is_fov_angle(const char *str);
-bool			rd_word_is_vector(const char *str);
-bool			rd_word_is_unit_vector(const char *str);
-bool			rd_word_is_color_vector(const char *str);
+bool			rd_word_is_positive_real(t_file_cursor *cur, const char *str);
+bool			rd_word_is_ratio(t_file_cursor *cur, const char *str);
+bool			rd_word_is_fov_angle(t_file_cursor *cur, const char *str);
+bool			rd_word_is_vector(t_file_cursor *cur, const char *str);
+bool			rd_word_is_unit_vector(t_file_cursor *cur, const char *str);
+bool			rd_word_is_color_vector(t_file_cursor *cur, const char *str);
 
 void			rd_vectorize(const char *str, t_vec3 *vector);
 void			rd_free_strarray(char **strs);

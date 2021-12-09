@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:56:32 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/09 10:24:22 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,54 +47,88 @@ static const t_element_info_predicate	g_cylinder_predicates[] = {
 	rd_word_is_positive_real,
 	rd_word_is_positive_real,
 	rd_word_is_color_vector,
-	NULL,
-};
+	NULL};
 
-static bool	line_matches_predicates(
+static const t_element_info_predicate	*g_element_predicate_array[] = {
+	g_ambient_predicates,
+	g_camera_predicates,
+	g_light_predicates,
+	g_sphere_predicates,
+	g_plane_predicates,
+	g_cylinder_predicates,
+	NULL};
+
+static const char						*g_element_ids[] = {
+	RD_ID_AMBIENT,
+	RD_ID_CAMERA,
+	RD_ID_LIGHT,
+	RD_ID_SPHERE,
+	RD_ID_PLANE,
+	RD_ID_CYLINDER,
+	NULL};
+
+static const t_element_type				g_element_types[] = {
+	RD_ET_AMBIENT,
+	RD_ET_CAMERA,
+	RD_ET_LIGHT,
+	RD_ET_SPHERE,
+	RD_ET_PLANE,
+	RD_ET_CYLINDER,
+	RD_ET_DUMMY};
+
+static t_element_type	matches_predicates(
+	t_element_type expected_type,
+	t_temp_scene *scene,
 	const char **words,
 	const t_element_info_predicate *predicates)
 {
-	size_t	i;
-
-	i = 0;
+	scene->cur.word_number = 0;
 	if (!words)
 	{
-		return (false);
+		return (RD_ET_UNEXPECTED);
 	}
-	while (words[i + 1])
+	while (words[scene->cur.word_number + 1])
 	{
-		if (!predicates[i] || !(predicates[i])(words[i + 1]))
+		if (!predicates[scene->cur.word_number]
+			|| !(predicates[scene->cur.word_number])
+			(&scene->cur, words[scene->cur.word_number + 1]))
 		{
-			return (false);
+			return (RD_ET_UNEXPECTED);
+		}
+		scene->cur.word_number += 1;
+	}
+	if (predicates[scene->cur.word_number])
+	{
+		rd_print_error_cur(&scene->cur, "less words");
+		return (RD_ET_UNEXPECTED);
+	}
+	scene->cur.word_number = 0;
+	return (expected_type);
+}
+
+t_element_type	rd_detect_element_type(t_temp_scene *scene, const char **words)
+{
+	size_t	i;
+
+	scene->cur.symbol = NULL;
+	if (!words)
+	{
+		rd_print_error_cur(&scene->cur, "no words");
+		return (RD_ET_UNEXPECTED);
+	}
+	scene->cur.symbol = (char *)words[0];
+	scene->cur.word_number = 0;
+	i = 0;
+	while (g_element_ids[i])
+	{
+		if (ft_strcmp(scene->cur.symbol, g_element_ids[i]) == 0)
+		{
+			return (matches_predicates(
+					g_element_types[i], scene, words,
+					g_element_predicate_array[i]));
 		}
 		i += 1;
 	}
-	if (predicates[i])
-		return (false);
-	return (true);
-}
-
-t_element_type	rd_detect_element_type(const char **words)
-{
-	if (!words)
-		return (RD_ET_UNEXPECTED);
-	if (ft_strcmp(words[0], RD_ID_AMBIENT) == 0
-		&& line_matches_predicates(words, g_ambient_predicates))
-		return (RD_ET_AMBIENT);
-	if (ft_strcmp(words[0], RD_ID_CAMERA) == 0
-		&& line_matches_predicates(words, g_camera_predicates))
-		return (RD_ET_CAMERA);
-	if (ft_strcmp(words[0], RD_ID_LIGHT) == 0
-		&& line_matches_predicates(words, g_light_predicates))
-		return (RD_ET_LIGHT);
-	if (ft_strcmp(words[0], RD_ID_SPHERE) == 0
-		&& line_matches_predicates(words, g_sphere_predicates))
-		return (RD_ET_SPHERE);
-	if (ft_strcmp(words[0], RD_ID_PLANE) == 0
-		&& line_matches_predicates(words, g_plane_predicates))
-		return (RD_ET_PLANE);
-	if (ft_strcmp(words[0], RD_ID_CYLINDER) == 0
-		&& line_matches_predicates(words, g_cylinder_predicates))
-		return (RD_ET_CYLINDER);
+	rd_print_error_cur(&scene->cur, "unexpexcted symbol");
 	return (RD_ET_UNEXPECTED);
 }
