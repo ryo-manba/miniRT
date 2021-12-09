@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 17:06:52 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/10 01:01:05 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,15 @@ static void mr_normalize_color(t_vec3 *color)
 static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 {
 	t_hit_record	*actual;
+	t_element		*light;
 	size_t			i;
+	t_vec3			color;
 
-	t_vec3 light_pos = {5, -5, -5};
-	t_vec3 light_color = {255, 255, 255}; // 白
-	double	light_ratio = 1.0;
-	mr_normalize_color(&light_color);
-	light_color = mr_vec3_mul_double(&light_color, light_ratio);
-
+	light = scene->lights[0];
+	color = light->color;
+	color = mr_vec3_mul_double(&color, light->ratio);
 	actual = NULL;
 	i = 0;
-
 	while (i < scene->n_objects)
 	{
 		if (rt_hit_object(scene->objects[i], r, &recs[i]))
@@ -85,14 +83,13 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	}
 	if (actual)
 	{
-		if (rt_is_shadow(actual, scene, recs, &light_pos))
+		if (rt_is_shadow(actual, scene, recs, &light->position))
 		{
 			return ((t_vec3){0, 0, 0});
 		}
 		double cos = actual->cos;
 		double x = cos * 1; // cos * 輝度
 		t_vec3 base_color = actual->color;
-//		t_vec3 base_color = {255, 0, 0};
 		t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
 		(void)c;
 
@@ -102,8 +99,8 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		base_color = rt_ambient(ambient_ratio, &ambient_color, &base_color);
 
 		// 反射の計算
-		t_vec3 diffuse = rt_diffuse(actual, &light_pos, &light_color);
-		t_vec3 specular = rt_specular(actual, &light_pos, &light_color, r);
+		t_vec3 diffuse = rt_diffuse(actual, &light->position, &color);
+		t_vec3 specular = rt_specular(actual, &light->position, &color, r);
 		t_vec3 res_color = mr_vec3_add(base_color, mr_vec3_add(diffuse, specular));
 
 		res_color.x = fmin(res_color.x, 1);
