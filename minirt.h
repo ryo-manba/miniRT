@@ -50,6 +50,12 @@ void	rt_after_hit(
 t_vec3	rt_orient_vector(t_vec3 *v, t_vec3 *orient);
 
 
+bool	rt_hit_object(
+	t_element *el,
+	const t_ray *ray,
+	t_hit_record *rec
+);
+
 /* refraction */
 t_vec3 rt_ambient(
 	const double ratio,
@@ -67,7 +73,11 @@ t_vec3	rt_specular(
 	const t_vec3 *light_color,
 	const t_ray *ray);
 
-
+bool	rt_is_shadow(
+	const t_hit_record *actual,
+	const t_scene *scene,
+	t_hit_record *recs,
+	const t_vec3 *light_pos);
 
 /* debug */
 void	vec3_debug(t_vec3 *vec);

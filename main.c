@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 16:36:34 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/09 17:06:52 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 //#define HEIGHT 400
 #define HEIGHT 250
 #define WIDTH (HEIGHT * ASPECT_RATIO)
-#define EPS 1e-9
 
 static int	vec3_to_color(const t_vec3 *v3)
 {
@@ -39,7 +38,7 @@ static t_vec3	sky_blue(const t_vec3 direction)
 			mr_vec3_mul_double(&c2, 1 - t)));
 }
 
-static bool	rt_hit_object(
+bool	rt_hit_object(
 	t_element *el,
 	const t_ray *ray,
 	t_hit_record *rec
@@ -59,41 +58,6 @@ static void mr_normalize_color(t_vec3 *color)
 	color->x = color->x / 255.0;
 	color->y = color->y / 255.0;
 	color->z = color->z / 255.0;
-}
-
-static bool rt_is_shadow(
-	const t_hit_record *actual,
-	const t_scene *scene,
-	t_hit_record *recs,
-	const t_vec3 *light_pos)
-{
-	t_ray	shadow_ray;
-	const double eps = (1 / 256);
-
-	t_vec3 v = mr_vec3_sub(*light_pos, actual->p); // 交点から光源へのベクトル
-	t_vec3 l = mr_unit_vector(&v); // 入射ベクトル
-	shadow_ray.origin = mr_vec3_add(actual->p, mr_vec3_mul_double(&l, eps)); // 入射方向に少しずらす
-	shadow_ray.direction = l;
-
-	// 光源までの距離
-	double dist_to_light = mr_vec3_length(&v) - eps;
-
-	size_t i = 0;
-	while (i < scene->n_objects)
-	{
-		if (rt_hit_object(scene->objects[i], &shadow_ray, &recs[i]))
-		{
-			t_vec3 normal = shadow_ray.direction;
-			t_vec3 tmp = mr_vec3_mul_double(&normal, recs[i].t); // シャドウレイからt倍したもの
-			double dist_to_obj = mr_vec3_length(&tmp); // 長さ
-			if (dist_to_obj < dist_to_light) // 物体との距離が光源よりも近い場合
-			{
-				return (true);
-			}
-		}
-		i += 1;
-	}
-	return (false);
 }
 
 static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
@@ -127,8 +91,8 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		}
 		double cos = actual->cos;
 		double x = cos * 1; // cos * 輝度
-//		t_vec3 base_color = actual->color;
-		t_vec3 base_color = {255, 0, 0};
+		t_vec3 base_color = actual->color;
+//		t_vec3 base_color = {255, 0, 0};
 		t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
 		(void)c;
 

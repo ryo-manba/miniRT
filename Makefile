@@ -16,10 +16,10 @@ SRCS		:=	debug.c \
 				rt_object_sphere.c \
 				rt_object_plane.c \
 				rt_object_cylinder.c \
-				rt_diffuse.c \
 				rt_hit_util.c \
 				rt_vector_rotation.c \
 				rt_calc_reflection.c \
+				rt_is_shadow.c \
 
 OBJS		:=	$(SRCS:.c=.o)
 MLX			:=	minilibx-linux
