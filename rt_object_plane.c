@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_object_plane.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:14:54 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:30:55 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/09 16:42:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ bool	rt_hittest_plane(
 	if (rec->t < 1)
 		return (false);
 	rec->normal = el->direction;
+	rec->hit = true;
 	rt_after_hit(el, ray, rec);
 	return (true);
 }

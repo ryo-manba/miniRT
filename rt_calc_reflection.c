@@ -1,0 +1,82 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_calc_reflection.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/09 10:30:49 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/12/09 11:37:36 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minirt.h"
+
+static t_vec3	mr_vec3_mul(const t_vec3 *u, const t_vec3 *v)
+{
+	t_vec3	mul;
+
+	mul.x = u->x * v->x;
+	mul.y = u->y * v->y;
+	mul.z = u->z * v->z;
+	return (mul);
+}
+
+// 環境光
+t_vec3 rt_ambient(
+	const double ratio,
+	const t_vec3 *ambient_color,
+	const t_vec3 *obj_color)
+{
+	t_vec3	ambient = mr_vec3_mul_double(ambient_color, ratio);
+
+	return (mr_vec3_mul(&ambient, obj_color)); // 環境光(rgb * 輝度) * 物体の色
+}
+
+// 光源の強さ * cosθ
+t_vec3	rt_diffuse(
+	const t_hit_record *rec,
+	const t_vec3 *light_p,
+	const t_vec3 *light_color)
+{
+	t_vec3 c;
+	const t_vec3 tmp = mr_vec3_sub(*light_p, (*rec).p);
+	t_vec3 p = mr_unit_vector(&tmp); // 光の入射ベクトル
+	t_vec3 normal = mr_unit_vector(&rec->normal);
+	double cos = mr_vec3_dot(p, normal); // 入射ベクトルと法線ベクトルのなす角
+
+	if (cos < 0) // なす角が90度を超える(光源が面の裏側から当たっている)とき反射は起きない
+		return ((t_vec3){0, 0, 0});
+	double ratio = 0.5;
+	double x = cos * ratio; // cos * 輝度 (* 拡散反射係数?)
+	c = mr_vec3_mul_double(light_color, x);
+	return (c);
+}
+
+t_vec3	rt_specular(
+	const t_hit_record *rec,
+	const t_vec3 *light,
+	const t_vec3 *light_color,
+	const t_ray *ray)
+{
+	const double	k = 0.3; // 鏡面反射係数
+	const double	i = 1.0; // 光源の光の強度
+//	const double	a = 30.0; // 光沢度
+	const double	a = 30.0; // 光沢度
+
+	const t_vec3	tmp = mr_vec3_mul_double(&ray->direction, -1);
+	const t_vec3	v = mr_unit_vector(&tmp); // 視線ベクトルの逆ベクトル
+	const t_vec3	tmp2 = mr_vec3_sub(*light, rec->p);
+	const t_vec3	l = mr_unit_vector(&tmp2); // 光の入射方向ベクトル
+
+	// 𝐫⃗ = 2(𝐧⃗ ⋅ℓ⃗ )𝐧⃗ −ℓ⃗
+	const t_vec3	n = mr_unit_vector(&rec->normal); // 物体面の法線ベクトル
+	const t_vec3	r = mr_vec3_sub(mr_vec3_mul_double(&n, mr_vec3_dot(n, l) * 2), l); // 入射光の正反射ベクトル
+
+	if (mr_vec3_dot(n, l) < 0 || mr_vec3_dot(v, r) < 0)
+		return ((t_vec3){0, 0, 0});
+
+	// 𝑅𝑠=𝑘𝑠𝐼𝑖(𝐯⃗ ⋅𝐫⃗ )^𝛼
+	t_vec3 x = mr_vec3_mul_double(light_color, (k * i * pow(mr_vec3_dot(v, r), a))); // 直接光の鏡面反射光の放射輝度
+	return (x);
+}
