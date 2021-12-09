@@ -50,6 +50,25 @@ void	rt_after_hit(
 t_vec3	rt_orient_vector(t_vec3 *v, t_vec3 *orient);
 
 
+/* refraction */
+t_vec3 rt_ambient(
+	const double ratio,
+	const t_vec3 *ambient_color,
+	const t_vec3 *obj_color);
+
+t_vec3	rt_diffuse(
+	const t_hit_record *rec,
+	const t_vec3 *light_p,
+	const t_vec3 *light_color);
+
+t_vec3	rt_specular(
+	const t_hit_record *rec,
+	const t_vec3 *light,
+	const t_vec3 *light_color,
+	const t_ray *ray);
+
+
+
 /* debug */
 void	vec3_debug(t_vec3 *vec);
 

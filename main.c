@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 19:47:26 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/09 11:42:20 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,23 @@ static bool	rt_hit_object(
 	return (false);
 }
 
+static void mr_normalize_color(t_vec3 *color)
+{
+	color->x = color->x / 255.0;
+	color->y = color->y / 255.0;
+	color->z = color->z / 255.0;
+}
+
 static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 {
 	t_hit_record	*actual;
 	size_t			i;
+
+	t_vec3 light_pos = {5, 0, -5};
+	t_vec3 light_color = {255, 255, 255}; // 白
+	double	light_ratio = 1.0;
+	mr_normalize_color(&light_color);
+	light_color = mr_vec3_mul_double(&light_color, light_ratio);
 
 	actual = NULL;
 	i = 0;
@@ -73,9 +86,31 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	{
 		double cos = actual->cos;
 		double x = cos * 1; // cos * 輝度
-		t_vec3 base_color = actual->color;
+//		t_vec3 base_color = actual->color;
+		t_vec3 base_color = {255, 0, 0};
+//		printf("base_color: "), vec3_debug(&base_color);
+		
 		t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
-		return (c);
+		(void)c;
+
+//		printf("c: "), vec3_debug(&c);
+		double ambient_ratio = 0.01 * 0.1;
+		t_vec3 ambient_color = {255, 255, 255};
+		mr_normalize_color(&ambient_color);
+		base_color = rt_ambient(ambient_ratio, &ambient_color, &base_color);
+
+		// 反射の計算
+		t_vec3 diffuse = rt_diffuse(actual, &light_pos, &light_color);
+		t_vec3 specular = rt_specular(actual, &light_pos, &light_color, r);
+		t_vec3 res_color = mr_vec3_add(base_color, mr_vec3_add(diffuse, specular));
+//		printf("res: "), vec3_debug(&res_color);
+
+//		vec3_debug(&res_color);
+		res_color.x = fmin(res_color.x, 1);
+		res_color.y = fmin(res_color.y, 1);
+		res_color.z = fmin(res_color.z, 1);
+		return (res_color);
+//		return (c);
 	}
 	return (sky_blue(r->direction));
 }
