@@ -13,11 +13,12 @@ SRCS		:=	debug.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
 				rt_color.c \
-				rt_sphere.c \
-				rt_plane.c \
-				rt_cylinder.c \
+				rt_object_sphere.c \
+				rt_object_plane.c \
+				rt_object_cylinder.c \
 				rt_diffuse.c \
 				rt_hit_util.c \
+				rt_vector_rotation.c \
 
 OBJS		:=	$(SRCS:.c=.o)
 MLX			:=	minilibx-linux

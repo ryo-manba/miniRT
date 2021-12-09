@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:02 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/04 13:14:13 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/07 18:25:34 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ bool	rd_is_unit_vector(const char *str)
 		|| vec.z < -1 || +1 < vec.z)
 		return (false);
 	r2 = vec.x * vec.x + vec.y * vec.y + vec.z * vec.z;
-	return (RD_UNIT_PREDICATE_EPSILON * RD_UNIT_PREDICATE_EPSILON > fabs(r2 - 1));
+	return (RD_UNIT_PREDICATE_EPSILON > fabs(r2 - 1));
 }
 
 bool	rd_is_color_vector(const char *str)
