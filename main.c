@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/10 01:01:05 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/10 01:02:43 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,6 @@ bool	rt_hit_object(
 	return (false);
 }
 
-static void mr_normalize_color(t_vec3 *color)
-{
-	color->x = color->x / 255.0;
-	color->y = color->y / 255.0;
-	color->z = color->z / 255.0;
-}
-
 static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 {
 	t_hit_record	*actual;
@@ -93,9 +86,8 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
 		(void)c;
 
-		double ambient_ratio = 0.01 * 0.1;
-		t_vec3 ambient_color = {255, 255, 255};
-		mr_normalize_color(&ambient_color);
+		double ambient_ratio = scene->ambient->ratio;
+		t_vec3 ambient_color = scene->ambient->color;
 		base_color = rt_ambient(ambient_ratio, &ambient_color, &base_color);
 
 		// 反射の計算
