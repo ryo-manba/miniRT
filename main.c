@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 11:42:20 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/09 16:36:34 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 #include "mr_camera.h"
 
 #define ASPECT_RATIO ((double)16.0 / 9.0)
-#define HEIGHT 400
+//#define HEIGHT 400
+#define HEIGHT 250
 #define WIDTH (HEIGHT * ASPECT_RATIO)
 #define EPS 1e-9
 
@@ -60,12 +61,47 @@ static void mr_normalize_color(t_vec3 *color)
 	color->z = color->z / 255.0;
 }
 
+static bool rt_is_shadow(
+	const t_hit_record *actual,
+	const t_scene *scene,
+	t_hit_record *recs,
+	const t_vec3 *light_pos)
+{
+	t_ray	shadow_ray;
+	const double eps = (1 / 256);
+
+	t_vec3 v = mr_vec3_sub(*light_pos, actual->p); // 交点から光源へのベクトル
+	t_vec3 l = mr_unit_vector(&v); // 入射ベクトル
+	shadow_ray.origin = mr_vec3_add(actual->p, mr_vec3_mul_double(&l, eps)); // 入射方向に少しずらす
+	shadow_ray.direction = l;
+
+	// 光源までの距離
+	double dist_to_light = mr_vec3_length(&v) - eps;
+
+	size_t i = 0;
+	while (i < scene->n_objects)
+	{
+		if (rt_hit_object(scene->objects[i], &shadow_ray, &recs[i]))
+		{
+			t_vec3 normal = shadow_ray.direction;
+			t_vec3 tmp = mr_vec3_mul_double(&normal, recs[i].t); // シャドウレイからt倍したもの
+			double dist_to_obj = mr_vec3_length(&tmp); // 長さ
+			if (dist_to_obj < dist_to_light) // 物体との距離が光源よりも近い場合
+			{
+				return (true);
+			}
+		}
+		i += 1;
+	}
+	return (false);
+}
+
 static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 {
 	t_hit_record	*actual;
 	size_t			i;
 
-	t_vec3 light_pos = {5, 0, -5};
+	t_vec3 light_pos = {5, -5, -5};
 	t_vec3 light_color = {255, 255, 255}; // 白
 	double	light_ratio = 1.0;
 	mr_normalize_color(&light_color);
@@ -73,6 +109,7 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 
 	actual = NULL;
 	i = 0;
+
 	while (i < scene->n_objects)
 	{
 		if (rt_hit_object(scene->objects[i], r, &recs[i]))
@@ -84,16 +121,17 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	}
 	if (actual)
 	{
+		if (rt_is_shadow(actual, scene, recs, &light_pos))
+		{
+			return ((t_vec3){0, 0, 0});
+		}
 		double cos = actual->cos;
 		double x = cos * 1; // cos * 輝度
 //		t_vec3 base_color = actual->color;
 		t_vec3 base_color = {255, 0, 0};
-//		printf("base_color: "), vec3_debug(&base_color);
-		
 		t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
 		(void)c;
 
-//		printf("c: "), vec3_debug(&c);
 		double ambient_ratio = 0.01 * 0.1;
 		t_vec3 ambient_color = {255, 255, 255};
 		mr_normalize_color(&ambient_color);
@@ -103,14 +141,11 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		t_vec3 diffuse = rt_diffuse(actual, &light_pos, &light_color);
 		t_vec3 specular = rt_specular(actual, &light_pos, &light_color, r);
 		t_vec3 res_color = mr_vec3_add(base_color, mr_vec3_add(diffuse, specular));
-//		printf("res: "), vec3_debug(&res_color);
 
-//		vec3_debug(&res_color);
 		res_color.x = fmin(res_color.x, 1);
 		res_color.y = fmin(res_color.y, 1);
 		res_color.z = fmin(res_color.z, 1);
 		return (res_color);
-//		return (c);
 	}
 	return (sky_blue(r->direction));
 }
