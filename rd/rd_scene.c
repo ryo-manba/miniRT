@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 10:18:43 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/10 19:43:36 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,7 @@ static t_element	*element_from_words(t_temp_scene *scene, const char **words)
 
 	etype = rd_detect_element_type(scene, words);
 	if (etype == RD_ET_UNEXPECTED)
-	{
 		return (NULL);
-	}
 	if (etype == RD_ET_AMBIENT && scene->ambient)
 	{
 		rd_print_error_cur(&scene->cur, "found 2nd ambient");
@@ -45,6 +43,11 @@ static t_element	*element_from_words(t_temp_scene *scene, const char **words)
 	if (etype == RD_ET_CAMERA && scene->camera)
 	{
 		rd_print_error_cur(&scene->cur, "found 2nd camera");
+		return (NULL);
+	}
+	if (etype == RD_ET_LIGHT && scene->light_list)
+	{
+		rd_print_error_cur(&scene->cur, "found 2nd light");
 		return (NULL);
 	}
 	el = rd_extract_element(etype, words);
@@ -121,6 +124,8 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 		return (rd_print_error("ambient not found"));
 	if (!temp_scene.camera)
 		return (rd_print_error("camera not found"));
+	if (!temp_scene.light_list)
+		return (rd_print_error("light not found"));
 	ft_bzero(scene, sizeof(t_scene));
 	list_to_array(temp_scene.light_list, &scene->n_lights, &scene->lights);
 	list_to_array(temp_scene.object_list, &scene->n_objects, &scene->objects);
