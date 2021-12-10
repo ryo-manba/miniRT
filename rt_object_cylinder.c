@@ -32,9 +32,7 @@ static bool	hit_at(
 	t_hit_record *rec)
 {
 	rec->t = t;
-	
 	rec->p = rt_hit_point(rec->t, ray);
-	rec->hit = (rec->t >= 1);
 	double axial_displacement = mr_vec3_dot(
 		mr_vec3_sub(rec->p, el->position), el->direction
 	);
@@ -42,6 +40,7 @@ static bool	hit_at(
 		rec->hit = false;
 	else
 	{
+		rec->hit = true;
 		t_vec3 axial_center = mr_vec3_add(
 			el->position,
 			mr_vec3_mul_double(
@@ -87,17 +86,18 @@ bool	rt_hittest_cylinder(
 	t_hit_record *rec)
 {
 	t_hit_record	hits[3];
+	t_hit_record	*h;
 
 	ft_bzero(hits, sizeof(t_hit_record) * 3);
 	hit_cylinder_disc(el, ray, &hits[0], true);
 	hit_cylinder_disc(el, ray, &hits[1], false);
 	hit_cylinder_side(el, ray, &hits[2]);
-	hits[0].color = (t_vec3){ 1, 0, 1 };
-	hits[1].color = (t_vec3){ 1, 1, 0 };
-	*rec = hits[0];
+	h = &hits[0];
 	if (!rec->hit || (hits[1].hit && hits[1].t < rec->t))
-		*rec = hits[1];
+		h = &hits[1];
 	if (!rec->hit || (hits[2].hit && hits[2].t < rec->t))
-		*rec = hits[2];
+		h = &hits[2];
+	if (h->hit)
+		*rec = *h;
 	return (rec->hit);
 }
