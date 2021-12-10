@@ -117,9 +117,9 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 		temp_scene.cur.line_number += 1;
 	}
 	rd_free_strarray(lines);
-	if (!scene->ambient)
+	if (!temp_scene.ambient)
 		return (rd_print_error("ambient not found"));
-	if (!scene->camera)
+	if (!temp_scene.camera)
 		return (rd_print_error("camera not found"));
 	ft_bzero(scene, sizeof(t_scene));
 	list_to_array(temp_scene.light_list, &scene->n_lights, &scene->lights);
