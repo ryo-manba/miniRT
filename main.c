@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/10 12:18:32 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/10 15:41:39 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,25 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	{
 		return (sky_blue(r->direction));
 	}
-	// if (rt_is_shadow(actual, scene, recs, &light->position))
-	// {
-	// 	return ((t_vec3){0, 0, 0});
-	// }
-	t_vec3	ambient_color = scene->ambient->color;
-	t_vec3	base_color =
-		rt_ambient(scene->ambient->ratio, &ambient_color, &actual->color);
-	// 反射の計算
-	t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
-	t_vec3 diffuse = rt_diffuse(actual, &light->position, &color);
-	t_vec3 specular = rt_specular(actual, &light->position, &color, r);
-	t_vec3 res_color = mr_vec3_add(base_color, mr_vec3_add(diffuse, specular));
-	// printf("actual->color: "); vec3_debug(&actual->color);
-	// printf("ambient_color: "); vec3_debug(&ambient_color);
-	// printf("res_color: "); vec3_debug(&res_color);
-	// printf("diffuse: "); vec3_debug(&diffuse);
-	// printf("specular: "); vec3_debug(&specular);
-	res_color.x = fmin(res_color.x, 1);
-	res_color.y = fmin(res_color.y, 1);
-	res_color.z = fmin(res_color.z, 1);
-	return (res_color);
+	t_vec3	base_color = rt_ambient(scene->ambient->ratio,
+		&scene->ambient->color, &actual->color);
+	t_hit_record	actual_0;
+	actual_0 = *actual;
+	printf("(%d, %d)\n", r->pixel_x, r->pixel_y);
+	if (!rt_is_shadow(actual, scene, recs, &light->position))
+	{
+		// 反射の計算
+		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
+		vec3_debug(&base_color);
+		base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
+		vec3_debug(&base_color);
+		base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
+		vec3_debug(&base_color);
+	}
+	base_color.x = fmin(base_color.x, 1);
+	base_color.y = fmin(base_color.y, 1);
+	base_color.z = fmin(base_color.z, 1);
+	return (base_color);
 }
 
 static void	ray_loop(

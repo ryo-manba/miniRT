@@ -65,7 +65,8 @@ t_vec3 rt_ambient(
 t_vec3	rt_diffuse(
 	const t_hit_record *rec,
 	const t_vec3 *light_p,
-	const t_vec3 *light_color);
+	const t_vec3 *light_color,
+	const t_ray *ray);
 
 t_vec3	rt_specular(
 	const t_hit_record *rec,
