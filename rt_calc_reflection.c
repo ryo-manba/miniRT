@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_calc_reflection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:30:49 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/09 11:37:36 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/10 03:55:21 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ t_vec3 rt_ambient(
 	const t_vec3 *obj_color)
 {
 	t_vec3	ambient = mr_vec3_mul_double(ambient_color, ratio);
-
 	return (mr_vec3_mul(&ambient, obj_color)); // 環境光(rgb * 輝度) * 物体の色
 }
 
@@ -39,12 +38,13 @@ t_vec3	rt_diffuse(
 	const t_vec3 *light_p,
 	const t_vec3 *light_color)
 {
+	if (!rec->hit)
+		return ((t_vec3){0, 0, 0});
 	t_vec3 c;
-	const t_vec3 tmp = mr_vec3_sub(*light_p, (*rec).p);
+	t_vec3 tmp = mr_vec3_sub(*light_p, (*rec).p);
 	t_vec3 p = mr_unit_vector(&tmp); // 光の入射ベクトル
 	t_vec3 normal = mr_unit_vector(&rec->normal);
 	double cos = mr_vec3_dot(p, normal); // 入射ベクトルと法線ベクトルのなす角
-
 	if (cos < 0) // なす角が90度を超える(光源が面の裏側から当たっている)とき反射は起きない
 		return ((t_vec3){0, 0, 0});
 	double ratio = 0.5;
@@ -64,6 +64,8 @@ t_vec3	rt_specular(
 //	const double	a = 30.0; // 光沢度
 	const double	a = 30.0; // 光沢度
 
+	if (!rec->hit)
+		return ((t_vec3){0, 0, 0});
 	const t_vec3	tmp = mr_vec3_mul_double(&ray->direction, -1);
 	const t_vec3	v = mr_unit_vector(&tmp); // 視線ベクトルの逆ベクトル
 	const t_vec3	tmp2 = mr_vec3_sub(*light, rec->p);

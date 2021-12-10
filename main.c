@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/10 01:02:43 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/10 12:18:32 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ bool	rt_hit_object(
 	t_hit_record *rec
 )
 {
+	rec->hit = false;
 	if (el->etype == RD_ET_SPHERE)
 		return (rt_hittest_sphere(el, ray, rec));
 	if (el->etype == RD_ET_PLANE)
@@ -58,49 +59,47 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	t_hit_record	*actual;
 	t_element		*light;
 	size_t			i;
-	t_vec3			color;
 
+	ft_bzero(recs, scene->n_objects * sizeof(t_hit_record));
 	light = scene->lights[0];
-	color = light->color;
-	color = mr_vec3_mul_double(&color, light->ratio);
 	actual = NULL;
 	i = 0;
 	while (i < scene->n_objects)
 	{
 		if (rt_hit_object(scene->objects[i], r, &recs[i]))
 		{
-			if (!actual || recs[i].t < actual->t)
+			if (recs[i].hit && (!actual || recs[i].t < actual->t))
+			{
 				actual = &recs[i];
+			}
 		}
 		i += 1;
 	}
-	if (actual)
+	if (!actual)
 	{
-		if (rt_is_shadow(actual, scene, recs, &light->position))
-		{
-			return ((t_vec3){0, 0, 0});
-		}
-		double cos = actual->cos;
-		double x = cos * 1; // cos * 輝度
-		t_vec3 base_color = actual->color;
-		t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
-		(void)c;
-
-		double ambient_ratio = scene->ambient->ratio;
-		t_vec3 ambient_color = scene->ambient->color;
-		base_color = rt_ambient(ambient_ratio, &ambient_color, &base_color);
-
-		// 反射の計算
-		t_vec3 diffuse = rt_diffuse(actual, &light->position, &color);
-		t_vec3 specular = rt_specular(actual, &light->position, &color, r);
-		t_vec3 res_color = mr_vec3_add(base_color, mr_vec3_add(diffuse, specular));
-
-		res_color.x = fmin(res_color.x, 1);
-		res_color.y = fmin(res_color.y, 1);
-		res_color.z = fmin(res_color.z, 1);
-		return (res_color);
+		return (sky_blue(r->direction));
 	}
-	return (sky_blue(r->direction));
+	// if (rt_is_shadow(actual, scene, recs, &light->position))
+	// {
+	// 	return ((t_vec3){0, 0, 0});
+	// }
+	t_vec3	ambient_color = scene->ambient->color;
+	t_vec3	base_color =
+		rt_ambient(scene->ambient->ratio, &ambient_color, &actual->color);
+	// 反射の計算
+	t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
+	t_vec3 diffuse = rt_diffuse(actual, &light->position, &color);
+	t_vec3 specular = rt_specular(actual, &light->position, &color, r);
+	t_vec3 res_color = mr_vec3_add(base_color, mr_vec3_add(diffuse, specular));
+	// printf("actual->color: "); vec3_debug(&actual->color);
+	// printf("ambient_color: "); vec3_debug(&ambient_color);
+	// printf("res_color: "); vec3_debug(&res_color);
+	// printf("diffuse: "); vec3_debug(&diffuse);
+	// printf("specular: "); vec3_debug(&specular);
+	res_color.x = fmin(res_color.x, 1);
+	res_color.y = fmin(res_color.y, 1);
+	res_color.z = fmin(res_color.z, 1);
+	return (res_color);
 }
 
 static void	ray_loop(
@@ -111,7 +110,7 @@ static void	ray_loop(
 	double	j;
 	t_ray	ray;
 	t_hit_record	*recs;
-	recs = (t_hit_record *)ft_calloc(scene->n_objects, sizeof(t_hit_record));
+	recs = (t_hit_record *)malloc(scene->n_objects * sizeof(t_hit_record));
 
 	j = 0;
 	while (j < HEIGHT)
@@ -122,7 +121,7 @@ static void	ray_loop(
 			// rayの方向ベクトル = (viewportの左下 + (水平方向ベクトル * u)) + (垂直方向ベクトル * v)) - rayの原点)
 			t_vec3	ray_cross_screen = mr_vec3_add(
 				mr_vec3_add(
-					mr_vec3_mul_double(&scene->optics.screen_vertical, j / HEIGHT),
+					mr_vec3_mul_double(&scene->optics.screen_vertical, (HEIGHT - j) / HEIGHT),
 					mr_vec3_mul_double(&scene->optics.screen_horizontal, i / WIDTH)
 				),
 				scene->optics.screen_bottomleft

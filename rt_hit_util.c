@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_hit_util.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:29:15 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 14:47:34 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/10 12:18:18 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ void	rt_after_hit(
 {
 	if (rec->hit)
 	{
+		rec->element = *el;
 		rec->cos = mr_vec3_dot(mr_unit_vector(&ray->direction), rec->normal);
 		rec->color = el->color;
 	}
 	else
+	{
 		rec->t = rd_inf(true);
+	}
 }

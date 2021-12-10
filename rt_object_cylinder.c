@@ -19,8 +19,7 @@ static void	hit_cylinder_disc(
 	if (rt_hittest_plane(&disc, ray, rec))
 	{
 		temp = mr_vec3_sub(rec->p, disc.position);
-		if (mr_vec3_length(&temp) < disc.diameter / 2)
-			rec->hit = true;
+		rec->hit = (mr_vec3_length(&temp) < disc.diameter / 2);
 	}
 	rt_after_hit(&disc, ray, rec);
 }
@@ -92,12 +91,14 @@ bool	rt_hittest_cylinder(
 	hit_cylinder_disc(el, ray, &hits[0], true);
 	hit_cylinder_disc(el, ray, &hits[1], false);
 	hit_cylinder_side(el, ray, &hits[2]);
-	h = &hits[0];
-	if (!rec->hit || (hits[1].hit && hits[1].t < rec->t))
+	h = NULL;
+	if (hits[0].hit)
+		h = &hits[0];
+	if (hits[1].hit && (!h || !h->hit || hits[1].t < h->t))
 		h = &hits[1];
-	if (!rec->hit || (hits[2].hit && hits[2].t < rec->t))
+	if (hits[2].hit && (!h || !h->hit || hits[2].t < h->t))
 		h = &hits[2];
-	if (h->hit)
+	if (h)
 		*rec = *h;
-	return (rec->hit);
+	return (!!h);
 }

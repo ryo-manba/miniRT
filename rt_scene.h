@@ -30,13 +30,14 @@ typedef struct	s_ray
 } t_ray;
 
 typedef struct	s_hit_record
-{
-	t_vec3	p;
-	t_vec3	normal;
-	double	t;
-	bool	hit;
-	double	cos;
-	t_vec3	color;
+{	
+	t_vec3		p;
+	t_vec3		normal;
+	double		t;
+	bool		hit;
+	double		cos;
+	t_vec3		color;
+	t_element	element;
 }	t_hit_record;
 
 #endif
