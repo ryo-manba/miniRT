@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:30:49 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/10 03:55:21 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/10 14:21:46 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,16 @@ t_vec3	rt_diffuse(
 	if (!rec->hit)
 		return ((t_vec3){0, 0, 0});
 	t_vec3 c;
-	t_vec3 tmp = mr_vec3_sub(*light_p, (*rec).p);
-	t_vec3 p = mr_unit_vector(&tmp); // 光の入射ベクトル
-	t_vec3 normal = mr_unit_vector(&rec->normal);
-	double cos = mr_vec3_dot(p, normal); // 入射ベクトルと法線ベクトルのなす角
-	if (cos < 0) // なす角が90度を超える(光源が面の裏側から当たっている)とき反射は起きない
+	t_vec3 temp = mr_vec3_sub(rec->p, *light_p); // 光の入射ベクトル
+	t_vec3 light_in = mr_unit_vector(&temp);
+	t_vec3 normal = rec->normal;
+	t_vec3 ray_in = rec->p;
+	double cos_light = mr_vec3_dot(light_in, normal); // 入射ベクトルと法線ベクトルのなす角
+	double cos_ray = mr_vec3_dot(ray_in, normal); // レイベクトルと法線ベクトルのなす角
+	if (cos_light * cos_ray <= 0) // 光源とカメラが反射面を挟んで逆側にいる時反射は起きない
 		return ((t_vec3){0, 0, 0});
 	double ratio = 0.5;
-	double x = cos * ratio; // cos * 輝度 (* 拡散反射係数?)
+	double x = cos_light * ratio; // cos * 輝度 (* 拡散反射係数?)
 	c = mr_vec3_mul_double(light_color, x);
 	return (c);
 }
