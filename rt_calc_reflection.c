@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:30:49 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/12 19:24:03 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/12 19:52:35 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ t_vec3	rt_diffuse(
 	double cos_ray = mr_vec3_dot(ray_in, normal); // レイベクトルと法線ベクトルのなす角
 	if (cos_light * cos_ray <= 0) // 光源とカメラが反射面を挟んで逆側にいる時反射は起きない
 		return ((t_vec3){0, 0, 0});
-	double r_light = mr_vec3_length(&temp);
+	double r_light = mr_vec3_length_squared(&temp);
 	double ratio = 1;
-	double x = fabs(cos_light * ratio / r_light / r_light);
+	double x = fabs(cos_light * ratio / r_light);
 	// 点光源から面に到達する光束は、点光源と面の距離の二乗に反比例する
 	c = mr_vec3_mul_double(light_color, x);
 	return (c);
