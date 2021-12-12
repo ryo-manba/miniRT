@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_object_sphere.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 10:55:02 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/12 18:08:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,14 @@ bool	rt_hittest_sphere(
 	rec->hit = true;
 	rec->normal = mr_vec3_sub(rec->p, el->position);
 	rec->normal = mr_unit_vector(&rec->normal);
+
+	// !!BONUS
+	double theta = atan2(rec->normal.x, rec->normal.z);
+	double phi = acos(rec->normal.y / M_PI);
+
+	rec->tex.u = 1 - ((theta / (M_PI * 2) + 0.5));
+	rec->tex.v = 1 - ((phi / M_PI));
+
 	rt_after_hit(el, ray, rec);
 	return (true);
 }
-

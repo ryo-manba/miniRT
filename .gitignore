@@ -3,3 +3,5 @@
 *.a
 miniRT
 result.trace
+.gitignore
+test.sh

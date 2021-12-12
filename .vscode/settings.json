@@ -1,0 +1,31 @@
+{
+    "code-runner.executorMap": {
+        "cpp": "cd $dir && rm $dir/$fileNameWithoutExt && clang++ -std=c++17 $fileName -o $fileNameWithoutExt && $dir/$fileNameWithoutExt",
+    },
+    "code-runner.clearPreviousOutput": true,
+    "code-runner.runInTerminal": true,
+    "code-runner.saveFileBeforeRun": true,
+    "lldb.launch.expressions": "native",
+    // The number of spaces a tab is equal to. This setting is overridden
+    // based on the file contents when `editor.detectIndentation` is true.
+    "editor.tabSize": 4,
+
+    // Insert spaces when pressing Tab. This setting is overriden
+    // based on the file contents when `editor.detectIndentation` is true.
+    "editor.insertSpaces": false,
+    "files.associations": {
+        "minirt.h": "c",
+        "math.h": "c",
+        "stdio.h": "c",
+        "array": "c",
+        "deque": "c",
+        "string": "c",
+        "string_view": "c",
+        "unordered_map": "c",
+        "vector": "c",
+        "mr_vec3.h": "c",
+        "random": "c",
+        "__node_handle": "c"
+    },
+
+}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_calc_reflection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:30:49 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/10 15:47:26 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/12 18:09:56 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ t_vec3	rt_diffuse(
 	if (cos_light * cos_ray <= 0) // 光源とカメラが反射面を挟んで逆側にいる時反射は起きない
 		return ((t_vec3){0, 0, 0});
 	
-	double ratio = 0.2;
+	double ratio = 1.0;
 	double x = fabs(cos_light * ratio); // cos * 輝度 (* 拡散反射係数?)
 	c = mr_vec3_mul_double(light_color, x);
-	vec3_debug(&c);
+//	vec3_debug(&c);
 	return (c);
 }
 
@@ -66,7 +66,6 @@ t_vec3	rt_specular(
 {
 	const double	k = 0.3; // 鏡面反射係数
 	const double	i = 1.0; // 光源の光の強度
-//	const double	a = 30.0; // 光沢度
 	const double	a = 30.0; // 光沢度
 
 	if (!rec->hit)

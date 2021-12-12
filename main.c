@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/10 15:41:39 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/12 18:07:52 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static int	vec3_to_color(const t_vec3 *v3)
 
 static t_vec3	sky_blue(const t_vec3 direction)
 {
-	const t_vec3 c1 = {1.0, 1.0, 1.0}; // 白
-	const t_vec3 c2 = {0.5, 0.7, 1.0}; // 青
+	const t_vec3 c2 = {1.0, 1.0, 1.0}; // 白
+	const t_vec3 c1 = {0.5, 0.7, 1.0}; // 青
 	const t_vec3 unit_direction = mr_unit_vector(&direction);
 	const double t = 0.5  * (unit_direction.y + 1.0);
 
@@ -53,6 +53,40 @@ bool	rt_hit_object(
 		return (rt_hittest_cylinder(el, ray, rec));
 	return (false);
 }
+
+static void mr_normalize_color(t_vec3 *p)
+{
+	p->x /= 255.0;
+	p->y /= 255.0;
+	p->z /= 255.0;
+}
+
+static t_vec3	checker_texture(const t_hit_record *rec)
+{
+	const double u = rec->tex.u;
+	const double v = rec->tex.v;
+
+//	printf("%f, %f\n", u, v);
+	const double m_freq = 75.0; // 周波数
+//	double sines = sinf(m_freq * p->x) * sinf(m_freq * p->y) * sinf(m_freq * p->z);
+	double sines = sinf(m_freq * u) * sinf(m_freq * v) * sinf(m_freq * -10);
+//	t_vec3 odd = {31, 133, 201};
+//	t_vec3 even = {54, 54, 54};
+	t_vec3 odd = {79, 172, 135};
+	t_vec3 even = {41, 37, 34};
+	mr_normalize_color(&odd);
+	mr_normalize_color(&even);
+	
+	if (sines < 0)
+	{
+		return (odd);
+	}
+	else
+	{
+		return (even);
+	}
+}
+
 
 static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 {
@@ -79,25 +113,40 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	{
 		return (sky_blue(r->direction));
 	}
-	t_vec3	base_color = rt_ambient(scene->ambient->ratio,
+	double cos = actual->cos;
+	double x = cos * 1; // cos * 輝度
+	t_vec3 base_color = actual->color;
+	t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
+	(void)c;
+
+	base_color = rt_ambient(scene->ambient->ratio,
 		&scene->ambient->color, &actual->color);
 	t_hit_record	actual_0;
 	actual_0 = *actual;
-	printf("(%d, %d)\n", r->pixel_x, r->pixel_y);
+//	printf("(%d, %d)\n", r->pixel_x, r->pixel_y);
+	if (actual->element.etype == RD_ET_SPHERE)
+	{
+		base_color = checker_texture(actual);
+		return (base_color);
+	}
 	if (!rt_is_shadow(actual, scene, recs, &light->position))
 	{
 		// 反射の計算
 		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
-		vec3_debug(&base_color);
+//		vec3_debug(&base_color);
 		base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
-		vec3_debug(&base_color);
+//		vec3_debug(&base_color);
 		base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
-		vec3_debug(&base_color);
+//		vec3_debug(&base_color);
 	}
+//	else
+//		return ((t_vec3){0, 0, 0});
+
 	base_color.x = fmin(base_color.x, 1);
 	base_color.y = fmin(base_color.y, 1);
 	base_color.z = fmin(base_color.z, 1);
 	return (base_color);
+
 }
 
 static void	ray_loop(
