@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 10:30:49 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/10 15:47:26 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/12 19:52:35 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,16 @@ t_vec3	rt_diffuse(
 	t_vec3 temp = mr_vec3_sub(rec->p, *light_p); // 光の入射ベクトル
 	t_vec3 light_in = mr_unit_vector(&temp);
 	t_vec3 normal = rec->normal;
-	t_vec3 ray_in = ray->direction;
+	t_vec3 ray_in = mr_unit_vector(&ray->direction);
 	double cos_light = mr_vec3_dot(light_in, normal); // 入射ベクトルと法線ベクトルのなす角
 	double cos_ray = mr_vec3_dot(ray_in, normal); // レイベクトルと法線ベクトルのなす角
 	if (cos_light * cos_ray <= 0) // 光源とカメラが反射面を挟んで逆側にいる時反射は起きない
 		return ((t_vec3){0, 0, 0});
-	
-	double ratio = 0.2;
-	double x = fabs(cos_light * ratio); // cos * 輝度 (* 拡散反射係数?)
+	double r_light = mr_vec3_length_squared(&temp);
+	double ratio = 1;
+	double x = fabs(cos_light * ratio / r_light);
+	// 点光源から面に到達する光束は、点光源と面の距離の二乗に反比例する
 	c = mr_vec3_mul_double(light_color, x);
-	vec3_debug(&c);
 	return (c);
 }
 

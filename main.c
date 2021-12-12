@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/10 15:41:39 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/12 18:07:19 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,13 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		&scene->ambient->color, &actual->color);
 	t_hit_record	actual_0;
 	actual_0 = *actual;
-	printf("(%d, %d)\n", r->pixel_x, r->pixel_y);
+	// printf("(%d, %d)\n", r->pixel_x, r->pixel_y);
 	if (!rt_is_shadow(actual, scene, recs, &light->position))
 	{
 		// 反射の計算
 		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
-		vec3_debug(&base_color);
 		base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
-		vec3_debug(&base_color);
 		base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
-		vec3_debug(&base_color);
 	}
 	base_color.x = fmin(base_color.x, 1);
 	base_color.y = fmin(base_color.y, 1);
