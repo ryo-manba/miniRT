@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/12 18:07:52 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/12 23:21:16 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,24 +65,19 @@ static t_vec3	checker_texture(const t_hit_record *rec)
 {
 	const double u = rec->tex.u;
 	const double v = rec->tex.v;
+	const double m_freq = 6; // 周波数; 1周当たりのブロック数
+	const int sines = (int)(floor(m_freq * u) + floor(m_freq * v));
 
-//	printf("%f, %f\n", u, v);
-	const double m_freq = 75.0; // 周波数
-//	double sines = sinf(m_freq * p->x) * sinf(m_freq * p->y) * sinf(m_freq * p->z);
-	double sines = sinf(m_freq * u) * sinf(m_freq * v) * sinf(m_freq * -10);
-//	t_vec3 odd = {31, 133, 201};
-//	t_vec3 even = {54, 54, 54};
-	t_vec3 odd = {79, 172, 135};
-	t_vec3 even = {41, 37, 34};
-	mr_normalize_color(&odd);
-	mr_normalize_color(&even);
-	
-	if (sines < 0)
+	if (sines % 2 == 0)
 	{
+		t_vec3 odd = {79, 172, 135};
+		mr_normalize_color(&odd);
 		return (odd);
 	}
 	else
 	{
+		t_vec3 even = {41, 37, 34};
+		mr_normalize_color(&even);
 		return (even);
 	}
 }
