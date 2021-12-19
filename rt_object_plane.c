@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:14:54 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/13 22:30:36 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/14 18:57:59 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ static void	rt_texture_plane(t_hit_record *rec)
 	rec->tex.u = mr_vec3_dot(mr_vec3_sub(q, p0), p1);
 	rec->tex.v = mr_vec3_dot(mr_vec3_sub(q, p0), p2);
 }
-
-
 
 bool	rt_hittest_plane(
 	const t_element *el,

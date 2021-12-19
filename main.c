@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/13 22:52:21 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/19 18:16:06 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,27 @@ static t_vec3	checker_texture(const t_hit_record *rec)
 {
 	const double u = rec->tex.u;
 	const double v = rec->tex.v;
-	const double m_freq = 1; // 周波数; 1周当たりのブロック数
+
+	double m_freq = 10; // 周波数; 1周当たりのブロック数
+	if (rec->element.etype == RD_ET_SPHERE)
+	{
+		m_freq = 10;
+	}
 
 //	printf("%f %f\n", u, v);
 	const int sines = (int)(floor(m_freq * u) + floor(m_freq * v));
 
 	if (sines % 2 == 0)
 	{
+		if (rec->element.etype == RD_ET_PLANE) return ((t_vec3){0, 0, 0});
+
 		t_vec3 odd = {79, 172, 135};
 		mr_normalize_color(&odd);
 		return (odd);
 	}
 	else
 	{
+		if (rec->element.etype == RD_ET_PLANE) return ((t_vec3){1, 1, 1});
 		t_vec3 even = {41, 37, 34};
 		mr_normalize_color(&even);
 		return (even);
@@ -120,13 +128,9 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		&scene->ambient->color, &actual->color);
 	t_hit_record	actual_0;
 	actual_0 = *actual;
-	// printf("(%d, %d)\n", r->pixel_x, r->pixel_y);
-//	if (actual->element.etype == RD_ET_SPHERE)
-	if (actual->element.etype == RD_ET_PLANE)
-	{
-		base_color = checker_texture(actual);
-		return (base_color);
-	}
+
+	base_color = checker_texture(actual);
+	return (base_color);
 	if (!rt_is_shadow(actual, scene, recs, &light->position))
 	{
 		// 反射の計算

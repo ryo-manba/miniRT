@@ -79,6 +79,31 @@ static void	hit_cylinder_side(
 		rec->hit = false;
 }
 
+static void	rt_texture_cylinder(t_hit_record *rec, const t_element *el, const t_ray *ray)
+{
+	double tmp = mr_vec3_dot(mr_vec3_sub(ray->origin, el->position), el->direction);
+	t_vec3 f = mr_vec3_add(mr_vec3_mul_double(&el->direction, tmp), el->position);
+
+	t_vec3 tmp2 = mr_vec3_sub(ray->origin, f);
+	t_vec3 dx = mr_vec3_div_double(&tmp2, mr_vec3_length_squared(&tmp2));
+
+	t_vec3 tmp3 = mr_vec3_mul_double(&el->direction, mr_vec3_dot(el->direction, dx));
+	t_vec3 dz = mr_vec3_add(tmp3, mr_vec3_cross(&el->direction, &dx));
+
+	double x = mr_vec3_dot(mr_vec3_sub(rec->p, el->position), dx);
+	double z = mr_vec3_dot(mr_vec3_sub(rec->p, el->position), dz);
+
+	double theta = atan2(x, z);
+	// x = (衝突点 - 円柱の円柱の中心位置ベクトル) ･ 円柱の中心軸の方向ベクトル
+	double a = mr_vec3_dot(mr_vec3_sub(rec->p, el->position), el->direction);mr_vec3_sub(ray->origin, f);
+
+	// 仰角
+	double phi = a * M_PI / el->height;
+	rec->tex.u = 1 - ((theta / (M_PI * 2) + 0.5));
+	rec->tex.v = 1 - (phi / M_PI);
+//	printf("%f %f %f\n", x, rec->tex.u, rec->tex.v);
+}
+
 bool	rt_hittest_cylinder(
 	const t_element *el,
 	const t_ray *ray,
@@ -100,5 +125,8 @@ bool	rt_hittest_cylinder(
 		h = &hits[2];
 	if (h)
 		*rec = *h;
+
+	// !!BONUS
+	rt_texture_cylinder(rec, el, ray);
 	return (!!h);
 }
