@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/19 18:16:06 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/21 01:01:42 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static t_vec3	checker_texture(const t_hit_record *rec)
 	{
 		m_freq = 10;
 	}
-
 //	printf("%f %f\n", u, v);
 	const int sines = (int)(floor(m_freq * u) + floor(m_freq * v));
 

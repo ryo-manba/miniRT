@@ -81,11 +81,28 @@ static void	hit_cylinder_side(
 
 static void	rt_texture_cylinder(t_hit_record *rec, const t_element *el, const t_ray *ray)
 {
-	double tmp = mr_vec3_dot(mr_vec3_sub(ray->origin, el->position), el->direction);
-	t_vec3 f = mr_vec3_add(mr_vec3_mul_double(&el->direction, tmp), el->position);
+//	double tmp = mr_vec3_dot(mr_vec3_sub(ray->origin, el->position), el->direction);
+//	t_vec3 f = mr_vec3_add(mr_vec3_mul_double(&el->direction, tmp), el->position);
 
-	t_vec3 tmp2 = mr_vec3_sub(ray->origin, f);
-	t_vec3 dx = mr_vec3_div_double(&tmp2, mr_vec3_length_squared(&tmp2));
+//	t_vec3 tmp2 = mr_vec3_sub(ray->origin, f);
+//	t_vec3 dx = mr_vec3_div_double(&tmp2, mr_vec3_length_squared(&tmp2));
+
+	(void)ray;
+	t_vec3 vecx = {1, 0, 0};
+	t_vec3 vecy = {0, 1, 0};
+	t_vec3 vecz = {0, 0, 1};
+
+	t_vec3 r;
+
+	if (el->direction.y != 0 || el->direction.z != 0) r = vecx;
+	if (el->direction.z != 0 || el->direction.x != 0) r = vecy;
+	if (el->direction.x != 0 || el->direction.y != 0) r = vecz;
+
+	t_vec3 dx = mr_vec3_cross(&el->direction, &r);
+
+	dx = mr_unit_vector(&dx);
+//	vec3_debug(&dx);
+//	t_vec3 dx = mr_vec3_div_double(&tmp2, mr_vec3_length_squared(&tmp2));
 
 	t_vec3 tmp3 = mr_vec3_mul_double(&el->direction, mr_vec3_dot(el->direction, dx));
 	t_vec3 dz = mr_vec3_add(tmp3, mr_vec3_cross(&el->direction, &dx));
@@ -95,14 +112,18 @@ static void	rt_texture_cylinder(t_hit_record *rec, const t_element *el, const t_
 
 	double theta = atan2(x, z);
 	// x = (衝突点 - 円柱の円柱の中心位置ベクトル) ･ 円柱の中心軸の方向ベクトル
-	double a = mr_vec3_dot(mr_vec3_sub(rec->p, el->position), el->direction);mr_vec3_sub(ray->origin, f);
+	double a = mr_vec3_dot(mr_vec3_sub(rec->p, el->position), el->direction);
+
+	// a = (-h/2 ~h/2)
+//	mr_vec3_sub(ray->origin, f);
 
 	// 仰角
 	double phi = a * M_PI / el->height;
-	rec->tex.u = 1 - ((theta / (M_PI * 2) + 0.5));
-	rec->tex.v = 1 - (phi / M_PI);
+	rec->tex.u = theta / M_PI;
+	rec->tex.v = phi / M_PI;
 //	printf("%f %f %f\n", x, rec->tex.u, rec->tex.v);
 }
+
 
 bool	rt_hittest_cylinder(
 	const t_element *el,
