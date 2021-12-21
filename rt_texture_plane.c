@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:30:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/21 13:36:16 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/21 18:52:17 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,9 @@ void	rt_texture_plane(t_hit_record *rec)
 {
 	const t_vec3	p1 = calc_perpendicular(&rec->normal);
 	const t_vec3	p2 = mr_vec3_add(
-					mr_vec3_mul_double(&rec->normal , mr_vec3_dot(rec->normal, p1)),
-					mr_vec3_cross(&rec->normal, &p1));
+				mr_vec3_mul_double(&rec->normal, mr_vec3_dot(rec->normal, p1)),
+				mr_vec3_cross(&rec->normal, &p1));
+
 	rec->tex.u = mr_vec3_dot(mr_vec3_sub(rec->p, rec->element.position), p1);
 	rec->tex.v = mr_vec3_dot(mr_vec3_sub(rec->p, rec->element.position), p2);
 }
