@@ -29,7 +29,6 @@ typedef struct	s_ray
 	int		pixel_y;
 } t_ray;
 
-// !!BONUS
 typedef struct	s_textures
 {
 	double	u;
@@ -45,8 +44,6 @@ typedef struct	s_hit_record
 	double		cos;
 	t_vec3		color;
 	t_element	element;
-
-	// !!BONUS
 	t_textures	tex;
 }	t_hit_record;
 

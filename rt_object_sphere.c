@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/13 16:37:11 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/21 16:51:20 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,6 @@ bool	rt_hittest_sphere(
 	rec->hit = true;
 	rec->normal = mr_vec3_sub(rec->p, el->position);
 	rec->normal = mr_unit_vector(&rec->normal);
-
-	// !!BONUS
-	double theta = atan2(rec->normal.x, rec->normal.z);
-	double phi = acos(rec->normal.y);
-
-	rec->tex.u = 1 - ((theta / (M_PI * 2) + 0.5));
-	rec->tex.v = 1 - ((phi / M_PI));
-
 	rt_after_hit(el, ray, rec);
 	return (true);
 }

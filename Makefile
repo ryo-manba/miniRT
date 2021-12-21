@@ -20,6 +20,11 @@ SRCS		:=	debug.c \
 				rt_vector_rotation.c \
 				rt_calc_reflection.c \
 				rt_is_shadow.c \
+				rt_texture_plane.c \
+				rt_texture_sphere.c \
+				rt_texture_cylinder.c \
+
+
 
 OBJS		:=	$(SRCS:.c=.o)
 MLX			:=	minilibx-linux

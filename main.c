@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/21 01:01:42 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/21 16:51:04 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 //#define HEIGHT 400
 #define HEIGHT 250
 #define WIDTH (HEIGHT * ASPECT_RATIO)
+#define _GREEN (t_vec3){79, 172, 135}
+#define _BLACK (t_vec3){41, 37, 34}
 
 static int	vec3_to_color(const t_vec3 *v3)
 {
@@ -61,31 +63,27 @@ static void mr_normalize_color(t_vec3 *p)
 	p->z /= 255.0;
 }
 
+/** m_freq:
+ *  plane    :  0.5
+ *  cylinder : 10.0
+ *  sphere   : 10.0
+ */ 
 static t_vec3	checker_texture(const t_hit_record *rec)
 {
 	const double u = rec->tex.u;
 	const double v = rec->tex.v;
-
-	double m_freq = 10; // 周波数; 1周当たりのブロック数
-	if (rec->element.etype == RD_ET_SPHERE)
-	{
-		m_freq = 10;
-	}
-//	printf("%f %f\n", u, v);
+	const double m_freq = 10; // 周波数; 1周当たりのブロック数
 	const int sines = (int)(floor(m_freq * u) + floor(m_freq * v));
 
 	if (sines % 2 == 0)
 	{
-		if (rec->element.etype == RD_ET_PLANE) return ((t_vec3){0, 0, 0});
-
-		t_vec3 odd = {79, 172, 135};
+		t_vec3 odd = _GREEN;
 		mr_normalize_color(&odd);
 		return (odd);
 	}
 	else
 	{
-		if (rec->element.etype == RD_ET_PLANE) return ((t_vec3){1, 1, 1});
-		t_vec3 even = {41, 37, 34};
+		t_vec3 even = _BLACK;
 		mr_normalize_color(&even);
 		return (even);
 	}
