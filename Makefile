@@ -18,11 +18,13 @@ SRCS		:=	debug.c \
 				rt_object_cylinder.c \
 				rt_hit_util.c \
 				rt_vector_rotation.c \
-				rt_calc_reflection.c \
 				rt_is_shadow.c \
 				rt_texture_plane.c \
 				rt_texture_sphere.c \
 				rt_texture_cylinder.c \
+				rt_ambient.c \
+				rt_diffuse.c \
+				rt_specular.c \
 
 
 

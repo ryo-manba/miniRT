@@ -6,7 +6,7 @@
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/21 16:51:04 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/22 23:30:54 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,7 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	t_hit_record	actual_0;
 	actual_0 = *actual;
 
-	base_color = checker_texture(actual);
-	return (base_color);
+	(void)checker_texture(actual);
 	if (!rt_is_shadow(actual, scene, recs, &light->position))
 	{
 		// 反射の計算
@@ -135,8 +134,8 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
 		base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
 	}
-//	else
-//		return ((t_vec3){0, 0, 0});
+	else
+		return ((t_vec3){0, 0, 0});
 
 	base_color.x = fmin(base_color.x, 1);
 	base_color.y = fmin(base_color.y, 1);
