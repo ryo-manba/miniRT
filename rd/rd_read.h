@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rd_read.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 09:59:46 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/23 16:41:00 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
-# include "../mr_vec3.h"
-# include "../libft/libft.h"
+# include "mr_vec3.h"
+# include "libft.h"
 # include "mr_read.h"
 
 # define RD_UNIT_PREDICATE_EPSILON 1e-3

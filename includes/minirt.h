@@ -8,11 +8,11 @@
 # include <stdbool.h>
 # include <math.h>
 # include <X11/X.h>
-# include "./libft/libft.h"
-# include "./minilibx-linux/mlx.h"
+# include "libft.h"
+# include "mlx.h"
 # include "rt_scene.h"
 # include "mr_vec3.h"
-# include "rd/mr_read.h"
+# include "mr_read.h"
 # include "rt_object.h"
 # include "rt_texture.h"
 

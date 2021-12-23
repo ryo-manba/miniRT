@@ -1,5 +1,5 @@
 CC			:=	gcc
-CFLAGS		:=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS		:=	-Wall -Wextra -Werror -g -fsanitize=address -I../includes -I../common -I../libft
 NAME		:=	libread.a
 SRCS		:=	rd_file.c \
 				rd_error.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_object.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:48:46 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 03:05:57 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/23 16:41:27 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define RT_OBJECT_H
 
 # include <limits.h>
-# include "rd/mr_read.h"
+# include "mr_read.h"
 # include "rt_scene.h"
-# include "common/mr_common.h"
+# include "mr_common.h"
 
 bool			rt_hittest_sphere(
 					const t_element *el,
