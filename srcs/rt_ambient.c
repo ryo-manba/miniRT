@@ -1,25 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mr_read.h                                          :+:      :+:    :+:   */
+/*   rt_ambient.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 20:45:06 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 16:40:52 by rmatsuka         ###   ########.fr       */
+/*   Created: 2021/12/22 23:28:57 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/12/22 23:30:01 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MR_READ_H
-# define MR_READ_H
+#include "minirt.h"
 
-# include <stdlib.h>
-# include <stdbool.h>
-# include "mr_common.h"
-# include "mr_vec3.h"
+static t_vec3	mr_vec3_mul(const t_vec3 *u, const t_vec3 *v)
+{
+	t_vec3	mul;
 
-bool	rd_read_scene(const char *filename, t_scene *scene);
-void	rd_destroy_scene(t_scene *scene);
-double	rd_inf(bool positive);
+	mul.x = u->x * v->x;
+	mul.y = u->y * v->y;
+	mul.z = u->z * v->z;
+	return (mul);
+}
 
-#endif
+t_vec3	rt_ambient(
+	const double ratio,
+	const t_vec3 *ambient_color,
+	const t_vec3 *obj_color)
+{
+	const t_vec3	ambient = mr_vec3_mul_double(ambient_color, ratio);
+
+	return (mr_vec3_mul(&ambient, obj_color));
+}

@@ -1,6 +1,6 @@
 #ifndef MR_VEC3_H
 # define MR_VEC3_H
-# include "common/mr_common.h"
+# include "mr_common.h"
 
 /* mr_vec3_operator */
 t_vec3	mr_vec3_add(const t_vec3 u, const t_vec3 v);

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 10:57:05 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/23 17:22:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 //#define HEIGHT 400
 #define HEIGHT 250
 #define WIDTH (HEIGHT * ASPECT_RATIO)
+#define _GREEN (t_vec3){79, 172, 135}
+#define _BLACK (t_vec3){41, 37, 34}
 
 static int	vec3_to_color(const t_vec3 *v3)
 {
@@ -63,22 +65,27 @@ static void mr_normalize_color(t_vec3 *p)
 	p->z /= 255.0;
 }
 
+/** m_freq:
+ *  plane    :  0.5
+ *  cylinder : 10.0
+ *  sphere   : 10.0
+ */ 
 static t_vec3	checker_texture(const t_hit_record *rec)
 {
 	const double u = rec->tex.u;
 	const double v = rec->tex.v;
-	const double m_freq = 6; // 周波数; 1周当たりのブロック数
+	const double m_freq = 10; // 周波数; 1周当たりのブロック数
 	const int sines = (int)(floor(m_freq * u) + floor(m_freq * v));
 
 	if (sines % 2 == 0)
 	{
-		t_vec3 odd = {79, 172, 135};
+		t_vec3 odd = _GREEN;
 		mr_normalize_color(&odd);
 		return (odd);
 	}
 	else
 	{
-		t_vec3 even = {41, 37, 34};
+		t_vec3 even = _BLACK;
 		mr_normalize_color(&even);
 		return (even);
 	}
@@ -120,24 +127,17 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		&scene->ambient->color, &actual->color);
 	t_hit_record	actual_0;
 	actual_0 = *actual;
-//	printf("(%d, %d)\n", r->pixel_x, r->pixel_y);
-	if (actual->element.etype == RD_ET_SPHERE)
-	{
-		base_color = checker_texture(actual);
-		return (base_color);
-	}
+
+	(void)checker_texture(actual);
 	if (!rt_is_shadow(actual, scene, recs, &light->position))
 	{
 		// 反射の計算
 		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
-//		vec3_debug(&base_color);
 		base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
-//		vec3_debug(&base_color);
 		base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
-//		vec3_debug(&base_color);
 	}
-//	else
-//		return ((t_vec3){0, 0, 0});
+	else
+		return ((t_vec3){0, 0, 0});
 
 	base_color.x = fmin(base_color.x, 1);
 	base_color.y = fmin(base_color.y, 1);

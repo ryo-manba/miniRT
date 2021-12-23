@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mr_read.h                                          :+:      :+:    :+:   */
+/*   rt_texture_sphere.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 20:45:06 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 16:40:52 by rmatsuka         ###   ########.fr       */
+/*   Created: 2021/12/21 13:39:11 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/12/21 23:07:24 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MR_READ_H
-# define MR_READ_H
+#include "minirt.h"
 
-# include <stdlib.h>
-# include <stdbool.h>
-# include "mr_common.h"
-# include "mr_vec3.h"
+void	rt_texture_sphere(t_hit_record *rec)
+{
+	const double	theta = atan2(rec->normal.x, rec->normal.z);
+	const double	phi = acos(rec->normal.y);
 
-bool	rd_read_scene(const char *filename, t_scene *scene);
-void	rd_destroy_scene(t_scene *scene);
-double	rd_inf(bool positive);
-
-#endif
+	rec->tex.u = 1 - (theta / M_PI);
+	rec->tex.v = 1 - (phi / M_PI);
+}

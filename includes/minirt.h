@@ -8,12 +8,13 @@
 # include <stdbool.h>
 # include <math.h>
 # include <X11/X.h>
-# include "./libft/libft.h"
-# include "./minilibx-linux/mlx.h"
+# include "libft.h"
+# include "mlx.h"
 # include "rt_scene.h"
 # include "mr_vec3.h"
-# include "rd/mr_read.h"
+# include "mr_read.h"
 # include "rt_object.h"
+# include "rt_texture.h"
 
 /* window size */
 //# define WIDTH 500
@@ -33,7 +34,6 @@
 /* hooks */
 void	mr_mlx_pixel_put(t_img *img, int x, int y, int color);
 int		mr_exit_window(t_info *info);
-
 
 /* color */
 int rt_create_trgb(int t, int r, int g, int b);

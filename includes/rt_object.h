@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:48:46 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/22 22:55:53 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/23 17:17:05 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 # define RT_OBJECT_H
 
 # include <limits.h>
-# include "rd/mr_read.h"
+# include "mr_read.h"
 # include "rt_scene.h"
-# include "common/mr_common.h"
+# include "mr_common.h"
 
 bool			rt_hittest_sphere(
 					const t_element *el,

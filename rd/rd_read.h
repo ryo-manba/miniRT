@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/22 00:33:34 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/23 17:19:22 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 # include <fcntl.h>
 # include <stdio.h>
 # include <math.h>
-# include "../mr_vec3.h"
-# include "../libft/libft.h"
+# include "mr_vec3.h"
+# include "libft.h"
 # include "mr_read.h"
 
 # define RD_UNIT_PREDICATE_EPSILON 1e-3

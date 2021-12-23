@@ -2,6 +2,7 @@
 *.out
 *.a
 miniRT
-result.trace
-.gitignore
 test.sh
+.vscode
+.gitignore
+result.trace
