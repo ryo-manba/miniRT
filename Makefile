@@ -16,6 +16,7 @@ SRCS		:=	debug.c \
 				rt_object_sphere.c \
 				rt_object_plane.c \
 				rt_object_cylinder.c \
+				rt_object_cone.c \
 				rt_hit_util.c \
 				rt_vector_rotation.c \
 				rt_calc_reflection.c \

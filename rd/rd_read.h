@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 09:59:46 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/22 00:33:34 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define RD_ID_SPHERE	"sp"
 # define RD_ID_PLANE	"pl"
 # define RD_ID_CYLINDER	"cy"
+# define RD_ID_CONE		"co"
 
 typedef struct s_file_cursor
 {
