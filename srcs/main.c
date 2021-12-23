@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/22 23:30:54 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/23 17:22:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ bool	rt_hit_object(
 		return (rt_hittest_plane(el, ray, rec));
 	if (el->etype == RD_ET_CYLINDER)
 		return (rt_hittest_cylinder(el, ray, rec));
+	if (el->etype == RD_ET_CONE)
+		return (rt_hittest_cone(el, ray, rec));
 	return (false);
 }
 

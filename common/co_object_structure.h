@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 03:04:28 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/22 00:33:59 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef enum e_element_type
 	RD_ET_SPHERE,
 	RD_ET_PLANE,
 	RD_ET_CYLINDER,
+	RD_ET_CONE,
 	RD_ET_UNEXPECTED,
 }	t_element_type;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rd_read.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 16:41:00 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2021/12/23 17:19:22 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define RD_ID_SPHERE	"sp"
 # define RD_ID_PLANE	"pl"
 # define RD_ID_CYLINDER	"cy"
+# define RD_ID_CONE		"co"
 
 typedef struct s_file_cursor
 {
