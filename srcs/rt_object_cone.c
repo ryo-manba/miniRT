@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 11:50:04 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/23 23:02:21 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static bool	t_predicate(
 	t_hit_record *rec
 )
 {
-	printf("t = %f\n", t);
 	if (t < 1)
 		return (false);
 	const t_vec3 p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
@@ -30,11 +29,9 @@ static bool	t_predicate(
 	rec->p = p;
 	rec->hit = true;
 
-	vec3_debug((t_vec3 *)&p);
-	printf("2 * acos((p - c) / ||p - c|| . d) = %f\n", 180 / M_PI * 2 * acos(mr_vec3_dot(pc, el->direction) / mr_vec3_length(&pc)));
 	rec->normal = mr_vec3_sub(
-		el->direction,
-		mr_vec3_mul_double(&pc, cos(el->fov * M_PI / 360) / mr_vec3_length(&pc))
+		mr_vec3_mul_double(&pc, cos(el->fov * M_PI / 360) / mr_vec3_length(&pc)),
+		el->direction
 	);
 	rec->normal = mr_unit_vector(&rec->normal);
 
@@ -76,15 +73,12 @@ bool	rt_hittest_cone(
 	const t_ray *ray,
 	t_hit_record *rec)
 {
-	printf("rt_hittest_cone\n");
 	if (actual_hittest(el, ray, rec))
 	{
-		printf("yes: t = %f\n", rec->t);
 		return (true);
 	}
 	else
 	{
-		printf("no\n");
 		return (false);
 	}
 }

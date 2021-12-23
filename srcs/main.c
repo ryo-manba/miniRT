@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 17:22:28 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/23 23:06:31 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,8 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 		base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
 		base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
 	}
-	else
-		return ((t_vec3){0, 0, 0});
+	// else
+	// 	return ((t_vec3){0, 0, 0});
 
 	base_color.x = fmin(base_color.x, 1);
 	base_color.y = fmin(base_color.y, 1);
