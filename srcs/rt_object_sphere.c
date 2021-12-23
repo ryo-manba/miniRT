@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_object_sphere.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 10:55:02 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/21 16:51:20 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,3 @@ bool	rt_hittest_sphere(
 	rt_after_hit(el, ray, rec);
 	return (true);
 }
-

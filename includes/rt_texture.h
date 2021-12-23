@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mr_read.h                                          :+:      :+:    :+:   */
+/*   rt_texture.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 20:45:06 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 16:40:52 by rmatsuka         ###   ########.fr       */
+/*   Created: 2021/12/21 13:34:21 by rmatsuka          #+#    #+#             */
+/*   Updated: 2021/12/21 16:21:59 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MR_READ_H
-# define MR_READ_H
+#ifndef RT_TEXTURE_H
+# define RT_TEXTURE_H
 
-# include <stdlib.h>
-# include <stdbool.h>
-# include "mr_common.h"
-# include "mr_vec3.h"
+# include "rt_scene.h"
 
-bool	rd_read_scene(const char *filename, t_scene *scene);
-void	rd_destroy_scene(t_scene *scene);
-double	rd_inf(bool positive);
+void	rt_texture_plane(t_hit_record *rec);
+void	rt_texture_sphere(t_hit_record *rec);
+void	rt_texture_cylinder(t_hit_record *rec, const t_element *el);
 
 #endif
