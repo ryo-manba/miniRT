@@ -197,8 +197,8 @@ static void	ray(t_img *img, t_scene *scene)
 
 	opt = &scene->optics;
 	cam = scene->camera;
-	opt->screen_height = 2.0;
-	opt->screen_width = ASPECT_RATIO * opt->screen_height;
+	opt->screen_width = 2.0;
+	opt->screen_height = opt->screen_width / ASPECT_RATIO;
 	if (scene->camera->fov == 0)
 		opt->focal_length = 1;
 	else
