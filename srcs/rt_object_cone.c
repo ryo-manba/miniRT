@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/24 15:27:20 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/24 18:19:13 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ static bool	t_predicate(
 		return (false);
 	const t_vec3 p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
 	const t_vec3 pc = mr_vec3_sub(p, el->position);
-	if (mr_vec3_dot(pc, el->direction) < 0)
-		return (false);
 	rec->t = t;
 	rec->p = p;
 	rec->hit = true;
