@@ -129,7 +129,7 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	actual_0 = *actual;
 
 	(void)checker_texture(actual);
-	if (!rt_is_shadow(actual, scene, recs, &light->position))
+	if (actual->hit && !rt_is_shadow(actual, scene, recs, r))
 	{
 		// 反射の計算
 		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);

@@ -78,7 +78,7 @@ bool	rt_is_shadow(
 	const t_hit_record *actual,
 	const t_scene *scene,
 	t_hit_record *recs,
-	const t_vec3 *light_pos);
+	t_ray *ray);
 
 /* debug */
 void	vec3_debug(t_vec3 *vec);
