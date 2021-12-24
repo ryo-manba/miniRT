@@ -81,6 +81,20 @@ static bool actual_hittest(
 	return (false);
 }
 
+void	rt_texture_cone(t_hit_record *rec, const t_element *el)
+{
+	const t_vec3	r = mr_vec3_sub(rec->p, el->position);
+	const double	phi = mr_vec3_dot(el->direction, r);
+	const t_vec3	u1 = rt_coord_perpendicular_unit(&el->direction);
+	const t_vec3	u2 = rt_coord_turn_around_90(&u1, &el->direction);
+	const double	dx = mr_vec3_dot(r, u1);
+	const double	dz = mr_vec3_dot(r, u2);
+	const double	theta = atan2(dz, dx);
+
+	rec->tex.u = theta / M_PI;
+	rec->tex.v = phi / (2 * M_PI);
+}
+
 bool	rt_hittest_cone(
 	const t_element *el,
 	const t_ray *ray,
@@ -88,6 +102,7 @@ bool	rt_hittest_cone(
 {
 	if (actual_hittest(el, ray, rec))
 	{
+		rt_texture_cone(rec, el);
 		return (true);
 	}
 	else

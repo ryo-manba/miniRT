@@ -15,6 +15,7 @@
 # include "mr_read.h"
 # include "rt_object.h"
 # include "rt_texture.h"
+# include "rt_coord.h"
 
 /* window size */
 //# define WIDTH 500
