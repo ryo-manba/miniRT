@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/24 11:01:46 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/24 15:27:20 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,9 @@ static bool actual_hittest(
 	if (discriminant < 0)
 		return (false);
 	const double t1 = (-b - sqrt(discriminant)) / a;
+	const double t2 = (-b + sqrt(discriminant)) / a;
 	if (t_predicate(el, ray, t1, rec))
 		return (true);
-	const double t2 = (-b + sqrt(discriminant)) / a;
 	if (t_predicate(el, ray, t2, rec))
 		return (true);
 	return (false);

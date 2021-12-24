@@ -27,6 +27,7 @@ typedef struct	s_ray
 	t_vec3	direction;
 	int		pixel_x;
 	int		pixel_y;
+	t_vec3	marking_color;
 } t_ray;
 
 typedef struct	s_textures

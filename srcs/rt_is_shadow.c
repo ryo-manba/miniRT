@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/24 14:37:45 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/24 15:27:08 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,6 @@ static bool	pre_calc(
 	const double	cos_ray = mr_vec3_dot(
 						ray->direction, rec->normal);
 	const bool is_reflective = (cos_light > 0 && cos_ray > 0) || (cos_light < 0 && cos_ray < 0);
-	if (is_reflective)
-	{
-		printf("[%s:%d] %f, %f\n", is_reflective ? "Y" : "N", rec->element.etype, cos_light, cos_ray);
-		printf("i: "); vec3_debug((t_vec3 *)&light_in);
-	}
 	return (is_reflective);
 }
 
@@ -61,13 +56,15 @@ bool	rt_is_shadow(
 		{
 			t_vec3 normal = shadow_ray.direction;
 			t_vec3 tmp = mr_vec3_mul_double(&normal, recs[i].t); // シャドウレイからt倍する
-			double dist_to_obj = mr_vec3_length(&tmp);
+			double dist_to_obj = mr_vec3_length(&tmp) - 1;
 			if (dist_to_obj < dist_to_light)  // 物体との距離が光源よりも近い場合
 			{
+				ray->marking_color = (t_vec3){0,1,1};
 				return (true);
 			}
 		}
 		i += 1;
 	}
+	ray->marking_color = (t_vec3){1,1,0};
 	return (false);
 }
