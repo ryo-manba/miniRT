@@ -6,11 +6,12 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 11:50:04 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/24 18:19:13 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+#define EPS 1e-9
 
 static bool	t_predicate(
 	const t_element *el,
@@ -19,22 +20,17 @@ static bool	t_predicate(
 	t_hit_record *rec
 )
 {
-	printf("t = %f\n", t);
 	if (t < 1)
 		return (false);
 	const t_vec3 p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
 	const t_vec3 pc = mr_vec3_sub(p, el->position);
-	if (mr_vec3_dot(pc, el->direction) < 0)
-		return (false);
 	rec->t = t;
 	rec->p = p;
 	rec->hit = true;
 
-	vec3_debug((t_vec3 *)&p);
-	printf("2 * acos((p - c) / ||p - c|| . d) = %f\n", 180 / M_PI * 2 * acos(mr_vec3_dot(pc, el->direction) / mr_vec3_length(&pc)));
 	rec->normal = mr_vec3_sub(
-		el->direction,
-		mr_vec3_mul_double(&pc, cos(el->fov * M_PI / 360) / mr_vec3_length(&pc))
+		mr_vec3_mul_double(&pc, cos(el->fov * M_PI / 360) / mr_vec3_length(&pc)),
+		el->direction
 	);
 	rec->normal = mr_unit_vector(&rec->normal);
 
@@ -59,16 +55,42 @@ static bool actual_hittest(
 	// assuming B^2 != R^2
 	const double a = BB - R * R;
 	const double b = BQ - R * S;
-	const double discriminant = b * b - a * (QQ - S * S);
+	const double c = QQ - S * S;
+	if (fabs(a) < EPS)
+	{
+		if (fabs(b) < EPS)
+			return (false);
+		const double t0 = c / b / 2;
+		if (t_predicate(el, ray, t0, rec))
+		{
+			return (true);
+		}
+		return (false);
+	}
+	const double discriminant = b * b - a * c;
 	if (discriminant < 0)
 		return (false);
 	const double t1 = (-b - sqrt(discriminant)) / a;
+	const double t2 = (-b + sqrt(discriminant)) / a;
 	if (t_predicate(el, ray, t1, rec))
 		return (true);
-	const double t2 = (-b + sqrt(discriminant)) / a;
 	if (t_predicate(el, ray, t2, rec))
 		return (true);
 	return (false);
+}
+
+void	rt_texture_cone(t_hit_record *rec, const t_element *el)
+{
+	const t_vec3	r = mr_vec3_sub(rec->p, el->position);
+	const double	phi = mr_vec3_dot(el->direction, r);
+	const t_vec3	u1 = rt_coord_perpendicular_unit(&el->direction);
+	const t_vec3	u2 = rt_coord_turn_around_90(&u1, &el->direction);
+	const double	dx = mr_vec3_dot(r, u1);
+	const double	dz = mr_vec3_dot(r, u2);
+	const double	theta = atan2(dz, dx);
+
+	rec->tex.u = theta / M_PI;
+	rec->tex.v = phi / (2 * M_PI);
 }
 
 bool	rt_hittest_cone(
@@ -76,15 +98,13 @@ bool	rt_hittest_cone(
 	const t_ray *ray,
 	t_hit_record *rec)
 {
-	printf("rt_hittest_cone\n");
 	if (actual_hittest(el, ray, rec))
 	{
-		printf("yes: t = %f\n", rec->t);
+		rt_texture_cone(rec, el);
 		return (true);
 	}
 	else
 	{
-		printf("no\n");
 		return (false);
 	}
 }
