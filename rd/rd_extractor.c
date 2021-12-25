@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 17:49:22 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 22:44:20 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ static const t_element_info_extractor	g_spotlight_extractors[] = {
 	extract_double_vector, // posiiton
 	extract_double_vector, // direction
 	extract_double_scalar, // fov
+	extract_double_scalar, // ratio
 	extract_double_vector, // color
 	NULL,
 };
@@ -142,7 +143,7 @@ static bool	extract_element(
 	if (el->etype == RD_ET_SPOTLIGHT)
 		return (extract_seq(words, g_spotlight_extractors,
 				(void *[]){&(el->position), &(el->direction),
-				&(el->fov), &(el->color)}));
+				&(el->fov), &(el->ratio), &(el->color)}));
 	return (false);
 }
 
@@ -174,5 +175,6 @@ t_element	*rd_extract_element(
 	el->color.x /= 255;
 	el->color.y /= 255;
 	el->color.z /= 255;
+	printf("el: %p(%p)\n", el, el->next);
 	return (el);
 }

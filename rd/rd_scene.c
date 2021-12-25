@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 16:24:12 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 17:43:46 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	element_addback(t_element **list, t_element *el)
 {
 	t_element	*temp;
 
+	printf("%p <- %p(%d), %p\n", list, el, el->etype, el->next);
 	if (*list)
 	{
 		temp = *list;
@@ -62,9 +63,11 @@ static bool	list_to_array(t_element *list, size_t *n_ptr, t_element ***array)
 	size_t		i;
 
 	el = list;
+	printf("els: %p\n", el);
 	while (el)
 	{
 		*n_ptr += 1;
+		printf("el: %p\n", el);
 		el = el->next;
 	}
 	*array = (t_element **)ft_calloc(*n_ptr + 1, sizeof(t_element *));

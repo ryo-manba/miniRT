@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 16:29:37 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 22:44:43 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ static const t_element_info_predicate	g_spotlight_predicates[] = {
 	rd_word_is_vector,
 	rd_word_is_unit_vector,
 	rd_word_is_positive_real,
+	rd_word_is_ratio,
 	rd_word_is_color_vector,
 	NULL};
 
