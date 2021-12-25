@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rt_object_cylinder.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/25 17:23:05 by corvvs            #+#    #+#             */
+/*   Updated: 2021/12/25 18:53:56 by corvvs           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 static void	hit_cylinder_disc(
@@ -67,15 +79,14 @@ static void	hit_cylinder_side(
 	double bd = mr_vec3_dot(ray->direction, el->direction);
 	double oc_b = mr_vec3_dot(oc, ray->direction);
 	double oc_d = mr_vec3_dot(oc, el->direction);
-	double a = b2 * d2 - bd * bd;
-	double b = 2 * (oc_b * d2 - oc_d * bd);
-	double c = oc2 * d2 - oc_d * oc_d - el->diameter * el->diameter / 4;
-	double discriminant = b * b - 4 * a * c;
-	if (discriminant < 0)
+	t_equation2	eq;
+
+	eq.a = b2 * d2 - bd * bd;
+	eq.b_half = (oc_b * d2 - oc_d * bd);
+	eq.c = oc2 * d2 - oc_d * oc_d - el->diameter * el->diameter / 4;
+	if (rt_solve_equation2(&eq) < 1)
 		return ;
-	double root = sqrt(discriminant);
-	if (!hit_at(el, (-b - root) / 2 / a, ray, rec)
-		&& !hit_at(el, (-b + root) / 2 / a, ray, rec))
+	if (!hit_at(el, eq.t1, ray, rec) && !hit_at(el, eq.t2, ray, rec))
 		rec->hit = false;
 }
 

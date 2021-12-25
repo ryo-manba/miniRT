@@ -14,7 +14,7 @@
 #define EPS 1e-6
 
 // 光源とカメラが反射面を挟んで逆側にいる時反射は起きない
-static bool	pre_calc(
+static bool	is_reflective_part(
 	const t_hit_record *rec,
 	const t_vec3 *light_p,
 	const t_ray *ray)
@@ -35,7 +35,7 @@ bool	rt_is_shadow(
 	t_ray *ray)
 {
 	const t_vec3 *light_pos = &scene->lights[0]->position;
-	if (!pre_calc(actual, light_pos, ray))
+	if (!is_reflective_part(actual, light_pos, ray))
 	{
 		ray->marking_color = (t_vec3){0,0,1};
 		return (true);

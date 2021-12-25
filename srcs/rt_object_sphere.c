@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 17:23:21 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 17:16:17 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,18 @@ bool	rt_hittest_sphere(
 	t_hit_record *rec)
 {
 	const t_vec3	oc = mr_vec3_sub(ray->origin, el->position);
-	const double	a = mr_vec3_length_squared(&ray->direction);
-	const double	half_b = mr_vec3_dot(oc, ray->direction);
-	const double	c = mr_vec3_length_squared(&oc) - el->radius * el->radius;
-	const double	discriminant = half_b * half_b - a * c;
+	t_equation2	eq;
 
-	if (discriminant < 0)
+	eq.a = mr_vec3_length_squared(&ray->direction);
+	eq.b_half = mr_vec3_dot(oc, ray->direction);
+	eq.c = mr_vec3_length_squared(&oc) - el->radius * el->radius;
+	if (rt_solve_equation2(&eq) < 1)
 		return (false);
-	double root = sqrt(discriminant);
 	rec->t = 0;
-	if (((-half_b - root) / a) >= 1)
-		rec->t = (-half_b - root) / a;
-	else if (((-half_b + root) / a) >= 1)
-		rec->t = (-half_b + root) / a;
+	if (eq.t1 >= 1)
+		rec->t = eq.t1;
+	else if (eq.t2 >= 1)
+		rec->t = eq.t2;
 	else
 		return (false);
 	rec->p = rt_hit_point(rec->t, ray);

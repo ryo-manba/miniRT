@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 16:21:05 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 17:49:22 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ static bool	extract_element(
 	if (el->etype == RD_ET_CONE)
 		return (extract_seq(words, g_cone_extractors,
 				(void *[]){&(el->position), &(el->direction),
-				&(el->diameter), &(el->height), &(el->color)}));
+				&(el->fov), &(el->color)}));
 	if (el->etype == RD_ET_SPOTLIGHT)
 		return (extract_seq(words, g_spotlight_extractors,
 				(void *[]){&(el->position), &(el->direction),
