@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 17:51:41 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 19:04:11 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,8 @@ bool	rt_hittest_cone(
 	const t_ray *ray,
 	t_hit_record *rec)
 {
-	if (actual_hittest(el, ray, rec))
-	{
-		rt_texture_cone(rec, el);
-		return (true);
-	}
-	else
-	{
+	if (!actual_hittest(el, ray, rec))
 		return (false);
-	}
+	rt_texture_cone(rec, el);
+	return (true);
 }
