@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/10 19:43:36 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 16:24:12 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 			temp_scene.camera = el;
 		else if (el->etype == RD_ET_LIGHT)
 			element_addback(&temp_scene.light_list, el);
+		else if (el->etype == RD_ET_SPOTLIGHT)
+			element_addback(&temp_scene.spotlight_list, el);
 		else
 			element_addback(&temp_scene.object_list, el);
 		temp_scene.cur.line_number += 1;
@@ -129,6 +131,7 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 	ft_bzero(scene, sizeof(t_scene));
 	list_to_array(temp_scene.light_list, &scene->n_lights, &scene->lights);
 	list_to_array(temp_scene.object_list, &scene->n_objects, &scene->objects);
+	list_to_array(temp_scene.spotlight_list, &scene->n_spotlights, &scene->spotlights);
 	scene->ambient = temp_scene.ambient;
 	scene->camera = temp_scene.camera;
 	return (true);

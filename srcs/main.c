@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/24 18:18:26 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 16:27:03 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,15 +132,16 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	t_hit_record	actual_0;
 	actual_0 = *actual;
 
-	if (actual->hit)
-		base_color = checker_texture(actual);
-	// if (actual->hit && !rt_is_shadow(actual, scene, recs, r))
-	// {
-	// 	// 反射の計算
-	// 	// t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
-	// 	// base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
-	// 	// base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
-	// }
+	(void)checker_texture(actual);
+	// if (actual->hit)
+	// 	base_color = checker_texture(actual);
+	if (actual->hit && !rt_is_shadow(actual, scene, recs, r))
+	{
+		// 反射の計算
+		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
+		base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
+		base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
+	}
 	// else
 	// 	return r->marking_color;
 
