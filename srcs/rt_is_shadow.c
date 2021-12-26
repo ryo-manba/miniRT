@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/25 23:28:35 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 13:24:08 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static bool	is_reflective_part(
 		t_vec3 pc = mr_vec3_sub(rec->p, light->position);
 		pc = mr_unit_vector(&pc);
 		const double cs = mr_vec3_dot(pc, light->direction);
-		printf("cs = %f\n", cs);
 		if (cs < cos(light->fov * M_PI / 360))
 			return (false);
 	}

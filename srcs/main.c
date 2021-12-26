@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 12:39:29 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 13:25:08 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static t_vec3	light_proc(
 	if (actual->hit && !rt_is_shadow(actual, light, scene, r))
 	{
 		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
-		base_color = mr_vec3_add(base_color, rt_diffuse(actual, light, &color, r));
+		base_color = mr_vec3_add(base_color, rt_diffuse(actual, light, &color));
 		base_color = mr_vec3_add(base_color, rt_specular(actual, &light->position, &color, r));
 	}
 	return (base_color);
@@ -125,13 +125,15 @@ static t_vec3	reflection(
 	i = 0;
 	while (i < scene->n_spotlights)
 	{
-		base_color = mr_vec3_add(base_color, light_proc(r, scene, actual, scene->spotlights[i]));
+		base_color = mr_vec3_add(base_color,
+			light_proc(r, scene, actual, scene->spotlights[i]));
 		i += 1;
 	}
 	i = 0;
 	while (i < scene->n_lights)
 	{
-		base_color = mr_vec3_add(base_color, light_proc(r, scene, actual, scene->lights[i]));
+		base_color = mr_vec3_add(base_color,
+			light_proc(r, scene, actual, scene->lights[i]));
 		i += 1;
 	}
 	return (base_color);
