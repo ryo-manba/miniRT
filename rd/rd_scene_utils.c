@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:20:24 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/02 10:37:34 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 16:23:14 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,5 @@ void	rd_destroy_temp_scene(t_temp_scene *temp_scene)
 	free(temp_scene->camera);
 	free_elemlist(temp_scene->light_list);
 	free_elemlist(temp_scene->object_list);
+	free_elemlist(temp_scene->spotlight_list);
 }

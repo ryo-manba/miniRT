@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/24 18:18:26 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 13:25:08 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 #define ASPECT_RATIO ((double)16.0 / 9.0)
 //#define HEIGHT 400
-#define HEIGHT 250
+#define HEIGHT 320
 #define WIDTH (HEIGHT * ASPECT_RATIO)
 #define _GREEN (t_vec3){79, 172, 135}
 #define _BLACK (t_vec3){41, 37, 34}
@@ -91,28 +91,69 @@ static t_vec3	checker_texture(const t_hit_record *rec)
 	}
 }
 
+static t_vec3	light_proc(
+	t_ray *r,
+	t_scene *scene,
+	const t_hit_record *actual,
+	t_element *light
+)
+{
+	t_vec3	base_color;
 
-static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
+	mr_vec3_init(&base_color, 0, 0, 0);
+	if (actual->hit && !rt_is_shadow(actual, light, scene, r))
+	{
+		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
+		base_color = mr_vec3_add(base_color, rt_diffuse(actual, light, &color));
+		base_color = mr_vec3_add(base_color, rt_specular(actual, &light->position, &color, r));
+	}
+	return (base_color);
+}
+
+static t_vec3	reflection(
+	t_ray *r,
+	t_scene *scene,
+	const t_hit_record *actual
+)
+{
+	size_t	i;
+	t_vec3	base_color;
+
+	base_color = rt_ambient(scene->ambient->ratio,
+		&scene->ambient->color, &actual->color);
+	(void)checker_texture(actual);
+	i = 0;
+	while (i < scene->n_spotlights)
+	{
+		base_color = mr_vec3_add(base_color,
+			light_proc(r, scene, actual, scene->spotlights[i]));
+		i += 1;
+	}
+	i = 0;
+	while (i < scene->n_lights)
+	{
+		base_color = mr_vec3_add(base_color,
+			light_proc(r, scene, actual, scene->lights[i]));
+		i += 1;
+	}
+	return (base_color);
+}
+
+static t_vec3	ray_color(t_ray *r, t_scene *scene)
 {
 	t_hit_record	*actual;
-	t_element		*light;
 	size_t			i;
 
-	ft_bzero(recs, scene->n_objects * sizeof(t_hit_record));
-	light = scene->lights[0];
+	ft_bzero(scene->recs, scene->n_objects * sizeof(t_hit_record));
 	actual = NULL;
 	i = 0;
 	while (i < scene->n_objects)
 	{
-		if (rt_hit_object(scene->objects[i], r, &recs[i]))
+		if (rt_hit_object(scene->objects[i], r, &scene->recs[i]))
 		{
-			if (recs[i].hit && (!actual || recs[i].t < actual->t))
+			if (scene->recs[i].hit && (!actual || scene->recs[i].t < actual->t))
 			{
-				actual = &recs[i];
-				// printf("Ray: (x,y) = (%d, %d), t = %f ", r->pixel_x, r->pixel_y, actual->t);
-				// printf("d: "); vec3_debug(&r->direction);
-				// printf("p: "); vec3_debug(&actual->p);
-				// printf("n: "); vec3_debug(&actual->normal);
+				actual = &scene->recs[i];
 			}
 		}
 		i += 1;
@@ -121,29 +162,13 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene, t_hit_record *recs)
 	{
 		return (sky_blue(r->direction));
 	}
-	double cos = actual->cos;
-	double x = cos * 1; // cos * 輝度
-	t_vec3 base_color = actual->color;
-	t_vec3 c = mr_vec3_mul_double(&base_color, fabs(x));
-	(void)c;
 
-	base_color = rt_ambient(scene->ambient->ratio,
-		&scene->ambient->color, &actual->color);
-	t_hit_record	actual_0;
-	actual_0 = *actual;
-
-	if (actual->hit)
-		base_color = checker_texture(actual);
-	// if (actual->hit && !rt_is_shadow(actual, scene, recs, r))
-	// {
-	// 	// 反射の計算
-	// 	// t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
-	// 	// base_color = mr_vec3_add(base_color, rt_diffuse(&actual_0, &light->position, &color, r));
-	// 	// base_color = mr_vec3_add(base_color, rt_specular(&actual_0, &light->position, &color, r));
-	// }
-	// else
-	// 	return r->marking_color;
-
+	t_element		*light;
+	light = scene->lights[0];
+	t_vec3 base_color = {0,0,0};
+	const t_hit_record	actual_0 = *actual;
+	t_vec3 ray_color = reflection(r, scene, &actual_0);
+	base_color = mr_vec3_add(base_color, ray_color);
 	base_color.x = fmin(base_color.x, 1);
 	base_color.y = fmin(base_color.y, 1);
 	base_color.z = fmin(base_color.z, 1);
@@ -158,8 +183,7 @@ static void	ray_loop(
 	double	i;
 	double	j;
 	t_ray	ray;
-	t_hit_record	*recs;
-	recs = (t_hit_record *)malloc(scene->n_objects * sizeof(t_hit_record));
+	scene->recs = (t_hit_record *)malloc(scene->n_objects * sizeof(t_hit_record));
 
 	j = 0;
 	while (j < HEIGHT)
@@ -187,13 +211,14 @@ static void	ray_loop(
 			}
 			ray.pixel_x = i;
 			ray.pixel_y = j;
-			t_vec3	ray_c = ray_color(&ray, scene, recs);
+			t_vec3	ray_c = ray_color(&ray, scene);
 			mr_mlx_pixel_put(img, i, j, vec3_to_color(&ray_c));
 			i += 1;
 		}
 		j += 1;
 	}
 }
+
 
 static void	ray(t_img *img, t_scene *scene)
 {
@@ -208,7 +233,6 @@ static void	ray(t_img *img, t_scene *scene)
 		opt->focal_length = 1;
 	else
 		opt->focal_length = opt->screen_width / (2 * tan(cam->fov * M_PI / 360));
-	printf("fl = %f\n", opt->focal_length);
 	opt->screen_horizontal.x = opt->screen_width;
 	opt->screen_vertical.y = opt->screen_height;
 	opt->screen_horizontal = rt_orient_vector(&opt->screen_horizontal, &cam->direction);
@@ -223,6 +247,18 @@ static void	ray(t_img *img, t_scene *scene)
 	ray_loop(img, scene);
 }
 
+static void	setup_info(t_info *info)
+{
+	info->mlx = mlx_init();
+	info->win = mlx_new_window(info->mlx, WIDTH, HEIGHT, "miniRT");
+	info->img.img = mlx_new_image(info->mlx, WIDTH, HEIGHT);
+	info->img.addr = mlx_get_data_addr(
+		info->img.img,
+		&info->img.bpp,
+		&info->img.line_len,
+		&info->img.endian);
+}
+
 int main(int argc, char **argv)
 {
 	t_info	info;
@@ -233,10 +269,7 @@ int main(int argc, char **argv)
 		printf("Error\n");
 		return (1);
 	}
-	info.mlx = mlx_init();
-	info.win = mlx_new_window(info.mlx, WIDTH, HEIGHT, "miniRT");
-	info.img.img = mlx_new_image(info.mlx, WIDTH, HEIGHT);
-	info.img.addr = mlx_get_data_addr(info.img.img, &info.img.bpp, &info.img.line_len, &info.img.endian);
+	setup_info(&info);
 	ray(&info.img, &scene);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
 	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);

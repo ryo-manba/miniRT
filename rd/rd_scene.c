@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/10 19:43:36 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 17:43:46 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ static void	element_addback(t_element **list, t_element *el)
 {
 	t_element	*temp;
 
+	printf("%p <- %p(%d), %p\n", list, el, el->etype, el->next);
 	if (*list)
 	{
 		temp = *list;
@@ -62,9 +63,11 @@ static bool	list_to_array(t_element *list, size_t *n_ptr, t_element ***array)
 	size_t		i;
 
 	el = list;
+	printf("els: %p\n", el);
 	while (el)
 	{
 		*n_ptr += 1;
+		printf("el: %p\n", el);
 		el = el->next;
 	}
 	*array = (t_element **)ft_calloc(*n_ptr + 1, sizeof(t_element *));
@@ -115,6 +118,8 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 			temp_scene.camera = el;
 		else if (el->etype == RD_ET_LIGHT)
 			element_addback(&temp_scene.light_list, el);
+		else if (el->etype == RD_ET_SPOTLIGHT)
+			element_addback(&temp_scene.spotlight_list, el);
 		else
 			element_addback(&temp_scene.object_list, el);
 		temp_scene.cur.line_number += 1;
@@ -129,6 +134,7 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 	ft_bzero(scene, sizeof(t_scene));
 	list_to_array(temp_scene.light_list, &scene->n_lights, &scene->lights);
 	list_to_array(temp_scene.object_list, &scene->n_objects, &scene->objects);
+	list_to_array(temp_scene.spotlight_list, &scene->n_spotlights, &scene->spotlights);
 	scene->ambient = temp_scene.ambient;
 	scene->camera = temp_scene.camera;
 	return (true);

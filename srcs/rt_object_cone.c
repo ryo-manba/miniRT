@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/24 18:19:13 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 19:04:11 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,29 +52,15 @@ static bool actual_hittest(
 	const double	BQ = mr_vec3_dot(B, Q);
 	const double	R = mr_vec3_dot(ray->direction, el->direction);
 	const double	S = mr_vec3_dot(q, el->direction);
-	// assuming B^2 != R^2
-	const double a = BB - R * R;
-	const double b = BQ - R * S;
-	const double c = QQ - S * S;
-	if (fabs(a) < EPS)
-	{
-		if (fabs(b) < EPS)
-			return (false);
-		const double t0 = c / b / 2;
-		if (t_predicate(el, ray, t0, rec))
-		{
-			return (true);
-		}
-		return (false);
-	}
-	const double discriminant = b * b - a * c;
-	if (discriminant < 0)
-		return (false);
-	const double t1 = (-b - sqrt(discriminant)) / a;
-	const double t2 = (-b + sqrt(discriminant)) / a;
-	if (t_predicate(el, ray, t1, rec))
+	
+	t_equation2	eq;
+	eq.a = BB - R * R;
+	eq.b_half = (BQ - R * S);
+	eq.c = QQ - S * S;
+	rt_solve_equation2(&eq);
+	if (eq.solutions >= 1 && t_predicate(el, ray, eq.t1, rec))
 		return (true);
-	if (t_predicate(el, ray, t2, rec))
+	if (eq.solutions >= 2 && t_predicate(el, ray, eq.t2, rec))
 		return (true);
 	return (false);
 }
@@ -98,13 +84,8 @@ bool	rt_hittest_cone(
 	const t_ray *ray,
 	t_hit_record *rec)
 {
-	if (actual_hittest(el, ray, rec))
-	{
-		rt_texture_cone(rec, el);
-		return (true);
-	}
-	else
-	{
+	if (!actual_hittest(el, ray, rec))
 		return (false);
-	}
+	rt_texture_cone(rec, el);
+	return (true);
 }

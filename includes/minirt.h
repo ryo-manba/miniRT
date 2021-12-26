@@ -65,9 +65,8 @@ t_vec3 rt_ambient(
 
 t_vec3	rt_diffuse(
 	const t_hit_record *rec,
-	const t_vec3 *light_p,
-	const t_vec3 *light_color,
-	const t_ray *ray);
+	const t_element *light,
+	const t_vec3 *light_color);
 
 t_vec3	rt_specular(
 	const t_hit_record *rec,
@@ -77,8 +76,8 @@ t_vec3	rt_specular(
 
 bool	rt_is_shadow(
 	const t_hit_record *actual,
-	const t_scene *scene,
-	t_hit_record *recs,
+	const t_element *light,
+	t_scene *scene,
 	t_ray *ray);
 
 /* debug */
