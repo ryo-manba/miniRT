@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 22:03:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/25 23:42:37 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 12:40:07 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ static double	pre_calc(
 
 	if (cos_light * cos_ray <= 0)
 		return (0);
-	if (light->etype == RD_ET_SPOTLIGHT)
-		return (fabs(cos_light * RATIO));
-	return (fabs(cos_light * RATIO / r_light));
+	return (fabs(cos_light * RATIO / pow(LIGHT_DISTANCE_DECAY * r_light, 1)));
 }
 
 t_vec3	rt_diffuse(
@@ -41,8 +39,9 @@ t_vec3	rt_diffuse(
 	const t_vec3 *light_color,
 	const t_ray *ray)
 {
-	const double	x = pre_calc(rec, light, ray);
-
+	double	x;
+	
+	x = pre_calc(rec, light, ray);
 	if (!rec->hit || x == 0)
 		return ((t_vec3){0, 0, 0});
 	return (mr_vec3_mul_double(light_color, x));

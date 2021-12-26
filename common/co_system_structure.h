@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 23:22:16 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 11:36:49 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include "co_geometric_structure.h"
 # include "co_object_structure.h"
+# define LIGHT_DISTANCE_DECAY 5e-2
 
 typedef struct s_optics
 {
