@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 20:56:32 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 22:42:20 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,6 @@ static void	setup_hitequation(
 	eq->a = mr_vec3_length_squared(&ray->direction);
 	eq->b_half = mr_vec3_dot(oc, ray->direction);
 	eq->c = mr_vec3_length_squared(&oc) - el->radius * el->radius;
-}
-
-void	rt_set_tangent_sphere(
-	t_hit_record *rec
-)
-{
-	const t_vec3	y0 = {0, 1, 0};
-
-	rec->normal = mr_vec3_sub(rec->p, rec->element.position);
-	rec->normal = mr_unit_vector(&rec->normal);
-	rec->w0 = rec->normal;
-	rec->u0 = mr_vec3_cross(&rec->w0, &y0);
-	rec->u0 = mr_unit_vector(&rec->u0);
-	rec->v0 = mr_vec3_cross(&rec->w0, &rec->u0);
-	t_vec3 vt = {0, 0, 1};
-	rec->normal = rt_vec_tangent_to_global(rec, &vt);
 }
 
 bool	rt_hittest_sphere(

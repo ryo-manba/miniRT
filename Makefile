@@ -24,6 +24,7 @@ SRCS		:=	debug.c \
 				rt_texture_plane.c \
 				rt_texture_sphere.c \
 				rt_texture_cylinder.c \
+				rt_texture_cone.c \
 				rt_ambient.c \
 				rt_diffuse.c \
 				rt_specular.c \

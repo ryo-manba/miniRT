@@ -6,31 +6,11 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 17:23:05 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 20:56:24 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 23:31:07 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-void	rt_set_tangent_cylinder(
-	t_hit_record *rec
-)
-{
-	t_vec3 axial_center = mr_vec3_add(
-		rec->element.position,
-		mr_vec3_mul_double(
-			&rec->element.direction,
-			rec->normal.x
-		)
-	);
-	rec->normal = mr_vec3_sub(rec->p, axial_center);
-	rec->normal = mr_unit_vector(&rec->normal);
-	rec->w0 = rec->normal;
-	rec->u0 = rec->element.direction;
-	rec->v0 = mr_vec3_cross(&rec->w0, &rec->u0);
-	t_vec3 vt = {0, 0, 1};
-	rec->normal = rt_vec_tangent_to_global(rec, &vt);
-}
 
 static bool	hit_at(
 	const t_element *el,

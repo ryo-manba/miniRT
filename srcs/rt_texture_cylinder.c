@@ -6,11 +6,60 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:41:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/25 19:08:18 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 23:35:11 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_vec3 test_bumpmap_cylinder(t_hit_record *rec)
+{
+
+	
+	const t_vec3	pc = mr_vec3_sub(rec->p, rec->element.position);
+	const t_vec3	u0 = rt_coord_perpendicular_unit(&rec->element.direction);
+	const t_vec3	v0 = rec->element.direction;
+	const double	c = 5e-1;
+	const double	u = mr_vec3_dot(pc, u0) * 14;
+	const double	v = mr_vec3_dot(pc, v0) * 5;
+	double	norm;
+	t_vec3	n;
+	// g(u, v) = c * sin(u) * sin(v)
+	// f(u, v, w) = g(u, v) - w
+	// then, grad f is:
+	n.x = c * cos(u) * sin(v);
+	n.y = c * sin(u) * cos(v);
+	// n.z = -1;
+	// normalize and invert grad f:
+	norm = -1 / sqrt(pow(n.x, 2) + pow(n.y, 2) + 1);
+	n.x *= norm;
+	n.y *= norm;
+	n.z = -norm;
+	// c = 0 -> n = (0, 0, +1)
+	return (n);
+}
+
+void	rt_set_tangent_cylinder(
+	t_hit_record *rec
+)
+{
+	t_vec3 axial_center = mr_vec3_add(
+		rec->element.position,
+		mr_vec3_mul_double(
+			&rec->element.direction,
+			rec->normal.x
+		)
+	);
+	rec->normal = mr_vec3_sub(rec->p, axial_center);
+	rec->normal = mr_unit_vector(&rec->normal);
+	rec->w0 = rec->normal;
+	rec->u0 = rec->element.direction;
+	rec->v0 = mr_vec3_cross(&rec->w0, &rec->u0);
+	// t_vec3 vt = {0, 0, 1};
+	// rec->normal = rt_vec_tangent_to_global(rec, &vt);
+	rec->normal = test_bumpmap_cylinder(rec);
+	rec->normal = rt_vec_tangent_to_global(rec, &rec->normal);
+}
 
 static double	calc_theta(
 	const t_hit_record *rec,
