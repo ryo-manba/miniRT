@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/23 17:19:22 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/25 16:22:58 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define RD_ID_PLANE	"pl"
 # define RD_ID_CYLINDER	"cy"
 # define RD_ID_CONE		"co"
+# define RD_ID_SPOTLIGHT	"sl"
 
 typedef struct s_file_cursor
 {
@@ -44,6 +45,7 @@ typedef struct s_temp_scene
 	t_element		*camera;
 	t_element		*light_list;
 	t_element		*object_list;
+	t_element		*spotlight_list;
 	t_file_cursor	cur;
 }	t_temp_scene;
 

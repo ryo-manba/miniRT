@@ -28,6 +28,7 @@ SRCS		:=	debug.c \
 				rt_diffuse.c \
 				rt_specular.c \
 				rt_coord_util.c \
+				rt_equation.c \
 
 OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 OBJDIR		:=	./objs/
