@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 11:36:49 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 20:17:21 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,10 @@ typedef struct	s_hit_record
 	t_vec3		color;
 	t_element	element;
 	t_textures	tex;
+
+	t_vec3		u0; // 接空間における正規直交基底; バンプマップで使う予定
+	t_vec3		v0;
+	t_vec3		w0;
 }	t_hit_record;
 
 typedef struct s_scene

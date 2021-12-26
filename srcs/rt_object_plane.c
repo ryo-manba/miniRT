@@ -6,17 +6,42 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:14:54 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 20:10:47 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 20:56:29 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void	rt_setnormal_plane(
+// 接空間上のベクトルを通常空間に変換する
+t_vec3	rt_vec_tangent_to_global(
+	t_hit_record *rec,
+	t_vec3 *vtangent
+)
+{
+	t_vec3	vglobal;
+
+	vglobal.x = rec->u0.x * vtangent->x
+		+ rec->v0.x * vtangent->y
+		+ rec->w0.x * vtangent->z;
+	vglobal.y = rec->u0.y * vtangent->x
+		+ rec->v0.y * vtangent->y
+		+ rec->w0.y * vtangent->z;
+	vglobal.z = rec->u0.z * vtangent->x
+		+ rec->v0.z * vtangent->y
+		+ rec->w0.z * vtangent->z;
+	return (vglobal);
+}
+
+void	rt_set_tangent_plane(
 	t_hit_record *rec
 )
 {
 	rec->normal = rec->element.direction;
+	rec->w0 = rec->element.direction;
+	rec->u0 = rt_coord_perpendicular_unit(&rec->w0);
+	rec->v0 = rt_coord_turn_around_90(&rec->u0, &rec->w0);
+	t_vec3 vt = {0, 0, 1};
+	rec->normal = rt_vec_tangent_to_global(rec, &vt);
 }
 
 bool	rt_hittest_plane(

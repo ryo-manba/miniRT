@@ -6,14 +6,14 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 20:10:38 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 20:56:22 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #define EPS 1e-9
 
-void	rt_setnormal_cone(
+void	rt_set_tangent_cone(
 	t_hit_record *rec
 )
 {
@@ -24,6 +24,11 @@ void	rt_setnormal_cone(
 		rec->element.direction
 	);
 	rec->normal = mr_unit_vector(&rec->normal);
+	rec->w0 = rec->normal;
+	rec->v0 = mr_unit_vector(&pc);
+	rec->u0 = mr_vec3_cross(&rec->v0, &rec->w0);
+	t_vec3 vt = {0, 0, 1};
+	rec->normal = rt_vec_tangent_to_global(rec, &vt);
 }
 
 static bool	t_predicate(
