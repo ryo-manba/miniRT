@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 13:25:08 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 14:37:07 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static t_vec3	light_proc(
 	t_vec3	base_color;
 
 	mr_vec3_init(&base_color, 0, 0, 0);
-	if (actual->hit && !rt_is_shadow(actual, light, scene, r))
+	if (!rt_is_shadow(actual, light, scene, r))
 	{
 		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
 		base_color = mr_vec3_add(base_color, rt_diffuse(actual, light, &color));
@@ -121,6 +121,8 @@ static t_vec3	reflection(
 
 	base_color = rt_ambient(scene->ambient->ratio,
 		&scene->ambient->color, &actual->color);
+	if (!actual->hit)
+		return (base_color);
 	(void)checker_texture(actual);
 	i = 0;
 	while (i < scene->n_spotlights)
@@ -184,7 +186,6 @@ static void	ray_loop(
 	double	j;
 	t_ray	ray;
 	scene->recs = (t_hit_record *)malloc(scene->n_objects * sizeof(t_hit_record));
-
 	j = 0;
 	while (j < HEIGHT)
 	{
@@ -217,6 +218,7 @@ static void	ray_loop(
 		}
 		j += 1;
 	}
+	free(scene->recs);
 }
 
 
