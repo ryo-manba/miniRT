@@ -6,11 +6,18 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:14:54 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 21:18:54 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 20:10:47 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+void	rt_setnormal_plane(
+	t_hit_record *rec
+)
+{
+	rec->normal = rec->element.direction;
+}
 
 bool	rt_hittest_plane(
 	const t_element *el,
@@ -27,7 +34,6 @@ bool	rt_hittest_plane(
 	rec->p = rt_hit_point(rec->t, ray);
 	if (rec->t < 1)
 		return (false);
-	rec->normal = el->direction;
 	rec->hit = true;
 	rt_texture_plane(rec);
 	rt_after_hit(el, ray, rec);

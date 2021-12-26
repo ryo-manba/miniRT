@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 13:25:08 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 20:12:29 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,14 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene)
 	t_element		*light;
 	light = scene->lights[0];
 	t_vec3 base_color = {0,0,0};
+	if (actual->element.etype == RD_ET_PLANE)
+		rt_setnormal_plane(actual);
+	else if (actual->element.etype == RD_ET_SPHERE)
+		rt_setnormal_sphere(actual);
+	else if (actual->element.etype == RD_ET_CYLINDER)
+		rt_setnormal_cylinder(actual);
+	else if (actual->element.etype == RD_ET_CONE)
+		rt_setnormal_cone(actual);
 	const t_hit_record	actual_0 = *actual;
 	t_vec3 ray_color = reflection(r, scene, &actual_0);
 	base_color = mr_vec3_add(base_color, ray_color);

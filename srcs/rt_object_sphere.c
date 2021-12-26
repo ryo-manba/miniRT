@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 19:18:08 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 20:10:50 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,14 @@ static void	setup_hitequation(
 	eq->a = mr_vec3_length_squared(&ray->direction);
 	eq->b_half = mr_vec3_dot(oc, ray->direction);
 	eq->c = mr_vec3_length_squared(&oc) - el->radius * el->radius;
+}
+
+void	rt_setnormal_sphere(
+	t_hit_record *rec
+)
+{
+	rec->normal = mr_vec3_sub(rec->p, rec->element.position);
+	rec->normal = mr_unit_vector(&rec->normal);
 }
 
 bool	rt_hittest_sphere(
@@ -44,8 +52,6 @@ bool	rt_hittest_sphere(
 		return (false);
 	rec->p = rt_hit_point(rec->t, ray);
 	rec->hit = true;
-	rec->normal = mr_vec3_sub(rec->p, el->position);
-	rec->normal = mr_unit_vector(&rec->normal);
 	rt_texture_sphere(rec);
 	rt_after_hit(el, ray, rec);
 	return (true);

@@ -6,12 +6,25 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 19:04:11 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 20:10:38 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #define EPS 1e-9
+
+void	rt_setnormal_cone(
+	t_hit_record *rec
+)
+{
+	const t_vec3 pc = mr_vec3_sub(rec->p, rec->element.position);
+
+	rec->normal = mr_vec3_sub(
+		mr_vec3_mul_double(&pc, cos(rec->element.fov * M_PI / 360) / mr_vec3_length(&pc)),
+		rec->element.direction
+	);
+	rec->normal = mr_unit_vector(&rec->normal);
+}
 
 static bool	t_predicate(
 	const t_element *el,
@@ -23,17 +36,9 @@ static bool	t_predicate(
 	if (t < 1)
 		return (false);
 	const t_vec3 p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
-	const t_vec3 pc = mr_vec3_sub(p, el->position);
 	rec->t = t;
 	rec->p = p;
 	rec->hit = true;
-
-	rec->normal = mr_vec3_sub(
-		mr_vec3_mul_double(&pc, cos(el->fov * M_PI / 360) / mr_vec3_length(&pc)),
-		el->direction
-	);
-	rec->normal = mr_unit_vector(&rec->normal);
-
 	rt_after_hit(el, ray, rec);
 	return (true);
 }
