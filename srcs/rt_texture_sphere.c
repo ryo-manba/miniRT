@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:39:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/27 02:57:23 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/27 16:21:02 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_vec3 test_bumpmap_sphere(t_hit_record *rec)
 {
 	const t_vec3	*pos = &rec->element.position;
 	const double	u = atan2(rec->p.x - pos->x, rec->p.z - pos->z) * 50;
-	const double	v = acos((rec->p.y - pos->y) / rec->element.radius) * 0.5;
+	const double	v = acos((rec->p.y - pos->y) / rec->element.radius) * 15;
 
 	return (test_bumpfunc_wave2(u, v));
 }

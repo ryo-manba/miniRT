@@ -274,12 +274,13 @@ int main(int argc, char **argv)
 	t_info	info;
 	t_scene	scene;
 
+	// xpmファイルの読み込みにmlxが必要なので、大変遺憾ながらここでmlxをセットアップする
+	setup_info(&info);
 	if (argc < 2 || rd_read_scene(argv[1], &scene) == false)
 	{
 		printf("Error\n");
 		return (1);
 	}
-	setup_info(&info);
 	ray(&info.img, &scene);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
 	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);
