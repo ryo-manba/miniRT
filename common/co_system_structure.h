@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 20:17:21 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/27 20:47:02 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include "co_geometric_structure.h"
 # include "co_object_structure.h"
+# include "co_image_structure.h"
 # define LIGHT_DISTANCE_DECAY 5e-2
 
 typedef struct s_optics
@@ -28,14 +29,6 @@ typedef struct s_optics
 	t_vec3		screen_vertical;
 	t_vec3		screen_bottomleft;
 }	t_optics;
-
-typedef struct s_img {
-	void	*img;
-	char	*addr;
-	int		bpp;
-	int		line_len;
-	int		endian;
-}			t_img;
 
 typedef struct s_info
 {
@@ -51,6 +44,7 @@ typedef struct	s_ray
 	int		pixel_x;
 	int		pixel_y;
 	t_vec3	marking_color;
+	bool	for_shadow;
 } t_ray;
 
 typedef struct	s_textures

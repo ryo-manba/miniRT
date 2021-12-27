@@ -6,37 +6,44 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/27 02:22:27 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/27 17:30:18 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/27 20:45:12 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #define IMAGE_W 6
 #define IMAGE_H 6
-static const double g_bumpmap[IMAGE_H][IMAGE_W] = {
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-	{0.0, 0.3, 0.6, 0.6, 0.3, 0.0},
-	{0.0, 0.6, 0.9, 0.9, 0.6, 0.0},
-	{0.0, 0.6, 0.9, 0.9, 0.6, 0.0},
-	{0.0, 0.3, 0.6, 0.6, 0.3, 0.0},
-	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
-};
+// static const double g_bumpmap[IMAGE_H][IMAGE_W] = {
+// 	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+// 	{0.0, 0.3, 0.6, 0.6, 0.3, 0.0},
+// 	{0.0, 0.6, 0.9, 0.9, 0.6, 0.0},
+// 	{0.0, 0.6, 0.9, 0.9, 0.6, 0.0},
+// 	{0.0, 0.3, 0.6, 0.6, 0.3, 0.0},
+// 	{0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+// };
 
-t_vec3	test_bumpfunc_image(double u, double v)
+static double	color_at(
+	t_img *bumpmap,
+	int x, int y
+)
 {
-	const double delta = 0.5;
+	const unsigned int color = mr_mlx_pixel_get(bumpmap, x, y);
+	return ((double)(color & 0xff));
+}
 
-	double jd = fmod(u / delta + 100000 * IMAGE_W, IMAGE_W);
-	double id = fmod(v / delta + 100000 * IMAGE_H, IMAGE_H);
+t_vec3	test_bumpfunc_image(double u, double v, t_img *bumpmap)
+{
+	double jd = fmod(u * bumpmap->width + 100000 * bumpmap->width, bumpmap->width);
+	double id = fmod(v * bumpmap->height + 100000 * bumpmap->height, bumpmap->height);
 	int ji = jd;
 	int ii = id;
-	const double	h1 = g_bumpmap[ii][ji];
-	const double	h2 = g_bumpmap[ii][(ji + 1) % IMAGE_W];
-	const double	h3 = g_bumpmap[(ii + 1) % IMAGE_H][ji];
-	const double	h4 = g_bumpmap[(ii + 1) % IMAGE_H][(ji + 1) % IMAGE_W];
+	const double	h1 = color_at(bumpmap, ji, ii);
+	const double	h2 = color_at(bumpmap, (ji + 1) % bumpmap->width, ii);
+	const double	h3 = color_at(bumpmap, ji, (ii + 1) % bumpmap->height);
+	const double	h4 = color_at(bumpmap, (ji + 1) % bumpmap->width, (ii + 1) % bumpmap->height);
 	const double	ru = jd - (double)ji;
 	const double	rv = id - (double)ii;
-	const double	c = 5e-1;
+	const double	c = 1e-2;
 	double			norm;
 	t_vec3			n;
 	n.x = c * ((h1 - h2 - h3 + h4) * rv + (h2 - h4));

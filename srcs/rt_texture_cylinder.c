@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:41:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/27 16:31:12 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/27 20:13:27 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_vec3 test_bumpmap_cylinder(t_hit_record *rec)
 	const double	u = mr_vec3_dot(pc, u0) * 14;
 	const double	v = mr_vec3_dot(pc, v0) * 5;
 
-	return (test_bumpfunc_image(u, v));
+	return (test_bumpfunc_image(u, v, rec->element.bumpmap));
 }
 
 void	rt_set_tangent_cylinder(

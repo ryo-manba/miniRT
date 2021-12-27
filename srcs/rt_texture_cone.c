@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 23:37:49 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/27 15:28:10 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/27 20:13:15 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_vec3 test_bumpmap_cone(t_hit_record *rec)
 	const double	dx = mr_vec3_dot(pc, u1);
 	const double	dz = mr_vec3_dot(pc, u2);
 
-	return (test_bumpfunc_image(atan2(dz, dx) * 12, mr_vec3_length(&pc) * 4));
+	return (test_bumpfunc_image(atan2(dz, dx) * 12, mr_vec3_length(&pc) * 4, rec->element.bumpmap));
 }
 
 void	rt_set_tangent_cone(

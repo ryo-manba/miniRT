@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/27 00:18:17 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/27 20:22:36 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -281,9 +281,21 @@ int main(int argc, char **argv)
 		printf("Error\n");
 		return (1);
 	}
+	t_img		bumpmap_image;
+	bumpmap_image.img = mlx_xpm_file_to_image(info.mlx, "images/terrain.xpm", &bumpmap_image.width, &bumpmap_image.height);
+	bumpmap_image.addr = mlx_get_data_addr(
+		bumpmap_image.img,
+		&bumpmap_image.bpp,
+		&bumpmap_image.line_len,
+		&bumpmap_image.endian);
+	printf("(%d, %d)\n", bumpmap_image.width, bumpmap_image.height);
+	size_t	i = 0;
+	while (i < scene.n_objects)
+		scene.objects[i++]->bumpmap = &bumpmap_image;
+
 	ray(&info.img, &scene);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
 	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);
 	mlx_loop(info.mlx);
 	return (0);
-}
+}	
