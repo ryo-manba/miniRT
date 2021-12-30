@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:30:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/27 02:57:40 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/28 23:18:21 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 t_vec3 test_bumpmap_plane(t_hit_record *rec)
 {
 	const t_vec3	pc = mr_vec3_sub(rec->p, rec->element.position);
-	const double	u = mr_vec3_dot(pc, rec->u0) * 4;
-	const double	v = mr_vec3_dot(pc, rec->v0) * 5;
+	const double	u = mr_vec3_dot(pc, rec->u0);
+	const double	v = mr_vec3_dot(pc, rec->v0);
 
 	return (test_bumpfunc_wave2(u, v));
 }

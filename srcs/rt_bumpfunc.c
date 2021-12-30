@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/27 02:22:27 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/27 20:45:12 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/28 16:03:01 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,12 @@ t_vec3	test_bumpfunc_image(double u, double v, t_img *bumpmap)
 	t_vec3			n;
 	n.x = c * ((h1 - h2 - h3 + h4) * rv + (h2 - h4));
 	n.y = c * ((h1 - h2 - h3 + h4) * ru + (h3 - h4));
+	// n.z = -1;
+	// norm = -1 / sqrt(pow(n.x, 2) + pow(n.y, 2) + pow(n.z, 2));
 	norm = -1 / sqrt(pow(n.x, 2) + pow(n.y, 2) + 1);
 	n.x *= norm;
 	n.y *= norm;
+	// n.z *= norm;
 	n.z = -norm;
 	return (n);
 }
