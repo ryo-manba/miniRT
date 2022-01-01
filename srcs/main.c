@@ -298,8 +298,8 @@ int main(int argc, char **argv)
 	
 	t_img		bumpmap_image;
 	t_img		texture_image;
-	read_xmp_image(info.mlx, "images/terrain.xpm", &bumpmap_image);
-	read_xmp_image(info.mlx, "images/otoku.xpm", &texture_image);
+	read_xmp_image(info.mlx, "images/merc.xpm", &bumpmap_image);
+	read_xmp_image(info.mlx, "images/merc.xpm", &texture_image);
 	size_t	i = 0;
 	while (i < scene.n_objects)
 	{

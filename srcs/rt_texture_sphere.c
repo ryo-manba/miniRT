@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:39:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/31 18:50:07 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/01 16:24:03 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 void test_bumpmap_sphere(t_hit_record *rec)
 {
 	const t_vec3	*pos = &rec->element.position;
-	rec->u = atan2(rec->p.x - pos->x, rec->p.z - pos->z);
-	rec->v = acos((rec->p.y - pos->y) / rec->element.radius);
+	rec->u = 1 - (atan2(rec->p.x - pos->x, rec->p.z - pos->z) / (2 * M_PI) - 0.5);
+	rec->v = acos((rec->p.y - pos->y) / rec->element.radius) / (M_PI);
+	printf("u = %f\n", rec->u);
 }
 
 void	rt_set_tangent_sphere(
