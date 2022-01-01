@@ -13,6 +13,7 @@ SRCS		:=	debug.c \
 				mr_mlx_utils.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
+				mr_vec3_operator2.c \
 				rt_color.c \
 				rt_object_sphere.c \
 				rt_object_plane.c \

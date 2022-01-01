@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:41:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/28 23:18:14 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/31 12:31:16 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 t_vec3 test_bumpmap_cylinder(t_hit_record *rec)
 {
+	if (!rec->element.bumpmap)
+		return ((t_vec3){0,0,1});
 	const t_vec3	pc = mr_vec3_sub(rec->p, rec->element.position);
 	const t_vec3	u0 = rt_coord_perpendicular_unit(&rec->element.direction);
 	const t_vec3	v0 = rec->element.direction;

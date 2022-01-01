@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/27 20:22:36 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/31 18:51:10 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,9 +103,9 @@ static t_vec3	light_proc(
 	mr_vec3_init(&base_color, 0, 0, 0);
 	if (actual->hit && !rt_is_shadow(actual, light, scene, r))
 	{
-		t_vec3	color = mr_vec3_mul_double(&light->color, light->ratio);
-		base_color = mr_vec3_add(base_color, rt_diffuse(actual, light, &color));
-		base_color = mr_vec3_add(base_color, rt_specular(actual, &light->position, &color, r));
+		t_vec3	light_color = mr_vec3_mul_double(&light->color, light->ratio);
+		base_color = mr_vec3_add(base_color, rt_diffuse(actual, light, &light_color));
+		base_color = mr_vec3_add(base_color, rt_specular(actual, &light->position, &light_color, r));
 	}
 	// else
 	// 	return r->marking_color;
@@ -269,6 +269,20 @@ static void	setup_info(t_info *info)
 		&info->img.endian);
 }
 
+bool	read_xmp_image(void *mlx, const char *xpm_path, t_img *image)
+{
+	image->img = mlx_xpm_file_to_image(mlx, (char *)xpm_path, &image->width, &image->height);
+	printf("%p\n", image->img);
+	if (!image->img)
+		return (false);
+	image->addr = mlx_get_data_addr(
+		image->img,
+		&image->bpp,
+		&image->line_len,
+		&image->endian);
+	return (true);
+}
+
 int main(int argc, char **argv)
 {
 	t_info	info;
@@ -281,17 +295,18 @@ int main(int argc, char **argv)
 		printf("Error\n");
 		return (1);
 	}
+	
 	t_img		bumpmap_image;
-	bumpmap_image.img = mlx_xpm_file_to_image(info.mlx, "images/terrain.xpm", &bumpmap_image.width, &bumpmap_image.height);
-	bumpmap_image.addr = mlx_get_data_addr(
-		bumpmap_image.img,
-		&bumpmap_image.bpp,
-		&bumpmap_image.line_len,
-		&bumpmap_image.endian);
-	printf("(%d, %d)\n", bumpmap_image.width, bumpmap_image.height);
+	t_img		texture_image;
+	read_xmp_image(info.mlx, "images/terrain.xpm", &bumpmap_image);
+	read_xmp_image(info.mlx, "images/otoku.xpm", &texture_image);
 	size_t	i = 0;
 	while (i < scene.n_objects)
-		scene.objects[i++]->bumpmap = &bumpmap_image;
+	{
+		scene.objects[i]->bumpmap = &bumpmap_image;
+		scene.objects[i]->texture = &texture_image;
+		i += 1;
+	}
 
 	ray(&info.img, &scene);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);

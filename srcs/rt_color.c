@@ -6,49 +6,44 @@
 #define SHIFT_G 8
 #define SHIFT_B 0
 
-// 0xTTRRGGBB
-// t = transparency(透明性)
 int rt_create_trgb(int t, int r, int g, int b)
 {
 	return (t << SHIFT_T | r << SHIFT_R | g << SHIFT_G | b);
 }
 
-int	rt_get_trgb(int trgb, int shift)
+t_vec3	rt_color_at(
+	t_img *image,
+	int x, int y
+)
 {
-	return (trgb & (0xFF << shift));
+	t_vec3	cv;
+
+	const unsigned int color = mr_mlx_pixel_get(image, x, y);
+	cv.x = ((color >> 16) & 0xff) / 255.0;
+	cv.y = ((color >> 8) & 0xff) / 255.0;
+	cv.z = (color & 0xff) / 255.0;
+	return (cv);
 }
 
-/*
-static void debug(int color)
+double	rt_grayscale_color_at(
+	t_img *image,
+	int x, int y
+)
 {
-	const int	t = rt_get_trgb(color, SHIFT_T);
-	const int	r = rt_get_trgb(color, SHIFT_R);
-	const int	g = rt_get_trgb(color, SHIFT_G);
-	const int	b = rt_get_trgb(color, SHIFT_B);
-
-	printf("t = [%d]\nr = [%d]\ng = [%d]\nb = [%d]\n",\
-			t>>SHIFT_T, r>>SHIFT_R, g>>SHIFT_G, b);
-}
-*/
-
-// distanceが0から1に近づくに連れて暗くなる
-int	rt_add_shade(double distance, int color)
-{
-	const int	t = rt_get_trgb(color, SHIFT_T) / (1 << SHIFT_T);
-	const int	r = (rt_get_trgb(color, SHIFT_R) / (1 << SHIFT_R))* (1.0f - distance);
-	const int	g = (rt_get_trgb(color, SHIFT_G) / (1 << SHIFT_G))* (1.0f - distance);
-	const int	b = (rt_get_trgb(color, SHIFT_B) / (1 << SHIFT_B))* (1.0f - distance);
-
-	return (rt_create_trgb(t, r, g, b));
+	const unsigned int color = mr_mlx_pixel_get(image, x, y);
+	return ((color & 0xff) / 255.0);
 }
 
-// 色を反転させる
-int	rt_get_opposite(int color)
+t_vec3	rt_element_color(double u, double v, t_element *el)
 {
-	const unsigned int	t = rt_get_trgb(color, SHIFT_T) / (1 << SHIFT_T);
-	const unsigned int	r = COLOR_MAX - (rt_get_trgb(color, SHIFT_R) / (1 << SHIFT_R));
-	const unsigned int	g = COLOR_MAX - (rt_get_trgb(color, SHIFT_G) / (1 << SHIFT_G));
-	const unsigned int	b = COLOR_MAX - (rt_get_trgb(color, SHIFT_B) / (1 << SHIFT_B));
+	const t_img	*texture = el->texture;
 
-	return (rt_create_trgb(t, r, g, b));
+	if (!texture)
+		return (el->color);
+	double jd = fmod(u * texture->width + 100000 * texture->width, texture->width);
+	double id = fmod(v * texture->height + 100000 * texture->height, texture->height);
+	int ji = jd;
+	int ii = id;
+	return (rt_color_at((t_img *)texture, ji, ii));
 }
+

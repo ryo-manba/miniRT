@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/27 20:09:29 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/31 12:03:41 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_element
 	double				fov;
 	struct s_element	*next;
 	size_t				id;
+	t_img				*texture;
 	t_img				*bumpmap;
 }	t_element;
 

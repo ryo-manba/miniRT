@@ -1,35 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt_hit_util.c                                      :+:      :+:    :+:   */
+/*   mr_vec3_operator2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 20:29:15 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/31 12:12:25 by corvvs           ###   ########.fr       */
+/*   Created: 2021/12/08 19:40:12 by corvvs            #+#    #+#             */
+/*   Updated: 2021/12/31 12:17:39 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minirt.h"
+#include "mr_vec3.h"
 
-t_vec3	rt_hit_point(double t, const t_ray *ray)
+t_vec3	mr_vec3_product(t_vec3 u, t_vec3 v)
 {
-	return (mr_vec3_add((ray->origin),
-		(mr_vec3_mul_double(&ray->direction, t))));
-}
+	t_vec3	prod;
 
-void	rt_after_hit(
-	const t_element *el,
-	const t_ray *ray,
-	t_hit_record *rec)
-{
-	if (rec->hit)
-	{
-		rec->element = *el;
-		rec->cos = mr_vec3_dot(mr_unit_vector(&ray->direction), rec->normal);
-	}
-	else
-	{
-		rec->t = rd_inf(true);
-	}
+	prod.x = u.x * v.x;
+	prod.y = u.y * v.y;
+	prod.z = u.z * v.z;
+	return (prod);
 }
