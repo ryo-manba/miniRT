@@ -6,23 +6,20 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:41:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/31 12:31:16 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 13:54:34 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-t_vec3 test_bumpmap_cylinder(t_hit_record *rec)
+static void set_tangent_coordinate_cylinder(t_hit_record *rec)
 {
-	if (!rec->element.bumpmap)
-		return ((t_vec3){0,0,1});
 	const t_vec3	pc = mr_vec3_sub(rec->p, rec->element.position);
 	const t_vec3	u0 = rt_coord_perpendicular_unit(&rec->element.direction);
 	const t_vec3	v0 = rec->element.direction;
-	const double	u = mr_vec3_dot(pc, u0);
-	const double	v = mr_vec3_dot(pc, v0);
 
-	return (test_bumpfunc_image(u, v, rec->element.bumpmap));
+	rec->u = mr_vec3_dot(pc, u0);
+	rec->v = mr_vec3_dot(pc, v0);
 }
 
 void	rt_set_tangent_cylinder(
@@ -41,8 +38,8 @@ void	rt_set_tangent_cylinder(
 	rec->w0 = rec->normal;
 	rec->u0 = rec->element.direction;
 	rec->v0 = mr_vec3_cross(&rec->w0, &rec->u0);
-	rec->normal = test_bumpmap_cylinder(rec);
-	rec->normal = rt_vec_tangent_to_global(rec, &rec->normal);
+	if (rec->element.bumpmap || rec->element.texture)
+		set_tangent_coordinate_cylinder(rec);
 }
 
 static double	calc_theta(

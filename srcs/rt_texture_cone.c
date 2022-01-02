@@ -6,13 +6,13 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 23:37:49 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/31 18:48:25 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 13:54:38 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void test_bumpmap_cone(t_hit_record *rec)
+static void set_tangent_coordinate_cone(t_hit_record *rec)
 {
 	const t_vec3	pc = mr_vec3_sub(rec->p, rec->element.position);
 	const t_vec3	u1 = rt_coord_perpendicular_unit(&rec->element.direction);
@@ -40,7 +40,7 @@ void	rt_set_tangent_cone(
 	rec->v0 = mr_unit_vector(&pc);
 	rec->u0 = mr_vec3_cross(&rec->v0, &rec->w0);
 	if (rec->element.bumpmap || rec->element.texture)
-		test_bumpmap_cone(rec);
+		set_tangent_coordinate_cone(rec);
 	if (rec->element.bumpmap)
 		rec->normal = test_bumpfunc_image(rec->u, rec->v, rec->element.bumpmap);
 	else

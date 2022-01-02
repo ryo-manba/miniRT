@@ -6,31 +6,11 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:14:54 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 23:30:52 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 13:52:47 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-
-// 接空間上のベクトルを通常空間に変換する
-t_vec3	rt_vec_tangent_to_global(
-	t_hit_record *rec,
-	t_vec3 *vtangent
-)
-{
-	t_vec3	vglobal;
-
-	vglobal.x = rec->u0.x * vtangent->x
-		+ rec->v0.x * vtangent->y
-		+ rec->w0.x * vtangent->z;
-	vglobal.y = rec->u0.y * vtangent->x
-		+ rec->v0.y * vtangent->y
-		+ rec->w0.y * vtangent->z;
-	vglobal.z = rec->u0.z * vtangent->x
-		+ rec->v0.z * vtangent->y
-		+ rec->w0.z * vtangent->z;
-	return (vglobal);
-}
 
 bool	rt_hittest_plane(
 	const t_element *el,

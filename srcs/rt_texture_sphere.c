@@ -6,18 +6,17 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:39:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/01 16:24:03 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 13:54:25 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-void test_bumpmap_sphere(t_hit_record *rec)
+static void set_tangent_coordinate_sphere(t_hit_record *rec)
 {
 	const t_vec3	*pos = &rec->element.position;
 	rec->u = 1 - (atan2(rec->p.x - pos->x, rec->p.z - pos->z) / (2 * M_PI) - 0.5);
 	rec->v = acos((rec->p.y - pos->y) / rec->element.radius) / (M_PI);
-	printf("u = %f\n", rec->u);
 }
 
 void	rt_set_tangent_sphere(
@@ -33,16 +32,7 @@ void	rt_set_tangent_sphere(
 	rec->u0 = mr_unit_vector(&rec->u0);
 	rec->v0 = mr_vec3_cross(&rec->w0, &rec->u0);
 	if (rec->element.bumpmap || rec->element.texture)
-		test_bumpmap_sphere(rec);
-	if (rec->element.bumpmap)
-		rec->normal = test_bumpfunc_image(rec->u, rec->v, rec->element.bumpmap);
-	else
-		rec->normal = Z0;
-	rec->normal = rt_vec_tangent_to_global(rec, &rec->normal);
-	if (rec->element.texture)
-		rec->color = rt_element_color(rec->u, rec->v, &rec->element);
-	else
-		rec->color = rec->element.color;
+		set_tangent_coordinate_sphere(rec);
 }
 
 void	rt_texture_sphere(t_hit_record *rec)
