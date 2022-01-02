@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/31 12:03:41 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 18:08:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,14 @@ typedef enum e_element_type
 	RD_ET_UNEXPECTED,
 }	t_element_type;
 
+typedef enum e_texture_type
+{
+	RD_TT_DUMMY,
+	RD_TT_TEXMAP,
+	RD_TT_CHECKER,
+	RD_TT_ELEMENT,
+}	t_texture_type;
+
 typedef struct s_element
 {
 	t_element_type		etype;
@@ -44,6 +52,7 @@ typedef struct s_element
 	double				fov;
 	struct s_element	*next;
 	size_t				id;
+	t_texture_type		textype;
 	t_img				*texture;
 	t_img				*bumpmap;
 }	t_element;

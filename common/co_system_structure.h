@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/31 18:38:00 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 18:22:11 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,6 @@ typedef struct	s_ray
 	t_vec3	marking_color;
 	bool	for_shadow;
 } t_ray;
-
-typedef struct	s_textures
-{
-	double	u;
-	double	v;
-} t_textures;
-
 typedef struct	s_hit_record
 {
 	t_vec3		p;
@@ -62,7 +55,6 @@ typedef struct	s_hit_record
 	double		cos;
 	t_vec3		color;
 	t_element	element;
-	t_textures	tex;
 
 	t_vec3		u0; // 接空間における正規直交基底; バンプマップで使う予定
 	t_vec3		v0;

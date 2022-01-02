@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 23:37:49 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/02 13:54:38 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 18:20:26 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,4 @@ void	rt_set_tangent_cone(
 		rec->color = rt_element_color(rec->u, rec->v, &rec->element);
 	else
 		rec->color = rec->element.color;
-}
-
-void	rt_texture_cone(t_hit_record *rec, const t_element *el)
-{
-	const t_vec3	r = mr_vec3_sub(rec->p, el->position);
-	const double	phi = mr_vec3_dot(el->direction, r);
-	const t_vec3	u1 = rt_coord_perpendicular_unit(&el->direction);
-	const t_vec3	u2 = rt_coord_turn_around_90(&u1, &el->direction);
-	const double	dx = mr_vec3_dot(r, u1);
-	const double	dz = mr_vec3_dot(r, u2);
-	const double	theta = atan2(dz, dx);
-
-	rec->tex.u = theta / M_PI;
-	rec->tex.v = phi / (2 * M_PI);
 }

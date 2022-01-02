@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:14:54 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/02 13:52:47 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 18:21:44 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ bool	rt_hittest_plane(
 	if (rec->t < 1)
 		return (false);
 	rec->hit = true;
-	rt_texture_plane(rec);
 	rt_after_hit(el, ray, rec);
 	return (true);
 }

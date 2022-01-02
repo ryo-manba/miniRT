@@ -17,6 +17,7 @@ double	mr_vec3_length(const t_vec3 *v);
 double	mr_vec3_length_squared(const t_vec3 *v);
 
 t_vec3	mr_vec3_product(t_vec3 u, t_vec3 v);
+void	mr_normalize_color(t_vec3 *p);
 
 
 #endif

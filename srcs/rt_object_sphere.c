@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 22:42:20 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 18:21:55 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ bool	rt_hittest_sphere(
 		return (false);
 	rec->p = rt_hit_point(rec->t, ray);
 	rec->hit = true;
-	rt_texture_sphere(rec);
 	rt_after_hit(el, ray, rec);
 	return (true);
 }
