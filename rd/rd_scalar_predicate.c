@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:22 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 09:56:52 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 16:11:05 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,8 @@ bool	rd_word_is_fov_angle(t_file_cursor *cur, const char *str)
 	v = rd_str_to_double(str);
 	if (!(rd_is_finite(v) && 0 <= v && v <= 180))
 	{
-		return (rd_print_error_cur(cur, "infinite or not within range [0,180]"));
+		return (rd_print_error_cur(cur,
+				"infinite or not within range [0,180]"));
 	}
 	return (true);
 }

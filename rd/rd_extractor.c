@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 22:44:20 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 18:03:47 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,38 +113,42 @@ static bool	extract_seq(
 	return (true);
 }
 
-static bool	extract_element(
-	t_element *el,
-	const char **words)
+static const t_element_info_extractor	*g_list_of_extractors[] = {
+	NULL,
+	g_ambient_extractors,
+	g_camera_extractors,
+	g_light_extractors,
+	g_sphere_extractors,
+	g_plane_extractors,
+	g_cylinder_extractors,
+	g_cone_extractors,
+	g_spotlight_extractors,
+};
+
+static void	**element_pointers(
+	t_element *el
+)
 {
 	if (el->etype == RD_ET_AMBIENT)
-		return (extract_seq(words, g_ambient_extractors,
-				(void *[]){&(el->ratio), &(el->color)}));
+		return ((void *[]){&(el->ratio), &(el->color)});
 	if (el->etype == RD_ET_CAMERA)
-		return (extract_seq(words, g_camera_extractors,
-				(void *[]){&(el->position), &(el->direction), &(el->fov)}));
+		return ((void *[]){&(el->position), &(el->direction), &(el->fov)});
 	if (el->etype == RD_ET_LIGHT)
-		return (extract_seq(words, g_light_extractors,
-				(void *[]){&(el->position), &(el->ratio), &(el->color)}));
+		return ((void *[]){&(el->position), &(el->ratio), &(el->color)});
 	if (el->etype == RD_ET_SPHERE)
-		return (extract_seq(words, g_sphere_extractors,
-				(void *[]){&(el->position), &(el->diameter), &(el->color)}));
+		return ((void *[]){&(el->position), &(el->diameter), &(el->color)});
 	if (el->etype == RD_ET_PLANE)
-		return (extract_seq(words, g_plane_extractors,
-				(void *[]){&(el->position), &(el->direction), &(el->color)}));
+		return ((void *[]){&(el->position), &(el->direction), &(el->color)});
 	if (el->etype == RD_ET_CYLINDER)
-		return (extract_seq(words, g_cylinder_extractors,
-				(void *[]){&(el->position), &(el->direction),
-				&(el->diameter), &(el->height), &(el->color)}));
+		return ((void *[]){&(el->position), &(el->direction),
+			&(el->diameter), &(el->height), &(el->color)});
 	if (el->etype == RD_ET_CONE)
-		return (extract_seq(words, g_cone_extractors,
-				(void *[]){&(el->position), &(el->direction),
-				&(el->fov), &(el->color)}));
+		return ((void *[]){&(el->position), &(el->direction),
+			&(el->fov), &(el->color)});
 	if (el->etype == RD_ET_SPOTLIGHT)
-		return (extract_seq(words, g_spotlight_extractors,
-				(void *[]){&(el->position), &(el->direction),
-				&(el->fov), &(el->ratio), &(el->color)}));
-	return (false);
+		return ((void *[]){&(el->position), &(el->direction),
+			&(el->fov), &(el->ratio), &(el->color)});
+	return (NULL);
 }
 
 t_element	*rd_extract_element(
@@ -158,23 +162,18 @@ t_element	*rd_extract_element(
 	if (!el)
 		return (NULL);
 	el->etype = etype;
-	if (!extract_element(el, words))
+	if (!extract_seq(words, g_list_of_extractors[el->etype],
+			element_pointers(el)))
 	{
 		free(el);
 		return (NULL);
 	}
 	el->radius = el->diameter / 2;
-	r = sqrt(el->direction.x * el->direction.x
-			+ el->direction.y * el->direction.y
-			+ el->direction.z * el->direction.z);
+	r = mr_vec3_length(&el->direction);
 	if (r == 0)
 		r = 1;
-	el->direction.x /= r;
-	el->direction.y /= r;
-	el->direction.z /= r;
-	el->color.x /= 255;
-	el->color.y /= 255;
-	el->color.z /= 255;
+	el->direction = mr_vec3_mul_double(&el->direction, 1 / r);
+	el->color = mr_vec3_mul_double(&el->color, 1 / 255.0);
 	printf("el: %p(%p)\n", el, el->next);
 	return (el);
 }
