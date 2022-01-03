@@ -40,8 +40,8 @@ t_vec3	rt_element_color(double u, double v, t_element *el)
 
 	if (!texture)
 		return (el->color);
-	double jd = fmod(u * texture->width + 100000 * texture->width, texture->width);
-	double id = fmod(v * texture->height + 100000 * texture->height, texture->height);
+	double jd = fmod(u * texture->width * el->freq_u + 100000 * texture->width, texture->width);
+	double id = fmod(v * texture->height * el->freq_v + 100000 * texture->height, texture->height);
 	int ji = jd;
 	int ii = id;
 	return (rt_color_at((t_img *)texture, ji, ii));
