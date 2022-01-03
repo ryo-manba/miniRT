@@ -229,7 +229,7 @@ static void	setup_info(t_info *info)
 bool	read_xmp_image(void *mlx, const char *xpm_path, t_img *image)
 {
 	image->img = mlx_xpm_file_to_image(mlx, (char *)xpm_path, &image->width, &image->height);
-	printf("%p\n", image->img);
+	printf("%p %d %d\n", image->img, image->width, image->height);
 	if (!image->img)
 		return (false);
 	image->addr = mlx_get_data_addr(
@@ -253,15 +253,19 @@ int main(int argc, char **argv)
 		return (1);
 	}
 	
-	t_img		bumpmap_image;
-	t_img		texture_image;
-	read_xmp_image(info.mlx, "images/merc.xpm", &bumpmap_image);
-	read_xmp_image(info.mlx, "images/merc.xpm", &texture_image);
 	size_t	i = 0;
 	while (i < scene.n_objects)
 	{
-		scene.objects[i]->bumpmap = &bumpmap_image;
-		scene.objects[i]->texture = &texture_image;
+		if (scene.objects[i]->tex_el && scene.objects[i]->tex_el->etype == RD_ET_TEXTURE)
+		{
+			scene.objects[i]->tex_el->image = ft_calloc(1, sizeof(t_img));
+			read_xmp_image(info.mlx, scene.objects[i]->tex_el->xpm_file_path, scene.objects[i]->tex_el->image);
+		}
+		if (scene.objects[i]->bump_el && scene.objects[i]->bump_el->etype == RD_ET_BUMPMAP)
+		{
+			scene.objects[i]->bump_el->image = ft_calloc(1, sizeof(t_img));
+			read_xmp_image(info.mlx, scene.objects[i]->bump_el->xpm_file_path, scene.objects[i]->bump_el->image);
+		}
 		i += 1;
 	}
 

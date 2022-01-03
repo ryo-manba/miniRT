@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:39:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/02 18:21:23 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 23:36:51 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,6 @@ void	rt_set_tangent_sphere(
 	rec->u0 = mr_vec3_cross(&rec->w0, &y0);
 	rec->u0 = mr_unit_vector(&rec->u0);
 	rec->v0 = mr_vec3_cross(&rec->w0, &rec->u0);
-	if (rec->element.bumpmap || rec->element.texture)
+	if (rec->element.bump_el || rec->element.tex_el)
 		set_tangent_coordinate_sphere(rec);
 }

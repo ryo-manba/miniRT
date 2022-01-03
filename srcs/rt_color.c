@@ -36,7 +36,7 @@ double	rt_grayscale_color_at(
 
 t_vec3	rt_element_color(double u, double v, t_element *el)
 {
-	const t_img	*texture = el->texture;
+	const t_img	*texture = el->image;
 
 	if (!texture)
 		return (el->color);

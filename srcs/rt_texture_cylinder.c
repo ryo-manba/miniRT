@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:41:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/02 18:21:32 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 23:37:03 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,6 @@ void	rt_set_tangent_cylinder(
 	rec->w0 = rec->normal;
 	rec->u0 = rec->element.direction;
 	rec->v0 = mr_vec3_cross(&rec->w0, &rec->u0);
-	if (rec->element.bumpmap || rec->element.texture)
+	if (rec->element.bump_el || rec->element.tex_el)
 		set_tangent_coordinate_cylinder(rec);
 }

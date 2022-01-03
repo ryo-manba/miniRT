@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 17:43:46 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 22:28:32 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,31 @@ static void	element_addback(t_element **list, t_element *el)
 	}
 	else
 		*list = el;
+}
+
+static bool	attach_attribute(t_temp_scene *scene, t_element **list, t_element *el)
+{
+	t_element	*tail;
+
+	printf("[%s]\n", scene->cur.symbol);
+	if (!*list)
+		return (rd_print_error_cur(&scene->cur, "no object"));
+	tail = *list;
+	while (tail->next)
+		tail = tail->next;
+	if (el->etype == RD_ET_TEXTURE || el->etype == RD_ET_CHECKER)
+	{
+		if (tail->tex_el)
+			return (rd_print_error_cur(&scene->cur, "texture already attached"));
+		tail->tex_el = el;
+	}
+	else if (el->etype == RD_ET_BUMPMAP)
+	{
+		if (tail->bump_el)
+			return (rd_print_error_cur(&scene->cur, "bumpmap already attached"));
+		tail->bump_el = el;
+	}
+	return (true);
 }
 
 static t_element	*element_from_words(t_temp_scene *scene, const char **words)
@@ -52,6 +77,7 @@ static t_element	*element_from_words(t_temp_scene *scene, const char **words)
 		return (NULL);
 	}
 	el = rd_extract_element(etype, words);
+	printf("etype: %d\n", el->etype);
 	if (!el)
 		rd_print_error_cur(&scene->cur, "failed to extract an element");
 	return (el);
@@ -105,9 +131,9 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 	{
 		words = ft_split(lines[temp_scene.cur.line_number], ' ');
 		el = element_from_words(&temp_scene, (const char **)words);
-		rd_free_strarray(words);
 		if (!el)
 		{
+			rd_free_strarray(words);
 			rd_free_strarray(lines);
 			return (false);
 		}
@@ -120,9 +146,20 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 			element_addback(&temp_scene.light_list, el);
 		else if (el->etype == RD_ET_SPOTLIGHT)
 			element_addback(&temp_scene.spotlight_list, el);
+		else if (el->etype == RD_ET_TEXTURE || el->etype == RD_ET_CHECKER
+			|| el->etype == RD_ET_BUMPMAP)
+			{
+				if (!attach_attribute(&temp_scene, &temp_scene.object_list, el))
+				{
+					rd_free_strarray(words);
+					rd_free_strarray(lines);
+					return (false);
+				}
+			}
 		else
 			element_addback(&temp_scene.object_list, el);
 		temp_scene.cur.line_number += 1;
+		rd_free_strarray(words);
 	}
 	rd_free_strarray(lines);
 	if (!temp_scene.ambient)

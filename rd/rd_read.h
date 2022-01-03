@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 16:22:58 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 20:22:51 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,17 @@
 
 # define RD_UNIT_PREDICATE_EPSILON 1e-3
 
-# define RD_ID_AMBIENT	"A"
-# define RD_ID_CAMERA	"C"
-# define RD_ID_LIGHT	"L"
-# define RD_ID_SPHERE	"sp"
-# define RD_ID_PLANE	"pl"
-# define RD_ID_CYLINDER	"cy"
-# define RD_ID_CONE		"co"
+# define RD_ID_AMBIENT		"A"
+# define RD_ID_CAMERA		"C"
+# define RD_ID_LIGHT		"L"
+# define RD_ID_SPHERE		"sp"
+# define RD_ID_PLANE		"pl"
+# define RD_ID_CYLINDER		"cy"
+# define RD_ID_CONE			"co"
 # define RD_ID_SPOTLIGHT	"sl"
+# define RD_ID_TEXTURE		"tx"
+# define RD_ID_CHECKER		"ch"
+# define RD_ID_BUMPMAP		"bm"
 
 typedef struct s_file_cursor
 {
@@ -71,6 +74,8 @@ t_element_type	rd_detect_element_type(t_temp_scene *scene, const char **words);
 bool			rd_word_is_positive_real(t_file_cursor *cur, const char *str);
 bool			rd_word_is_ratio(t_file_cursor *cur, const char *str);
 bool			rd_word_is_fov_angle(t_file_cursor *cur, const char *str);
+bool			rd_word_is_xpm_file_path(t_file_cursor *cur, const char *str);
+
 bool			rd_word_is_vector(t_file_cursor *cur, const char *str);
 bool			rd_word_is_unit_vector(t_file_cursor *cur, const char *str);
 bool			rd_word_is_color_vector(t_file_cursor *cur, const char *str);

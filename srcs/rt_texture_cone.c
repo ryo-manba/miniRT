@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 23:37:49 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/02 18:20:26 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 23:37:06 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,6 @@ void	rt_set_tangent_cone(
 	rec->w0 = rec->normal;
 	rec->v0 = mr_unit_vector(&pc);
 	rec->u0 = mr_vec3_cross(&rec->v0, &rec->w0);
-	if (rec->element.bumpmap || rec->element.texture)
+	if (rec->element.bump_el || rec->element.tex_el)
 		set_tangent_coordinate_cone(rec);
-	if (rec->element.bumpmap)
-		rec->normal = test_bumpfunc_image(rec->u, rec->v, rec->element.bumpmap);
-	else
-		rec->normal = Z0;
-	rec->normal = rt_vec_tangent_to_global(rec, &rec->normal);
-	if (rec->element.texture)
-		rec->color = rt_element_color(rec->u, rec->v, &rec->element);
-	else
-		rec->color = rec->element.color;
 }

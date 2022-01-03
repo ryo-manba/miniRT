@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:30:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/02 18:21:18 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 23:36:57 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ void	rt_set_tangent_plane(
 	rec->w0 = rec->element.direction;
 	rec->u0 = rt_coord_perpendicular_unit(&rec->w0);
 	rec->v0 = rt_coord_turn_around_90(&rec->u0, &rec->w0);
-	if (rec->element.bumpmap || rec->element.texture)
+	if (rec->element.bump_el || rec->element.tex_el)
 		set_tangent_coordinate_plane(rec);
 }
