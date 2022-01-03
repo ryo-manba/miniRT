@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:15 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 14:29:39 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 03:16:44 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ double	rd_str_to_double(const char *str)
 	sign = 1 - (*str == '-') * 2;
 	if (*str == '+' || *str == '-')
 		str += 1;
+	if (!*str)
+		return (rd_nan());
 	while (*str)
 	{
 		if (ft_isdigit(*str))

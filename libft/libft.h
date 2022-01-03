@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:08:43 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/05/31 11:18:47 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/02 23:40:49 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ char			*ft_strtrim(char const *s1, char const *set);
 char			*ft_itoa(int n);
 char			*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char			**ft_split(char const *s, char c);
+char			**ft_rawsplit(char const *s, char c);
 void			*ft_memset(void *dest, int value, size_t sz);
 void			*ft_memmove(void *dest, const void *src, size_t sz);
 void			*ft_memcpy(void *dest, const void *src, size_t sz);

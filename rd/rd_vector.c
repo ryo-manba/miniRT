@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:04 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 14:25:13 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 00:17:31 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	rd_vectorize(const char *str, t_vec3 *vector)
 	vector->x = rd_nan();
 	vector->y = rd_nan();
 	vector->z = rd_nan();
-	splitted = ft_split(str, ',');
+	splitted = ft_rawsplit(str, ',');
 	if (!splitted)
 		return ;
 	if (strarraylen(splitted) == 3)

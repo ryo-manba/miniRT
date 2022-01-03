@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+         #
+#    By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:59:59 by rmatsuka          #+#    #+#              #
-#    Updated: 2021/11/25 22:35:16 by rmatsuka         ###   ########.fr        #
+#    Updated: 2022/01/02 23:39:51 by corvvs           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRCS	=	ft_strlen.c \
 			ft_strlcat.c \
 			ft_strtrim.c \
 			ft_split.c \
+			ft_raw_split.c \
 			ft_itoa.c \
 			ft_strmapi.c \
 			ft_putchar_fd.c \
