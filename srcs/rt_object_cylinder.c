@@ -23,7 +23,7 @@ static bool	hit_at(
 	double axial_displacement = mr_vec3_dot(
 		mr_vec3_sub(rec->p, el->position), el->direction
 	);
-	if (t < 1 || fabs(axial_displacement) >= el->height / 2)
+	if (t < 1 || fabs(axial_displacement) >= ((el->height + (ray->for_shadow ? 1e-6 : 0)) / 2))
 		rec->hit = false;
 	else
 	{
