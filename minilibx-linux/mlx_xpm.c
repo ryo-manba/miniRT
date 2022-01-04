@@ -168,7 +168,7 @@ void	*mlx_int_parse_xpm(t_xvar *xvar,void *info,int info_size,char *(*f)())
 						!(cpp = atoi(tab[3])) )
 				RETURN;
 		free(tab);
-		tab = 0;
+		tab = (void *)0;
 
 		method = 0;
 		if (cpp<=2)
