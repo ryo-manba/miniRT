@@ -4,9 +4,9 @@ CFLAGS		=	-Werror -Wall -Wextra $(INC) -g -fsanitize=address
 INC			=	-I$(X11) -I$(MLX) -I$(LIBFT) -Iincludes -Icommon -Ird
 X11			:=	/usr/X11/include
 LIBFT		:=	libft
-LIBFT_A		:=	$(addprefix ./$(LIBFT)/, $(LIBFT).a)
+LIBFT_A		:=	./$(LIBFT)/$(LIBFT).a
 LIBREAD		:=	libread
-LIBREAD_A	:=	$(addprefix ./$(LIBREAD)/, $(LIBREAD).a)
+LIBREAD_A	:=	./rd/$(LIBREAD).a
 
 SRCS		:=	debug.c \
 				main.c \
@@ -38,7 +38,7 @@ OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 OBJDIR		:=	./objs/
 
 MLX			:=	minilibx-linux
-MLX_A		:= 	libmlx_Darwin.a
+MLX_A		:= 	./$(MLX)/libmlx_Darwin.a
 LIBS		:=	-L$(LIBFT) -L$(MLX) -Lrd -lmlx_Darwin -L/$(X11)/../lib -lXext -lX11 -lm -lread -lft
 RM 			:=	rm -rf
 SRCDIR		:= ./srcs/

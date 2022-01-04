@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rd_file.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 14:30:36 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 22:18:30 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ char	*rd_read_file_content(const char *filename)
 		return (NULL);
 	}
 	content = read_from_fd(fd);
-	close(fd);
+	if (close(fd) == -1)
+		return (NULL);
 	return (content);
 }
