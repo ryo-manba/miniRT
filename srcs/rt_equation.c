@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 17:01:33 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 17:19:02 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 21:15:16 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,16 @@ int	rt_solve_equation2(t_equation2 *arg)
 	else
 	{
 		arg->solutions = 2;
-		arg->t1 = (-arg->b_half - sqrt(discriminant)) / arg->a;
-		arg->t2 = (-arg->b_half + sqrt(discriminant)) / arg->a;
+		if (arg->a > 0)
+		{
+			arg->t1 = (-arg->b_half - sqrt(discriminant)) / arg->a;
+			arg->t2 = (-arg->b_half + sqrt(discriminant)) / arg->a;
+		}
+		else
+		{
+			arg->t2 = (-arg->b_half - sqrt(discriminant)) / arg->a;
+			arg->t1 = (-arg->b_half + sqrt(discriminant)) / arg->a;
+		}
 	}
 	return (arg->solutions);
 }
