@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_tangent.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 13:52:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 00:10:03 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/05 00:11:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void	rt_set_tangent_space(
 	// チェッカーを使う場合はチェッカーに従って計算。
 	// どちらでもない場合はelementの色を使う。
 	if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_TEXTURE)
-		rec->color = rt_element_color(rec->u, rec->v, rec->element.tex_el);
+		rec->color = rt_element_color(rec->u, rec->v, &rec->element);
 	else if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_CHECKER)
 		rec->color = checker_texture(rec);
 	else
