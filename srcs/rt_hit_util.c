@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:29:15 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/10 12:18:18 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/31 12:12:25 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	rt_after_hit(
 	{
 		rec->element = *el;
 		rec->cos = mr_vec3_dot(mr_unit_vector(&ray->direction), rec->normal);
-		rec->color = el->color;
 	}
 	else
 	{

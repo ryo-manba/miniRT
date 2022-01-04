@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   ft_raw_split.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/04/08 22:32:23 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/02 23:48:16 by corvvs           ###   ########.fr       */
+/*   Created: 2022/01/02 23:39:38 by corvvs            #+#    #+#             */
+/*   Updated: 2022/01/03 15:12:26 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,69 +23,56 @@ static void	*ft_all_free(char **split_strs, size_t i)
 	return (NULL);
 }
 
-static char	*ft_strcpy(char const *s, char c)
+static char	*ft_memdup(char const *s, size_t n)
 {
 	char	*dest;
-	size_t	i;
 
-	i = 0;
-	while (s[i] && s[i] != c)
-		i++;
-	dest = (char *)malloc(sizeof(char) * (i + 1));
+	dest = (char *)malloc(sizeof(char) * (n + 1));
 	if (dest == NULL)
 		return (NULL);
-	i = 0;
-	while (s[i] && s[i] != c)
-	{
-		dest[i] = s[i];
-		i++;
-	}
-	dest[i] = '\0';
+	ft_memcpy(dest, s, n);
+	dest[n] = '\0';
 	return (dest);
-}
-
-static size_t	get_len(char const *s, char c)
-{
-	size_t			i;
-	size_t			cnt;
-
-	i = 0;
-	cnt = 0;
-	if (s[i] && s[i] != c)
-		cnt++;
-	while (s[i])
-	{
-		if (s[i] == c && s[i + 1] != c && s[i + 1])
-			cnt++;
-		i++;
-	}
-	return (cnt);
 }
 
 static void	*get_split(char **split_strs, char const *s, char c)
 {
 	size_t	i;
+	size_t	n;
 
 	i = 0;
 	while (*s)
 	{
-		while (*s == c)
-			s++;
-		if (*s && *s != c)
-		{
-			split_strs[i] = ft_strcpy(s, c);
-			if (split_strs[i] == NULL)
-				return (ft_all_free(split_strs, i));
-			i++;
-			while (*s && *s != c)
-				s++;
-		}
+		n = 0;
+		if (0 < i && s[n] && s[n] == c)
+			s += 1;
+		while (s[n] && s[n] != c)
+			n += 1;
+		split_strs[i] = ft_memdup(s, n);
+		if (split_strs[i] == NULL)
+			return (ft_all_free(split_strs, i));
+		i++;
+		s += n;
 	}
 	split_strs[i] = NULL;
 	return (split_strs);
 }
 
-char	**ft_split(char const *s, char c)
+static size_t	get_len(char const *s, char c)
+{
+	size_t	cnt;
+
+	cnt = 1;
+	while (*s)
+	{
+		if (*s == c)
+			cnt++;
+		s++;
+	}
+	return (cnt);
+}
+
+char	**ft_rawsplit(char const *s, char c)
 {
 	char	**split_strs;
 	size_t	split_len;

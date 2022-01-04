@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/26 13:24:08 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/27 00:18:14 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,12 @@ static bool	is_reflective_part(
 						ray->direction, rec->normal);
 	const bool is_reflective = (cos_light > 0 && cos_ray > 0) || (cos_light < 0 && cos_ray < 0);
 	if (!is_reflective)
+	{
+		// printf("NL: %f %f (%d, %d)\n", cos_light, cos_ray, ray->pixel_x, ray->pixel_y);
+		// vec3_debug((t_vec3 *)&rec->p);
+		// vec3_debug((t_vec3 *)&rec->normal);
 		return (false);
+	}
 	if (light->etype == RD_ET_SPOTLIGHT)
 	{
 		// [スポットライトの場合]
@@ -37,7 +42,7 @@ static bool	is_reflective_part(
 		if (cs < cos(light->fov * M_PI / 360))
 			return (false);
 	}
-	return (is_reflective);
+	return (true);
 }
 
 bool	rt_is_shadow(

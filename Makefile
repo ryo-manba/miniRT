@@ -13,7 +13,9 @@ SRCS		:=	debug.c \
 				mr_mlx_utils.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
+				mr_vec3_operator2.c \
 				rt_color.c \
+				rt_tangent.c \
 				rt_object_sphere.c \
 				rt_object_plane.c \
 				rt_object_cylinder.c \
@@ -24,11 +26,13 @@ SRCS		:=	debug.c \
 				rt_texture_plane.c \
 				rt_texture_sphere.c \
 				rt_texture_cylinder.c \
+				rt_texture_cone.c \
 				rt_ambient.c \
 				rt_diffuse.c \
 				rt_specular.c \
 				rt_coord_util.c \
 				rt_equation.c \
+				rt_bumpfunc.c \
 
 OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 OBJDIR		:=	./objs/

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 17:23:05 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/26 12:55:33 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 23:31:07 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,8 @@ static bool	hit_at(
 		rec->hit = false;
 	else
 	{
+		rec->normal.x = axial_displacement;
 		rec->hit = true;
-		t_vec3 axial_center = mr_vec3_add(
-			el->position,
-			mr_vec3_mul_double(
-				&el->direction,
-				axial_displacement
-			)
-		);
-		t_vec3	temp;
-		temp = mr_vec3_sub(rec->p, axial_center);
-		rec->normal = mr_unit_vector(&temp);
 		rt_after_hit(el, ray, rec);
 	}
 	return (rec->hit);

@@ -33,14 +33,14 @@
 # define WHITE 0xffffff
 
 /* hooks */
-void	mr_mlx_pixel_put(t_img *img, int x, int y, int color);
-int		mr_exit_window(t_info *info);
+void			mr_mlx_pixel_put(t_img *img, int x, int y, int color);
+unsigned int	mr_mlx_pixel_get(t_img *img, int x, int y);
+int				mr_exit_window(t_info *info);
 
-/* color */
 int rt_create_trgb(int t, int r, int g, int b);
-int	rt_get_trgb(int trgb, int shift);
-int	rt_add_shade(double distance, int color);
-int	rt_get_opposite(int color);
+t_vec3	rt_color_at(t_img *image, int x, int y);
+double	rt_grayscale_color_at(t_img *image, int x, int y);
+t_vec3	rt_element_color(double u, double v, t_element *el);
 
 t_vec3	rt_hit_point(double t, const t_ray *ray);
 void	rt_after_hit(

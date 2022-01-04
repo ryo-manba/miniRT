@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 16:18:21 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 00:00:54 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define CO_OBJECT_STRUCTURE_H
 
 # include "co_geometric_structure.h"
+# include "co_image_structure.h"
 # include <stdlib.h>
 
 typedef enum e_element_type
@@ -27,6 +28,9 @@ typedef enum e_element_type
 	RD_ET_CYLINDER,
 	RD_ET_CONE,
 	RD_ET_SPOTLIGHT,
+	RD_ET_TEXTURE,
+	RD_ET_CHECKER,
+	RD_ET_BUMPMAP,
 	RD_ET_UNEXPECTED,
 }	t_element_type;
 
@@ -43,6 +47,14 @@ typedef struct s_element
 	double				fov;
 	struct s_element	*next;
 	size_t				id;
+	struct s_element	*tex_el;
+	struct s_element	*bump_el;
+
+	char				*xpm_file_path;
+	double				freq_u;
+	double				freq_v;
+	t_vec3				subcolor;
+	t_img				*image;
 }	t_element;
 
 #endif
