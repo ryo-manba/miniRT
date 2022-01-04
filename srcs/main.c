@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/02 18:19:36 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 13:54:25 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,12 @@ static t_vec3	light_proc(
 )
 {
 	t_vec3	base_color;
+	t_vec3	light_color;
 
 	mr_vec3_init(&base_color, 0, 0, 0);
 	if (actual->hit && !rt_is_shadow(actual, light, scene, r))
 	{
-		t_vec3	light_color = mr_vec3_mul_double(&light->color, light->ratio);
+		light_color = mr_vec3_mul_double(&light->color, light->ratio);
 		base_color = mr_vec3_add(base_color, rt_diffuse(actual, light, &light_color));
 		base_color = mr_vec3_add(base_color, rt_specular(actual, &light->position, &light_color, r));
 	}
@@ -150,6 +151,8 @@ static void	ray_loop(
 	double	i;
 	double	j;
 	t_ray	ray;
+
+	ray.for_shadow = false;
 	scene->recs = (t_hit_record *)malloc(scene->n_objects * sizeof(t_hit_record));
 
 	j = 0;
