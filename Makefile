@@ -1,12 +1,12 @@
 NAME		:=	miniRT
 CC			:=	gcc
 CFLAGS		=	-Werror -Wall -Wextra $(INC) -g -fsanitize=address
-INC			=	-I$(X11) -I$(MLX) -I$(LIBFT) -Iincludes -Icommon -Ird 
+INC			=	-I$(X11) -I$(MLX) -I$(LIBFT) -Iincludes -Icommon -Ird
 X11			:=	/usr/X11/include
 LIBFT		:=	libft
 LIBFT_A		:=	$(addprefix ./$(LIBFT)/, $(LIBFT).a)
 LIBREAD		:=	libread
-LIBREAD_A	:=	$(addprefix ./rd/, $(LIBREAD).a)
+LIBREAD_A	:=	$(addprefix ./$(LIBREAD)/, $(LIBREAD).a)
 
 SRCS		:=	debug.c \
 				main.c \
@@ -38,15 +38,16 @@ OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 OBJDIR		:=	./objs/
 
 MLX			:=	minilibx-linux
-LIBS		:=	-L$(LIBFT) -L$(MLX) -lmlx_Darwin -L/$(X11)/../lib -lXext -lX11 -lm
+MLX_A		:= 	libmlx_Darwin.a
+LIBS		:=	-L$(LIBFT) -L$(MLX) -Lrd -lmlx_Darwin -L/$(X11)/../lib -lXext -lX11 -lm -lread -lft
 RM 			:=	rm -rf
 SRCDIR		:= ./srcs/
 
 
 all: $(OBJDIR) $(NAME)
 
-$(NAME): $(OBJS) $(MLX) $(LIBFT_A) $(LIBREAD_A)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT_A) $(LIBREAD_A) $(LIBS) -o $(NAME)
+$(NAME): $(OBJS) $(MLX_A) $(LIBFT_A) $(LIBREAD_A)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
 $(LIBFT_A):
 	make -C $(LIBFT)
@@ -54,7 +55,7 @@ $(LIBFT_A):
 $(LIBREAD_A):
 	make -C ./rd
 
-$(MLX):
+$(MLX_A):
 	make -C $(MLX)
 
 $(OBJDIR):
