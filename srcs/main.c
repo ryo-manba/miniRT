@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 13:54:25 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 23:31:30 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,7 +144,7 @@ static t_vec3	ray_color(t_ray *r, t_scene *scene)
 
 }
 
-static void	ray_loop(
+static bool	ray_loop(
 	t_img *img,
 	t_scene *scene)
 {
@@ -154,7 +154,8 @@ static void	ray_loop(
 
 	ray.for_shadow = false;
 	scene->recs = (t_hit_record *)malloc(scene->n_objects * sizeof(t_hit_record));
-
+	if (!scene->recs)
+		return (false);
 	j = 0;
 	while (j < HEIGHT)
 	{
@@ -187,6 +188,7 @@ static void	ray_loop(
 		}
 		j += 1;
 	}
+	return (true);
 }
 
 
@@ -217,16 +219,23 @@ static void	ray(t_img *img, t_scene *scene)
 	ray_loop(img, scene);
 }
 
-static void	setup_info(t_info *info)
+static bool	setup_info(t_info *info)
 {
 	info->mlx = mlx_init();
+	if (!info->mlx)
+		return (false);
 	info->win = mlx_new_window(info->mlx, WIDTH, HEIGHT, "miniRT");
+	if (!info->win)
+		return (false);
 	info->img.img = mlx_new_image(info->mlx, WIDTH, HEIGHT);
+	if (!info->img.img)
+		return (false);
 	info->img.addr = mlx_get_data_addr(
 		info->img.img,
 		&info->img.bpp,
 		&info->img.line_len,
 		&info->img.endian);
+	return (true);
 }
 
 bool	read_xmp_image(void *mlx, const char *xpm_path, t_img *image)
@@ -248,14 +257,18 @@ int main(int argc, char **argv)
 	t_info	info;
 	t_scene	scene;
 
-	// xpmファイルの読み込みにmlxが必要なので、大変遺憾ながらここでmlxをセットアップする
-	setup_info(&info);
-	if (argc < 2 || rd_read_scene(argv[1], &scene) == false)
+	if (argc != 2 || rd_read_scene(argv[1], &scene) == false)
 	{
 		printf("Error\n");
 		return (1);
 	}
-	
+	if (setup_info(&info) == false)
+	{
+		printf("Error\n");
+		// scene構造体をfreeする
+		return (1);
+	}
+
 	size_t	i = 0;
 	while (i < scene.n_objects)
 	{
@@ -277,4 +290,4 @@ int main(int argc, char **argv)
 	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);
 	mlx_loop(info.mlx);
 	return (0);
-}	
+}
