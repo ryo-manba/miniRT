@@ -6,11 +6,40 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:15 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/01 14:29:39 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/03 16:07:09 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rd_read.h"
+
+static double	my_stod(const char *str)
+{
+	double	val;
+	double	exp;
+	bool	dot;
+
+	val = 0;
+	dot = false;
+	exp = 1;
+	while (*str)
+	{
+		if (ft_isdigit(*str))
+		{
+			if (dot)
+				val = val + exp * (*str - '0');
+			else
+				val = val * 10 + *str - '0';
+		}
+		else if (*str == '.' && !dot)
+			dot = true;
+		else
+			return (rd_nan());
+		str += 1;
+		if (dot)
+			exp = exp / 10;
+	}
+	return (val);
+}
 
 double	rd_inf(bool positive)
 {
@@ -46,34 +75,15 @@ bool	rd_is_finite(const double val)
 
 double	rd_str_to_double(const char *str)
 {
-	double	val;
 	double	sign;
-	double	exp;
-	bool	dot;
+	double	val;
 
-	val = 0;
-	dot = false;
-	exp = 1;
 	sign = 1 - (*str == '-') * 2;
 	if (*str == '+' || *str == '-')
 		str += 1;
-	while (*str)
-	{
-		if (ft_isdigit(*str))
-		{
-			if (dot)
-				val = val + exp * (*str - '0');
-			else
-				val = val * 10 + *str - '0';
-		}
-		else if (*str == '.' && !dot)
-			dot = true;
-		else
-			return (rd_nan());
-		str += 1;
-		if (dot)
-			exp = exp / 10;
-	}
+	if (!*str)
+		return (rd_nan());
+	val = my_stod(str);
 	if (rd_is_finite(val))
 		return (val * sign);
 	else

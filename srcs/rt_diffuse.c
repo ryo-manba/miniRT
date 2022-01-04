@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 22:03:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/26 13:33:07 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/31 18:40:12 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,9 @@ t_vec3	rt_diffuse(
 	const t_vec3 *light_color)
 {
 	double	x;
-	
+	t_vec3	color = *light_color;
+
 	x = intensity(rec, light);
-	return (mr_vec3_mul_double(light_color, x));
+	color = mr_vec3_product(*light_color, rec->color);
+	return (mr_vec3_mul_double(&color, x));
 }

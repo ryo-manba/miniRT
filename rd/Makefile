@@ -1,5 +1,9 @@
 CC			:=	gcc
-CFLAGS		:=	-Wall -Wextra -Werror -g -fsanitize=address -I../includes -I../common -I../libft
+MLX			:=	../minilibx-linux
+X11			:=	/usr/X11/include
+INC			:=	-I$(X11) -I$(MLX) -I../includes -I../common -I../libft
+LIBS		:=	-L../libft -L$(MLX) -L/$(X11)/../lib -lXext -lX11 -lm
+CFLAGS		:=	-Wall -Wextra -Werror -g -fsanitize=address $(INC)
 NAME		:=	libread.a
 SRCS		:=	rd_file.c \
 				rd_error.c \
@@ -24,16 +28,19 @@ LIBFT		:=	$(LIBFT_DIR)/libft.a
 
 all			:	$(NAME)
 
-$(NAME)		:	$(OBJS)
+$(NAME)		:	$(OBJS) $(MLX)
 	ar rcs $(NAME) $(OBJS)
 
 t			:	$(TEST_NAME)
 
 $(TEST_NAME):	$(OBJS) $(TEST_OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(TEST_NAME) $(LIBFT) $(OBJS) $(TEST_OBJS)
+	$(CC) $(CFLAGS) $(LIBS) -o $(TEST_NAME) $(LIBFT) $(OBJS) $(TEST_OBJS)
 
 $(LIBFT)	:
 	$(MAKE) -C $(LIBFT_DIR)
+
+$(MLX)		:
+	$(MAKE) -C $(MLX)
 
 clean		:
 	$(RM) -rf $(OBJS) $(TEST_OBJS)

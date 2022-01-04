@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/25 19:04:11 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/02 18:20:51 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,9 @@ static bool	t_predicate(
 	if (t < 1)
 		return (false);
 	const t_vec3 p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
-	const t_vec3 pc = mr_vec3_sub(p, el->position);
 	rec->t = t;
 	rec->p = p;
 	rec->hit = true;
-
-	rec->normal = mr_vec3_sub(
-		mr_vec3_mul_double(&pc, cos(el->fov * M_PI / 360) / mr_vec3_length(&pc)),
-		el->direction
-	);
-	rec->normal = mr_unit_vector(&rec->normal);
-
 	rt_after_hit(el, ray, rec);
 	return (true);
 }
@@ -65,20 +57,6 @@ static bool actual_hittest(
 	return (false);
 }
 
-void	rt_texture_cone(t_hit_record *rec, const t_element *el)
-{
-	const t_vec3	r = mr_vec3_sub(rec->p, el->position);
-	const double	phi = mr_vec3_dot(el->direction, r);
-	const t_vec3	u1 = rt_coord_perpendicular_unit(&el->direction);
-	const t_vec3	u2 = rt_coord_turn_around_90(&u1, &el->direction);
-	const double	dx = mr_vec3_dot(r, u1);
-	const double	dz = mr_vec3_dot(r, u2);
-	const double	theta = atan2(dz, dx);
-
-	rec->tex.u = theta / M_PI;
-	rec->tex.v = phi / (2 * M_PI);
-}
-
 bool	rt_hittest_cone(
 	const t_element *el,
 	const t_ray *ray,
@@ -86,6 +64,5 @@ bool	rt_hittest_cone(
 {
 	if (!actual_hittest(el, ray, rec))
 		return (false);
-	rt_texture_cone(rec, el);
 	return (true);
 }

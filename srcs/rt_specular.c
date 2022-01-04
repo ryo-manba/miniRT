@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 22:54:35 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/26 13:47:45 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/31 18:40:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,16 @@ t_vec3	rt_specular(
 						),
 						light_out
 					);
-	const double rr = -mr_vec3_dot(ray_inverse, reflect_of_light);
+	const double	rr = -mr_vec3_dot(ray_inverse, reflect_of_light);
 
 	if (rr < 0)
 	{
 		return ((t_vec3){0, 0, 0});
 	}
+	t_vec3	color = *light_color;
+	
+	color = mr_vec3_product(*light_color, rec->color);
 	return (mr_vec3_mul_double(
-			light_color,
+			&color,
 			(COEF * INTENSITY * pow(rr, GLOSS))));
 }
