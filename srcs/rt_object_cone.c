@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_object_cone.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/02 18:20:51 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/06 09:39:13 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,33 +22,38 @@ static bool	t_predicate(
 {
 	if (t < 1)
 		return (false);
-	const t_vec3 p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
 	rec->t = t;
-	rec->p = p;
+	rec->p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
 	rec->hit = true;
 	rt_after_hit(el, ray, rec);
 	return (true);
 }
 
-static bool actual_hittest(
+static void	calc_equation(
+		const t_element *el,
+		const t_ray *ray,
+		t_equation2 *eq)
+{
+	const t_vec3	q = mr_vec3_sub(ray->origin, el->position);
+	const t_vec3	b = mr_vec3_mul_double(
+					&ray->direction, cos(el->fov * M_PI / 360));
+	const t_vec3	x = mr_vec3_mul_double(&q, cos(el->fov * M_PI / 360));
+	const double	r = mr_vec3_dot(ray->direction, el->direction);
+	const double	s = mr_vec3_dot(q, el->direction);
+
+	eq->a = mr_vec3_dot(b, b) - r * r;
+	eq->b_half = mr_vec3_dot(b, x) - r * s;
+	eq->c = mr_vec3_dot(x, x) - s * s;
+}
+
+static bool	actual_hittest(
 	const t_element *el,
 	const t_ray *ray,
 	t_hit_record *rec)
 {
-	const double	T = cos(el->fov * M_PI / 360);
-	const t_vec3	q = mr_vec3_sub(ray->origin, el->position);
-	const t_vec3	B = mr_vec3_mul_double(&ray->direction, T);
-	const double	BB = mr_vec3_dot(B, B);
-	const t_vec3	Q = mr_vec3_mul_double(&q, T);
-	const double	QQ = mr_vec3_dot(Q, Q);
-	const double	BQ = mr_vec3_dot(B, Q);
-	const double	R = mr_vec3_dot(ray->direction, el->direction);
-	const double	S = mr_vec3_dot(q, el->direction);
-	
 	t_equation2	eq;
-	eq.a = BB - R * R;
-	eq.b_half = (BQ - R * S);
-	eq.c = QQ - S * S;
+
+	calc_equation(el, ray, &eq);
 	rt_solve_equation2(&eq);
 	if (eq.solutions >= 1 && t_predicate(el, ray, eq.t1, rec))
 		return (true);

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   rt_texture_plane.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:30:58 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/03 23:36:57 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/06 09:08:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static void set_tangent_coordinate_plane(t_hit_record *rec)
+static void	set_tangent_coordinate_plane(t_hit_record *rec)
 {
 	const t_vec3	pc = mr_vec3_sub(rec->p, rec->element.position);
 
