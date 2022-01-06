@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/04 13:57:18 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/05 00:27:50 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ bool	rt_is_shadow(
 			double dist_to_obj = scene->recs[i].t - 1 + EPS;
 			if (dist_to_obj < dist_to_light || fabs(dist_to_obj - dist_to_light) < EPS)  // 物体との距離が光源よりも近い場合
 			{
-				printf("%f - %f ", dist_to_obj, dist_to_light);
-				vec3_debug((t_vec3 *)&actual->p);
 				ray->marking_color = (t_vec3){1,0,1};
 				return (true);
 			}

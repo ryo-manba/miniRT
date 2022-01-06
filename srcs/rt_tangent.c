@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 13:52:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 00:10:03 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/05 21:26:12 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static const t_object_tangent_setter g_tangent_setters[] = {
 	rt_set_tangent_sphere,
 	rt_set_tangent_plane,
 	rt_set_tangent_cylinder,
+	rt_set_tangent_paraboloid,
 	rt_set_tangent_cone,
 };
 

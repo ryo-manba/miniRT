@@ -36,10 +36,9 @@ double	rt_grayscale_color_at(
 
 t_vec3	rt_element_color(double u, double v, t_element *el)
 {
-	const t_img	*texture = el->image;
+	t_img	*texture;
 
-	if (!texture)
-		return (el->color);
+	texture = el->image;
 	double jd = fmod(u * texture->width * el->freq_u + 100000 * texture->width, texture->width);
 	double id = fmod(v * texture->height * el->freq_v + 100000 * texture->height, texture->height);
 	int ji = jd;

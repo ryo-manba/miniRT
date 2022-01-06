@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/03 20:22:51 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 23:52:36 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define RD_ID_SPHERE		"sp"
 # define RD_ID_PLANE		"pl"
 # define RD_ID_CYLINDER		"cy"
+# define RD_ID_PARABOLOID	"pa"
 # define RD_ID_CONE			"co"
 # define RD_ID_SPOTLIGHT	"sl"
 # define RD_ID_TEXTURE		"tx"

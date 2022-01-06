@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/03 22:26:30 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 23:59:38 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,14 @@ static const t_element_info_extractor	g_cylinder_extractors[] = {
 	NULL,
 };
 
+static const t_element_info_extractor	g_paraboloid_extractors[] = {
+	extract_double_vector, // focalpoint
+	extract_double_vector, // posiiton
+	extract_double_vector, // direction
+	extract_double_vector, // color
+	NULL,
+};
+
 static const t_element_info_extractor	g_cone_extractors[] = {
 	extract_double_vector, // posiiton
 	extract_double_vector, // direction
@@ -162,6 +170,7 @@ static const t_element_info_extractor	*g_list_of_extractors[] = {
 	g_sphere_extractors,
 	g_plane_extractors,
 	g_cylinder_extractors,
+	g_paraboloid_extractors,
 	g_cone_extractors,
 	g_spotlight_extractors,
 	g_texture_extractors,
@@ -186,6 +195,9 @@ static void	**element_pointers(
 	if (el->etype == RD_ET_CYLINDER)
 		return ((void *[]){&el->position, &el->direction,
 			&el->diameter, &el->height, &el->color});
+	if (el->etype == RD_ET_PARABOLOID)
+		return ((void *[]){&el->focalpoint, &el->position, &el->direction,
+			&el->color});
 	if (el->etype == RD_ET_CONE)
 		return ((void *[]){&el->position, &el->direction,
 			&el->fov, &el->color});

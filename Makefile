@@ -19,6 +19,7 @@ SRCS		:=	debug.c \
 				rt_object_sphere.c \
 				rt_object_plane.c \
 				rt_object_cylinder.c \
+				rt_object_paraboloid.c \
 				rt_object_cone.c \
 				rt_hit_util.c \
 				rt_vector_rotation.c \
@@ -26,6 +27,7 @@ SRCS		:=	debug.c \
 				rt_texture_plane.c \
 				rt_texture_sphere.c \
 				rt_texture_cylinder.c \
+				rt_texture_paraboloid.c \
 				rt_texture_cone.c \
 				rt_ambient.c \
 				rt_diffuse.c \
