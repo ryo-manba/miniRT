@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_equation.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 17:01:33 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 21:15:16 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/06 09:08:12 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	rt_solve_equation1(t_equation2 *arg)
 	else
 	{
 		arg->solutions = 1;
-		arg->t1 = - arg->c / (2 * arg->b_half);
+		arg->t1 = -arg->c / (2 * arg->b_half);
 	}
 	return (arg->solutions);
 }

@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   rt_vector_rotation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:10:16 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 19:34:38 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 17:18:48 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mr_vec3.h"
-#include <math.h>
+#include <math.h> 
 
 // get azimuth-angle with y-axis-up
 static double	get_azimuth(const t_vec3 *vec)
