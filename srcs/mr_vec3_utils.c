@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mr_vec3_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:41:09 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 19:41:09 by corvvs           ###   ########.fr       */
+/*   Updated: 2021/12/26 23:37:49 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ t_vec3	mr_vec3_div_double(const t_vec3 *v, const double t)
 	return (mr_vec3_mul_double(v, (1 / t)));
 }
 
-// 単位ベクトル
 t_vec3	mr_unit_vector(const t_vec3 *v)
 {
 	return (mr_vec3_div_double(v, mr_vec3_length(v)));

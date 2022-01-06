@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   rt_texture_cylinder.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:41:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/04 13:39:59 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/06 09:11:45 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-static void set_tangent_coordinate_cylinder(t_hit_record *rec)
+static void	set_tangent_coordinate_cylinder(t_hit_record *rec)
 {
 	const t_vec3	pc = mr_vec3_sub(rec->p, rec->element.position);
 	const t_vec3	v0 = rec->element.direction;
@@ -20,9 +20,9 @@ static void set_tangent_coordinate_cylinder(t_hit_record *rec)
 	const t_vec3	u0 = rt_coord_turn_around_90(&w0, &v0);
 
 	rec->u = 1 - (atan2(
-			mr_vec3_dot(pc, w0),
-			mr_vec3_dot(pc, u0)
-		) / (2 * M_PI) - 0.5);
+				mr_vec3_dot(pc, w0),
+				mr_vec3_dot(pc, u0)
+				) / (2 * M_PI) - 0.5);
 	rec->v = -mr_vec3_dot(pc, v0);
 }
 
@@ -30,13 +30,14 @@ void	rt_set_tangent_cylinder(
 	t_hit_record *rec
 )
 {
-	t_vec3 axial_center = mr_vec3_add(
+	const t_vec3	axial_center = mr_vec3_add(
 		rec->element.position,
 		mr_vec3_mul_double(
 			&rec->element.direction,
 			rec->normal.x
 		)
 	);
+
 	rec->normal = mr_vec3_sub(rec->p, axial_center);
 	rec->normal = mr_unit_vector(&rec->normal);
 	rec->w0 = rec->normal;

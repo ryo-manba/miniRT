@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mr_mlx_utils.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/04 23:43:35 by rmatsuka          #+#    #+#             */
+/*   Updated: 2022/01/04 23:43:36 by rmatsuka         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minirt.h"
 
 void	mr_mlx_pixel_put(t_img *img, int x, int y, int color)
@@ -13,7 +25,7 @@ unsigned int	mr_mlx_pixel_get(t_img *img, int x, int y)
 	char	*dst;
 
 	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
-	return *(unsigned int *)dst;
+	return (*(unsigned int *)dst);
 }
 
 int	mr_exit_window(t_info *info)

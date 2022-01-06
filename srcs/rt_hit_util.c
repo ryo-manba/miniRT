@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_hit_util.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:29:15 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/31 12:12:25 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/05 00:24:42 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_vec3	rt_hit_point(double t, const t_ray *ray)
 {
 	return (mr_vec3_add((ray->origin),
-		(mr_vec3_mul_double(&ray->direction, t))));
+			(mr_vec3_mul_double(&ray->direction, t))));
 }
 
 void	rt_after_hit(
