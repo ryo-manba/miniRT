@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 23:59:38 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/07 21:01:29 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,6 @@ t_element	*rd_extract_element(
 	const char **words)
 {
 	t_element	*el;
-	double		r;
 
 	el = (t_element *)ft_calloc(1, sizeof(t_element));
 	if (!el)
@@ -229,13 +228,6 @@ t_element	*rd_extract_element(
 		free(el);
 		return (NULL);
 	}
-	el->radius = el->diameter / 2;
-	r = mr_vec3_length(&el->direction);
-	if (r == 0)
-		r = 1;
-	el->direction = mr_vec3_mul_double(&el->direction, 1 / r);
-	el->color = mr_vec3_mul_double(&el->color, 1 / 255.0);
-	el->subcolor = mr_vec3_mul_double(&el->subcolor, 1 / 255.0);
-	printf("el: %p(%p)\n", el, el->next);
+	rt_after_extraction(el);
 	return (el);
 }

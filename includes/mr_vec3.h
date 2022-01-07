@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mr_vec3.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/01/07 19:36:17 by corvvs            #+#    #+#             */
+/*   Updated: 2022/01/07 19:36:21 by corvvs           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MR_VEC3_H
 # define MR_VEC3_H
 # include "mr_common.h"
@@ -18,6 +30,5 @@ double	mr_vec3_length_squared(const t_vec3 *v);
 
 t_vec3	mr_vec3_product(t_vec3 u, t_vec3 v);
 void	mr_normalize_color(t_vec3 *p);
-
 
 #endif

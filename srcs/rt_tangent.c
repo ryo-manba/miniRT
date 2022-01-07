@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 13:52:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/06 11:38:48 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/07 20:21:00 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ void	rt_set_tangent_space(
 {
 	g_tangent_setters[rec->element.etype](rec);
 	if (rec->element.bump_el && rec->element.bump_el->image)
-		rec->normal = test_bumpfunc_image(
+		rec->normal = rt_bumpnormal(
 				rec->u, rec->v, rec->element.bump_el->image);
 	else
-		rec->normal = Z0;
+		rec->normal = (t_vec3){0, 0, 1};
 	rec->normal = rt_vec_tangent_to_global(rec, &rec->normal);
 	if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_TEXTURE)
 		rec->color = rt_element_color(rec->u, rec->v, rec->element.tex_el);

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/06 11:37:48 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/07 21:25:05 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ bool	rt_is_shadow(
 	ft_bzero(scene->recs, scene->n_objects * sizeof(t_hit_record));
 	if (is_obj_closer_than_light(scene, &shadow_ray, dist_to_light))
 	{
-		ray->marking_color = (t_vec3){1,0,1};
+		ray->marking_color = (t_vec3){1, 0, 1};
 		return (true);
 	}
 	ray->marking_color = (t_vec3){1, 1, 0};

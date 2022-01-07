@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/24 18:03:21 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/02 18:18:35 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/07 19:39:46 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 # define RT_COORD_H
 
 # include "mr_common.h"
-# define Y0 ((t_vec3){0, 1, 0})
-# define Z0 ((t_vec3){0, 0, 1})
-# define _GREEN ((t_vec3){79, 172, 135})
-# define _BLACK ((t_vec3){41, 37, 34})
 
 typedef struct s_equation2
 {

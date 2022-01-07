@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_texture_sphere.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:39:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/05 00:25:41 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/07 19:39:27 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	rt_set_tangent_sphere(
 	t_hit_record *rec
 )
 {
-	const t_vec3	y0 = Y0;
+	const t_vec3	y0 = (t_vec3){0, 1, 0};
 
 	rec->normal = mr_vec3_sub(rec->p, rec->element.position);
 	rec->normal = mr_unit_vector(&rec->normal);

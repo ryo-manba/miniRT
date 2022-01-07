@@ -82,4 +82,8 @@ re: fclean all
 test: $(NAME)
 	./$(NAME)
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus norm
+
+norm:
+	python3 -m norminette $(SRCDIR) includes
+

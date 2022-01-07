@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 00:01:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/06 11:35:25 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/07 20:33:37 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ t_vec3	rt_color_at(
 
 double	rt_grayscale_color_at(
 	t_img *image,
-	int x, int y
+	int x,
+	int y
 )
 {
 	const unsigned int	color = mr_mlx_pixel_get(image, x, y);
