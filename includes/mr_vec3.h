@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:36:17 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/07 19:36:21 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 11:17:22 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_vec3	mr_unit_vector(const t_vec3 *v);
 double	mr_vec3_length(const t_vec3 *v);
 double	mr_vec3_length_squared(const t_vec3 *v);
 
-t_vec3	mr_vec3_product(t_vec3 u, t_vec3 v);
+t_vec3	mr_vec3_product(const t_vec3 u, const t_vec3 v);
 void	mr_normalize_color(t_vec3 *p);
 
 #endif

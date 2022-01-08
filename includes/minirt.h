@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 11:11:53 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 11:18:01 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,6 @@ bool			rt_is_shadow(
 					t_ray *ray);
 
 /* debug */
-void			vec3_debug(t_vec3 *vec);
+void			vec3_debug(const t_vec3 *vec);
 
 #endif
