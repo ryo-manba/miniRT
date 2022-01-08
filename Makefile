@@ -14,11 +14,15 @@ SRCS		:=	debug.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
 				mr_vec3_operator2.c \
+				mr_reading_imagefile.c \
+				rt_raytracer.c \
 				rt_color.c \
+				rt_reflection.c \
 				rt_tangent.c \
 				rt_object_sphere.c \
 				rt_object_plane.c \
 				rt_object_cylinder.c \
+				rt_object_paraboloid.c \
 				rt_object_cone.c \
 				rt_hit_util.c \
 				rt_vector_rotation.c \
@@ -26,6 +30,7 @@ SRCS		:=	debug.c \
 				rt_texture_plane.c \
 				rt_texture_sphere.c \
 				rt_texture_cylinder.c \
+				rt_texture_paraboloid.c \
 				rt_texture_cone.c \
 				rt_ambient.c \
 				rt_diffuse.c \
@@ -80,4 +85,8 @@ re: fclean all
 test: $(NAME)
 	./$(NAME)
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus norm
+
+norm:
+	python3 -m norminette $(SRCDIR) includes
+

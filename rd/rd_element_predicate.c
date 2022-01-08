@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/03 19:54:41 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 23:59:01 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,13 @@ static const t_element_info_predicate	g_cylinder_predicates[] = {
 	rd_word_is_unit_vector,
 	rd_word_is_positive_real,
 	rd_word_is_positive_real,
+	rd_word_is_color_vector,
+	NULL};
+
+static const t_element_info_predicate	g_paraboloid_predicates[] = {
+	rd_word_is_vector,
+	rd_word_is_vector,
+	rd_word_is_unit_vector,
 	rd_word_is_color_vector,
 	NULL};
 
@@ -90,6 +97,7 @@ static const t_element_info_predicate	*g_element_predicate_array[] = {
 	g_sphere_predicates,
 	g_plane_predicates,
 	g_cylinder_predicates,
+	g_paraboloid_predicates,
 	g_cone_predicates,
 	g_spotlight_predicates,
 	g_texture_predicates,
@@ -104,6 +112,7 @@ static const char						*g_element_ids[] = {
 	RD_ID_SPHERE,
 	RD_ID_PLANE,
 	RD_ID_CYLINDER,
+	RD_ID_PARABOLOID,
 	RD_ID_CONE,
 	RD_ID_SPOTLIGHT,
 	RD_ID_TEXTURE,
@@ -118,6 +127,7 @@ static const t_element_type				g_element_types[] = {
 	RD_ET_SPHERE,
 	RD_ET_PLANE,
 	RD_ET_CYLINDER,
+	RD_ET_PARABOLOID,
 	RD_ET_CONE,
 	RD_ET_SPOTLIGHT,
 	RD_ET_TEXTURE,

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 00:00:54 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/04 23:57:53 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef enum e_element_type
 	RD_ET_SPHERE,
 	RD_ET_PLANE,
 	RD_ET_CYLINDER,
+	RD_ET_PARABOLOID,
 	RD_ET_CONE,
 	RD_ET_SPOTLIGHT,
 	RD_ET_TEXTURE,
@@ -40,6 +41,7 @@ typedef struct s_element
 	t_vec3				position;
 	t_vec3				direction;
 	t_vec3				color;
+	t_vec3				focalpoint;
 	double				ratio;
 	double				radius;
 	double				diameter;

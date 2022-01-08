@@ -1,16 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rt_object_cone.c                                   :+:      :+:    :+:   */
+/*   rt_object_paraboloid.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 10:35:28 by corvvs           ###   ########.fr       */
+/*   Created: 2022/01/05 00:02:39 by corvvs            #+#    #+#             */
+/*   Updated: 2022/01/07 21:18:54 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
 #define EPS 1e-9
 
 static bool	t_predicate(
@@ -20,30 +21,16 @@ static bool	t_predicate(
 	t_hit_record *rec
 )
 {
+	t_vec3	p;
+
 	if (t < 1)
 		return (false);
+	p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
 	rec->t = t;
-	rec->p = mr_vec3_add(ray->origin, mr_vec3_mul_double(&ray->direction, t));
+	rec->p = p;
 	rec->hit = true;
 	rt_after_hit(el, ray, rec);
 	return (true);
-}
-
-static void	calc_equation(
-		const t_element *el,
-		const t_ray *ray,
-		t_equation2 *eq)
-{
-	const t_vec3	q = mr_vec3_sub(ray->origin, el->position);
-	const t_vec3	b = mr_vec3_mul_double(
-					&ray->direction, cos(el->fov));
-	const t_vec3	x = mr_vec3_mul_double(&q, cos(el->fov));
-	const double	r = mr_vec3_dot(ray->direction, el->direction);
-	const double	s = mr_vec3_dot(q, el->direction);
-
-	eq->a = mr_vec3_dot(b, b) - r * r;
-	eq->b_half = mr_vec3_dot(b, x) - r * s;
-	eq->c = mr_vec3_dot(x, x) - s * s;
 }
 
 static bool	actual_hittest(
@@ -51,9 +38,15 @@ static bool	actual_hittest(
 	const t_ray *ray,
 	t_hit_record *rec)
 {
-	t_equation2	eq;
+	const t_vec3	q = mr_vec3_sub(ray->origin, el->position);
+	const t_vec3	g = mr_vec3_sub(ray->origin, el->focalpoint);
+	const double	bd = mr_vec3_dot(ray->direction, el->direction);
+	const double	qd = mr_vec3_dot(q, el->direction);
+	t_equation2		eq;
 
-	calc_equation(el, ray, &eq);
+	eq.a = bd * bd - mr_vec3_length_squared(&ray->direction);
+	eq.b_half = qd * bd - mr_vec3_dot(ray->direction, g);
+	eq.c = qd * qd - mr_vec3_length_squared(&g);
 	rt_solve_equation2(&eq);
 	if (eq.solutions >= 1 && t_predicate(el, ray, eq.t1, rec))
 		return (true);
@@ -62,7 +55,7 @@ static bool	actual_hittest(
 	return (false);
 }
 
-bool	rt_hittest_cone(
+bool	rt_hittest_paraboloid(
 	const t_element *el,
 	const t_ray *ray,
 	t_hit_record *rec)

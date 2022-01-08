@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_tangent.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 13:52:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/06 09:16:01 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/07 20:21:00 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static const t_object_tangent_setter	g_tangent_setters[] = {
 	rt_set_tangent_sphere,
 	rt_set_tangent_plane,
 	rt_set_tangent_cylinder,
+	rt_set_tangent_paraboloid,
 	rt_set_tangent_cone,
 };
 
@@ -60,13 +61,13 @@ void	rt_set_tangent_space(
 {
 	g_tangent_setters[rec->element.etype](rec);
 	if (rec->element.bump_el && rec->element.bump_el->image)
-		rec->normal = test_bumpfunc_image(
+		rec->normal = rt_bumpnormal(
 				rec->u, rec->v, rec->element.bump_el->image);
 	else
-		rec->normal = Z0;
+		rec->normal = (t_vec3){0, 0, 1};
 	rec->normal = rt_vec_tangent_to_global(rec, &rec->normal);
 	if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_TEXTURE)
-		rec->color = rt_element_color(rec->u, rec->v, &rec->element);
+		rec->color = rt_element_color(rec->u, rec->v, rec->element.tex_el);
 	else if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_CHECKER)
 		rec->color = checker_texture(rec);
 	else

@@ -13,6 +13,7 @@ SRCS		:=	rd_file.c \
 				rd_element_predicate.c \
 				rd_scalar_predicate.c rd_vector_predicate.c rd_double.c \
 				rd_extractor.c \
+				rd_after_extraction.c \
 				rd_debug.c
 
 OBJS		:=	$(SRCS:.c=.o)

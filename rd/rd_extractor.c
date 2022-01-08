@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/03 22:26:30 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/07 21:01:29 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,14 @@ static const t_element_info_extractor	g_cylinder_extractors[] = {
 	NULL,
 };
 
+static const t_element_info_extractor	g_paraboloid_extractors[] = {
+	extract_double_vector, // focalpoint
+	extract_double_vector, // posiiton
+	extract_double_vector, // direction
+	extract_double_vector, // color
+	NULL,
+};
+
 static const t_element_info_extractor	g_cone_extractors[] = {
 	extract_double_vector, // posiiton
 	extract_double_vector, // direction
@@ -162,6 +170,7 @@ static const t_element_info_extractor	*g_list_of_extractors[] = {
 	g_sphere_extractors,
 	g_plane_extractors,
 	g_cylinder_extractors,
+	g_paraboloid_extractors,
 	g_cone_extractors,
 	g_spotlight_extractors,
 	g_texture_extractors,
@@ -186,6 +195,9 @@ static void	**element_pointers(
 	if (el->etype == RD_ET_CYLINDER)
 		return ((void *[]){&el->position, &el->direction,
 			&el->diameter, &el->height, &el->color});
+	if (el->etype == RD_ET_PARABOLOID)
+		return ((void *[]){&el->focalpoint, &el->position, &el->direction,
+			&el->color});
 	if (el->etype == RD_ET_CONE)
 		return ((void *[]){&el->position, &el->direction,
 			&el->fov, &el->color});
@@ -205,7 +217,6 @@ t_element	*rd_extract_element(
 	const char **words)
 {
 	t_element	*el;
-	double		r;
 
 	el = (t_element *)ft_calloc(1, sizeof(t_element));
 	if (!el)
@@ -217,13 +228,6 @@ t_element	*rd_extract_element(
 		free(el);
 		return (NULL);
 	}
-	el->radius = el->diameter / 2;
-	r = mr_vec3_length(&el->direction);
-	if (r == 0)
-		r = 1;
-	el->direction = mr_vec3_mul_double(&el->direction, 1 / r);
-	el->color = mr_vec3_mul_double(&el->color, 1 / 255.0);
-	el->subcolor = mr_vec3_mul_double(&el->subcolor, 1 / 255.0);
-	printf("el: %p(%p)\n", el, el->next);
+	rt_after_extraction(el);
 	return (el);
 }

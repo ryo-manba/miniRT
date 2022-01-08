@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_is_shadow.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/05 11:12:36 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/08 11:01:16 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static bool	is_reflective_part(
 		return (true);
 	pc = mr_vec3_sub(rec->p, light->position);
 	pc = mr_unit_vector(&pc);
-	return (mr_vec3_dot(pc, light->direction) >= cos(light->fov * M_PI / 360));
+	return (mr_vec3_dot(pc, light->direction) >= cos(light->fov));
 }
 
 static bool	is_obj_closer_than_light(
