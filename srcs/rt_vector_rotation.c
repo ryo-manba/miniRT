@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_vector_rotation.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:10:16 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 17:18:48 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/08 15:27:02 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,10 @@ static double	get_elevation(const t_vec3 *vec)
 static t_vec3	rot_around_axis(const t_vec3 *r, const t_vec3 *n,
 	const double angle)
 {
-	const t_vec3	temp = mr_vec3_cross(n, r);
+	t_vec3	temp;
 
+	temp = mr_vec3_cross(n, r);
+	mr_vec3_mul_double_comp(&temp, sin(angle));
 	return (mr_vec3_add(
 			mr_vec3_add(
 				mr_vec3_mul_double(r, cos(angle)),
@@ -45,11 +47,8 @@ static t_vec3	rot_around_axis(const t_vec3 *r, const t_vec3 *n,
 					n,
 					mr_vec3_dot(*n, *r) * (1 - cos(angle))
 				)
-			),
-			mr_vec3_mul_double(
-				&temp,
-				sin(angle)
-			)));
+			), temp
+		));
 }
 
 // transform a vector v by transformation

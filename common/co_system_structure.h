@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 10:22:10 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 16:13:40 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct	s_ray
 	t_vec3	direction;
 	t_vec3	marking_color;
 	bool	for_shadow;
+	double	subpx;
 } t_ray;
 typedef struct	s_hit_record
 {

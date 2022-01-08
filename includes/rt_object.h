@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:48:46 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/07 20:21:00 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 15:56:12 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef void	(*t_object_tangent_setter)(t_hit_record *rec);
 
 t_vec3			rt_vec_tangent_to_global(
 					t_hit_record *rec,
-					t_vec3 *vtangent);
+					const t_vec3 *vtangent);
 
 t_vec3			rt_bumpnormal(double u, double v, t_img *bumpmap);
 

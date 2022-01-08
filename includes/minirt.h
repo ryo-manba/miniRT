@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 11:18:01 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 16:57:03 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,10 @@
 # define BLACK 0x000000
 # define WHITE 0xffffff
 
+# ifndef SUBPIXEL
+#  define SUBPIXEL 3
+# endif
+
 /* hooks */
 void			mr_mlx_pixel_put(t_img *img, int x, int y, const t_vec3 v3);
 unsigned int	mr_mlx_pixel_get(t_img *img, int x, int y);
@@ -76,7 +80,7 @@ t_hit_record	*rt_find_actual_hit(t_ray *r, t_scene *scene);
 t_vec3			rt_reflect_ray(
 					t_ray *r,
 					t_scene *scene,
-					const t_hit_record *actual);
+					t_hit_record *actual);
 
 t_vec3			rt_ambient(
 					const double ratio,

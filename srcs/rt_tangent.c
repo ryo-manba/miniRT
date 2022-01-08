@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 13:52:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/07 20:21:00 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 15:56:07 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	rt_set_tangent_space(
 // 接空間上のベクトルを通常空間に変換する
 t_vec3	rt_vec_tangent_to_global(
 	t_hit_record *rec,
-	t_vec3 *vtangent
+	const t_vec3 *vtangent
 )
 {
 	t_vec3	vglobal;

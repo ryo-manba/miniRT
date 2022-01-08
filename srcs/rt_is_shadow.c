@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/08 11:01:16 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 16:15:43 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static bool	is_reflective_part(
 	if (light->etype != RD_ET_SPOTLIGHT)
 		return (true);
 	pc = mr_vec3_sub(rec->p, light->position);
-	pc = mr_unit_vector(&pc);
+	mr_normalize_comp(&pc);
 	return (mr_vec3_dot(pc, light->direction) >= cos(light->fov));
 }
 
@@ -87,6 +87,7 @@ bool	rt_is_shadow(
 			actual->p, mr_vec3_mul_double(&incident, EPS - 1));
 	shadow_ray.direction = incident;
 	shadow_ray.for_shadow = true;
+	shadow_ray.subpx = 1;
 	ft_bzero(scene->recs, scene->n_objects * sizeof(t_hit_record));
 	if (is_obj_closer_than_light(scene, &shadow_ray, dist_to_light))
 	{

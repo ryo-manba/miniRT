@@ -14,6 +14,7 @@ SRCS		:=	debug.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
 				mr_vec3_operator2.c \
+				mr_vec3_operator_composit.c \
 				mr_reading_imagefile.c \
 				rt_raytracer.c \
 				rt_color.c \
