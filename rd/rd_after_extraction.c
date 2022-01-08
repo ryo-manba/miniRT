@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 20:59:37 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/07 21:09:09 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 10:35:04 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ static void	after_extraction_paraboloid(t_element *el)
 		el->direction = mr_vec3_mul_double(&n0, -1);
 }
 
+static void	after_extraction_light(t_element *el)
+{
+	el->color = mr_vec3_mul_double(&el->color, el->ratio);
+}
+
 void	rt_after_extraction(t_element *el)
 {
 	double	r;
@@ -32,6 +37,9 @@ void	rt_after_extraction(t_element *el)
 	el->direction = mr_vec3_mul_double(&el->direction, 1 / r);
 	el->color = mr_vec3_mul_double(&el->color, 1 / 255.0);
 	el->subcolor = mr_vec3_mul_double(&el->subcolor, 1 / 255.0);
+	el->fov *= M_PI / 360;
 	if (el->etype == RD_ET_PARABOLOID)
 		after_extraction_paraboloid(el);
+	if (el->etype == RD_ET_LIGHT || el->etype == RD_ET_SPOTLIGHT)
+		after_extraction_light(el);
 }

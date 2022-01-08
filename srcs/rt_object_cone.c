@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_object_cone.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:13:53 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/06 09:39:13 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/08 10:35:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	calc_equation(
 {
 	const t_vec3	q = mr_vec3_sub(ray->origin, el->position);
 	const t_vec3	b = mr_vec3_mul_double(
-					&ray->direction, cos(el->fov * M_PI / 360));
-	const t_vec3	x = mr_vec3_mul_double(&q, cos(el->fov * M_PI / 360));
+					&ray->direction, cos(el->fov));
+	const t_vec3	x = mr_vec3_mul_double(&q, cos(el->fov));
 	const double	r = mr_vec3_dot(ray->direction, el->direction);
 	const double	s = mr_vec3_dot(q, el->direction);
 

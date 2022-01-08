@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/07 19:38:27 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 11:11:53 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,18 @@
 # define WHITE 0xffffff
 
 /* hooks */
-void			mr_mlx_pixel_put(t_img *img, int x, int y, int color);
+void			mr_mlx_pixel_put(t_img *img, int x, int y, const t_vec3 v3);
 unsigned int	mr_mlx_pixel_get(t_img *img, int x, int y);
 int				mr_exit_window(t_info *info);
+bool			mr_read_image_files(t_info *info, t_scene *scene);
+void			mr_destroy_image_files(t_info *info, t_scene *scene);
 
 int				rt_create_trgb(int t, int r, int g, int b);
 t_vec3			rt_color_at(t_img *image, int x, int y);
 double			rt_grayscale_color_at(t_img *image, int x, int y);
 t_vec3			rt_element_color(double u, double v, t_element *el);
+
+void			rt_raytrace(t_info *info, t_scene *scene);
 
 t_vec3			rt_hit_point(double t, const t_ray *ray);
 void			rt_after_hit(
@@ -60,14 +64,20 @@ void			rt_after_hit(
 					const t_ray *ray,
 					t_hit_record *rec);
 
-t_vec3			rt_orient_vector(t_vec3 *v, t_vec3 *orient);
+t_vec3			rt_orient_vector(const t_vec3 *v, const t_vec3 *orient);
 
 bool			rt_hit_object(
-					t_element *el,
+					const t_element *el,
 					const t_ray *ray,
 					t_hit_record *rec);
+t_hit_record	*rt_find_actual_hit(t_ray *r, t_scene *scene);
 
-/* refraction */
+/* refrection */
+t_vec3			rt_reflect_ray(
+					t_ray *r,
+					t_scene *scene,
+					const t_hit_record *actual);
+
 t_vec3			rt_ambient(
 					const double ratio,
 					const t_vec3 *ambient_color,

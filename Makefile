@@ -14,7 +14,10 @@ SRCS		:=	debug.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
 				mr_vec3_operator2.c \
+				mr_reading_imagefile.c \
+				rt_raytracer.c \
 				rt_color.c \
+				rt_reflection.c \
 				rt_tangent.c \
 				rt_object_sphere.c \
 				rt_object_plane.c \

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/02 18:22:11 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 10:22:10 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,10 @@ typedef struct s_optics
 	t_vec3		screen_bottomleft;
 }	t_optics;
 
-typedef struct s_info
-{
-	void	*mlx;
-	void	*win;
-	t_img	img;
-} t_info;
-
 typedef struct	s_ray
 {
 	t_vec3	origin;
 	t_vec3	direction;
-	int		pixel_x;
-	int		pixel_y;
 	t_vec3	marking_color;
 	bool	for_shadow;
 } t_ray;
@@ -75,6 +66,17 @@ typedef struct s_scene
 	t_element		**spotlights;
 	t_optics		optics;
 	t_hit_record	*recs;
+	double			aspect_ratio;
+	double			pixel_width;
+	double			pixel_height;
 }	t_scene;
+
+typedef struct s_info
+{
+	void	*mlx;
+	void	*win;
+	t_img	img;
+	t_scene	*scene;
+} t_info;
 
 #endif
