@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 10:34:02 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 16:11:46 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include "mr_utils.h"
 #include "mr_camera.h"
 
-static const double					g_aspect_ratio = 16.0 / 9.0;
-static const int					g_height = 320;
+static const double	g_aspect_ratio = 16.0 / 9.0;
+static const int	g_height = 320;
 
 static bool	setup_info(t_info *info)
 {

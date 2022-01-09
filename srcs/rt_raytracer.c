@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 10:16:29 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 11:12:13 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 16:56:45 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,49 +24,59 @@ static t_vec3	sky_blue(const t_vec3 direction)
 			mr_vec3_mul_double(&c2, 1 - t)));
 }
 
-static t_vec3	derive_color_for_ray(t_ray *r, t_scene *scene)
-{
-	t_hit_record	*actual;
-	t_hit_record	actual_0;
-	t_vec3			base_color;
-
-	actual = rt_find_actual_hit(r, scene);
-	if (!actual)
-	{
-		return (sky_blue(r->direction));
-	}
-	rt_set_tangent_space(actual);
-	actual_0 = *actual;
-	base_color = rt_reflect_ray(r, scene, &actual_0);
-	base_color.x = fmin(base_color.x, 1);
-	base_color.y = fmin(base_color.y, 1);
-	base_color.z = fmin(base_color.z, 1);
-	return (base_color);
-}
-
-static void	set_ray_for_pixel(t_scene *scene, t_ray *ray, int x, int y)
+static void	set_ray_for_pixel(t_scene *scene, t_ray *ray, double x, double y)
 {
 	const t_element	*cam = scene->camera;
-	const t_vec3	ray_cross_screen = mr_vec3_add(
-		mr_vec3_add(
-			mr_vec3_mul_double(&scene->optics.screen_vertical,
-				(scene->pixel_height - y) / scene->pixel_height),
-			mr_vec3_mul_double(&scene->optics.screen_horizontal,
-				x / scene->pixel_width)
-		),
-		scene->optics.screen_bottomleft
-	);
 
+	ray->origin = mr_vec3_add(
+			mr_vec3_add(
+				mr_vec3_mul_double(&scene->optics.screen_vertical,
+					(scene->pixel_height - y) / scene->pixel_height),
+				mr_vec3_mul_double(&scene->optics.screen_horizontal,
+					x / scene->pixel_width)
+				),
+			scene->optics.screen_bottomleft
+			);
 	if (cam->fov == 0)
 	{
-		ray->origin = mr_vec3_sub(ray_cross_screen, cam->direction);
+		mr_vec3_sub_comp(&ray->origin, cam->direction);
 		ray->direction = cam->direction;
 	}
 	else
 	{
+		ray->direction = mr_vec3_sub(ray->origin, cam->position);
 		ray->origin = cam->position;
-		ray->direction = mr_vec3_sub(ray_cross_screen, ray->origin);
 	}
+}
+
+static t_vec3	derive_color_for_pixel(
+	t_ray *ray, t_scene *scene, int x, int y)
+{
+	t_hit_record	*actual;
+	t_vec3			bc;
+	double			i;
+	double			j;
+
+	i = 0;
+	mr_vec3_init(&bc, 0, 0, 0);
+	while (i < ray->subpx)
+	{
+		j = 0;
+		while (j < ray->subpx)
+		{
+			set_ray_for_pixel(scene, ray,
+				(x + (j + 0.5) / ray->subpx), (y + (i + 0.5) / ray->subpx));
+			actual = rt_find_actual_hit(ray, scene);
+			if (actual)
+				mr_vec3_add_comp(&bc, rt_reflect_ray(ray, scene, actual));
+			else
+				mr_vec3_add_comp(&bc, sky_blue(ray->direction));
+			j += 1;
+		}
+		i += 1;
+	}
+	mr_vec3_mul_double_comp(&bc, 1 / (ray->subpx * ray->subpx));
+	return (mr_vec_cutoff(bc));
 }
 
 static void	setup_optics(t_scene *scene)
@@ -98,23 +108,24 @@ static void	setup_optics(t_scene *scene)
 
 void	rt_raytrace(t_info *info, t_scene *scene)
 {
-	int		i;
-	int		j;
+	int		x;
+	int		y;
 	t_ray	ray;
+	t_vec3	color;
 
 	setup_optics(scene);
 	ray.for_shadow = false;
-	j = 0;
-	while (j < scene->pixel_height)
+	ray.subpx = SUBPIXEL;
+	y = 0;
+	while (y < scene->pixel_height)
 	{
-		i = 0;
-		while (i < scene->pixel_width)
+		x = 0;
+		while (x < scene->pixel_width)
 		{
-			set_ray_for_pixel(scene, &ray, i, j);
-			mr_mlx_pixel_put(
-				&info->img, i, j, derive_color_for_ray(&ray, scene));
-			i += 1;
+			color = derive_color_for_pixel(&ray, scene, x, y);
+			mr_mlx_pixel_put(&info->img, x, y, color);
+			x += 1;
 		}
-		j += 1;
+		y += 1;
 	}
 }
