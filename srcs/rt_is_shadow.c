@@ -52,8 +52,7 @@ static bool	is_obj_closer_than_light(
 		if (rt_hit_object(scene->objects[i], shadow_ray, &scene->recs[i]))
 		{
 			dist_to_obj = scene->recs[i].t - 1 + EPS;
-			if (dist_to_obj < dist_to_light ||
-				fabs(dist_to_obj - dist_to_light) < EPS)
+			if (dist_to_obj < dist_to_light)
 			{
 				return (true);
 			}
