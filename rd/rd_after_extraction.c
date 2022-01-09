@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 20:59:37 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 10:35:04 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/08 17:35:13 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	rt_after_extraction(t_element *el)
 	el->direction = mr_vec3_mul_double(&el->direction, 1 / r);
 	el->color = mr_vec3_mul_double(&el->color, 1 / 255.0);
 	el->subcolor = mr_vec3_mul_double(&el->subcolor, 1 / 255.0);
+	if (el->etype == RD_ET_CONE && fabs(el->fov - 180) < 1e-6)
+		el->etype = RD_ET_PLANE;
 	el->fov *= M_PI / 360;
 	if (el->etype == RD_ET_PARABOLOID)
 		after_extraction_paraboloid(el);
