@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/10 09:32:38 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 15:13:20 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ static bool	attach_attribute(t_temp_scene *scene, t_element **list, t_element *e
 	t_element	*tail;
 
 	printf("[%s]\n", scene->cur.symbol);
-	if (!*list)
-		return (rd_print_error_cur(&scene->cur, "no object"));
 	tail = *list;
+	if (!tail)
+		return (rd_print_error_cur(&scene->cur, "no object"));
 	while (tail->next)
 		tail = tail->next;
 	if (el->etype == RD_ET_TEXTURE || el->etype == RD_ET_CHECKER)
@@ -53,6 +53,8 @@ static bool	attach_attribute(t_temp_scene *scene, t_element **list, t_element *e
 	else if (el->etype == RD_ET_MATERIAL)
 	{
 		tail->gloss = el->gloss;
+		tail->k_diffuse = el->k_diffuse;
+		tail->k_specular = el->k_specular;
 		rd_destroy_element(el);
 	}
 	return (true);
