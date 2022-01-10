@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/07 21:01:29 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 11:49:39 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,13 @@ static const t_element_info_extractor	g_bumpmap_extractors[] = {
 	NULL,
 };
 
+static const t_element_info_extractor	g_material_extractors[] = {
+	extract_double_scalar, // k_diffuse
+	extract_double_scalar, // k_specular
+	extract_double_scalar, // gloss
+	NULL,
+};
+
 static bool	extract_seq(
 	const char **words,
 	const t_element_info_extractor *extractors,
@@ -176,6 +183,7 @@ static const t_element_info_extractor	*g_list_of_extractors[] = {
 	g_texture_extractors,
 	g_checker_extractors,
 	g_bumpmap_extractors,
+	g_material_extractors,
 };
 
 static void	**element_pointers(
@@ -209,6 +217,8 @@ static void	**element_pointers(
 	if (el->etype == RD_ET_CHECKER)
 		return ((void *[]){&el->freq_u, &el->freq_v,
 			&el->color, &el->subcolor});
+	if (el->etype == RD_ET_MATERIAL)
+		return ((void *[]){&el->k_diffuse, &el->k_specular, &el->gloss});
 	return (NULL);
 }
 
@@ -230,4 +240,16 @@ t_element	*rd_extract_element(
 	}
 	rt_after_extraction(el);
 	return (el);
+}
+
+void	rd_destroy_element(t_element *el)
+{
+	if (el->tex_el)
+		rd_destroy_element(el->tex_el);
+	if (el->bump_el)
+		rd_destroy_element(el->bump_el);
+	if (el->xpm_file_path)
+		free(el->xpm_file_path);
+	// el->imageはReadモジュールの外で別途破壊すること
+	free(el);
 }

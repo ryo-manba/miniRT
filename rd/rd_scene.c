@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/03 22:28:32 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 09:32:38 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,11 @@ static bool	attach_attribute(t_temp_scene *scene, t_element **list, t_element *e
 		if (tail->bump_el)
 			return (rd_print_error_cur(&scene->cur, "bumpmap already attached"));
 		tail->bump_el = el;
+	}
+	else if (el->etype == RD_ET_MATERIAL)
+	{
+		tail->gloss = el->gloss;
+		rd_destroy_element(el);
 	}
 	return (true);
 }
@@ -147,7 +152,7 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 		else if (el->etype == RD_ET_SPOTLIGHT)
 			element_addback(&temp_scene.spotlight_list, el);
 		else if (el->etype == RD_ET_TEXTURE || el->etype == RD_ET_CHECKER
-			|| el->etype == RD_ET_BUMPMAP)
+			|| el->etype == RD_ET_BUMPMAP || el->etype == RD_ET_MATERIAL)
 			{
 				if (!attach_attribute(&temp_scene, &temp_scene.object_list, el))
 				{

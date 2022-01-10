@@ -6,14 +6,13 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 22:54:35 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/09 22:32:34 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 11:50:57 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 
-#define COEF 0.3
-#define INTENSITY 100.0
+#define INTENSITY 30.0
 #define GLOSS 30.0
 
 // ray_inverse = レイの方向の逆向きの方向ベクトル(正規化済み)
@@ -45,6 +44,8 @@ t_vec3	rt_specular(
 	color = mr_vec3_product(*light_color, rec->color);
 	return (mr_vec3_mul_double(
 			&color,
-			(COEF * INTENSITY
-				* pow(rr, GLOSS) / mr_vec3_length_squared(&temp2))));
+			(INTENSITY
+				* rec->element.k_specular
+				* pow(rr, rec->element.gloss)
+				/ mr_vec3_length_squared(&temp2))));
 }

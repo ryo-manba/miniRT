@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 23:59:01 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 11:46:56 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,12 @@ static const t_element_info_predicate	g_bumpmap_predicates[] = {
 	rd_word_is_positive_real,
 	NULL};
 
+static const t_element_info_predicate	g_material_predicates[] = {
+	rd_word_is_positive_real,
+	rd_word_is_positive_real,
+	rd_word_is_positive_real,
+	NULL};
+
 static const t_element_info_predicate	*g_element_predicate_array[] = {
 	g_ambient_predicates,
 	g_camera_predicates,
@@ -103,6 +109,7 @@ static const t_element_info_predicate	*g_element_predicate_array[] = {
 	g_texture_predicates,
 	g_checker_predicates,
 	g_bumpmap_predicates,
+	g_material_predicates,
 	NULL};
 
 static const char						*g_element_ids[] = {
@@ -118,6 +125,7 @@ static const char						*g_element_ids[] = {
 	RD_ID_TEXTURE,
 	RD_ID_CHECKER,
 	RD_ID_BUMPMAP,
+	RD_ID_MATERIAL,
 	NULL};
 
 static const t_element_type				g_element_types[] = {
@@ -133,6 +141,7 @@ static const t_element_type				g_element_types[] = {
 	RD_ET_TEXTURE,
 	RD_ET_CHECKER,
 	RD_ET_BUMPMAP,
+	RD_ET_MATERIAL,
 	RD_ET_DUMMY};
 
 static t_element_type	matches_predicates(
