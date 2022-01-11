@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:05:37 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 11:42:42 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 18:39:35 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	rd_print_error(const char *error, t_temp_scene *temp_scene)
 {
-	printf("\e[93mError: %s\e[m\n", error);
+	printf("\e[93mError\n%s\e[m\n", error);
 	if (temp_scene)
 		rd_destroy_temp_scene_fail(temp_scene);
 	return (false);

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 11:32:07 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 18:58:14 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,13 @@ static bool	setup_info(t_info *info)
 
 	info->mlx = mlx_init();
 	if (!info->mlx)
-		return (false);
+		mr_bailout(info, "bad mlx(mlx)");
 	info->win = mlx_new_window(info->mlx, width, g_height, "miniRT");
 	if (!info->win)
-		return (false);
+		mr_bailout(info, "bad mlx(window)");
 	info->img.img = mlx_new_image(info->mlx, width, g_height);
 	if (!info->img.img)
-		return (false);
+		mr_bailout(info, "bad mlx(image)");
 	info->img.addr = mlx_get_data_addr(
 			info->img.img,
 			&info->img.bpp,
@@ -40,30 +40,34 @@ static bool	setup_info(t_info *info)
 	return (true);
 }
 
+void	setup(int argc, char **argv, t_info *info)
+{
+	if (argc != 2)
+		mr_bailout(info, "will be accepted just one argument as rt-file path");
+	if (rd_read_scene(argv[1], info->scene) == false)
+	{
+		exit(1);
+	}
+	setup_info(info);
+	info->scene->recs = (t_hit_record *)malloc(
+			(info->scene->n_objects + 1) * sizeof(t_hit_record));
+	if (!info->scene->recs)
+		mr_bailout(info, "bad alloc(recs)");
+	info->scene->aspect_ratio = g_aspect_ratio;
+	info->scene->pixel_height = g_height;
+	info->scene->pixel_width = g_aspect_ratio * g_height;
+	mr_read_image_files(info);
+}
+
 int	main(int argc, char **argv)
 {
 	t_info	info;
 	t_scene	scene;
 
-	if (argc != 2)
-	{
-		printf("Error: Invalid Argument\n");
-		return (1);
-	}
-	if (rd_read_scene(argv[1], &scene) == false)
-	{
-		return (1);
-	}
-	if (setup_info(&info) == false)
-	{
-		return (1);
-	}
-	scene.recs = (t_hit_record *)malloc((scene.n_objects + 1) * sizeof(t_hit_record));
-	scene.aspect_ratio = g_aspect_ratio;
-	scene.pixel_height = g_height;
-	scene.pixel_width = g_aspect_ratio * g_height;
+	ft_bzero(&info, sizeof(t_info));
+	ft_bzero(&scene, sizeof(t_scene));
 	info.scene = &scene;
-	mr_read_image_files(&info, &scene);
+	setup(argc, argv, &info);
 	rt_raytrace(&info, &scene);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
 	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);
