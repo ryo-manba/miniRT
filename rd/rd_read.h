@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 11:42:42 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 21:05:35 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,12 @@ double			rd_nan(void);
 t_element		*rd_extract_element(t_element_type etype,
 					const char **words);
 void			rd_destroy_element(t_element *el);
+void			**rd_get_element_slots(
+					void **dest,
+					t_element *el);
+bool			rd_extract_double_scalar(const char *str, void *slot);
+bool			rd_extract_double_vector(const char *str, void *slot);
+bool			rd_extract_string(const char *str, void *slot);
 
 void			rd_destroy_temp_scene_fail(t_temp_scene *temp_scene);
 void			rd_destroy_temp_scene_succ(t_temp_scene *temp_scene);

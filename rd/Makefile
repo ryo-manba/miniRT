@@ -8,11 +8,13 @@ NAME		:=	libread.a
 SRCS		:=	rd_file.c \
 				rd_error.c \
 				rd_scene.c \
-				rd_scene_utils.c \
+				rd_scene_destroyer.c \
 				rd_vector.c \
 				rd_element_predicate.c \
 				rd_scalar_predicate.c rd_vector_predicate.c rd_double.c \
 				rd_extractor.c \
+				rd_element_slot.c \
+				rd_field_extractor.c \
 				rd_after_extraction.c \
 				rd_debug.c
 
