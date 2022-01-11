@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:41:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/08 15:33:38 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 04:27:48 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,7 @@ static double	tangent_u(
 	const t_vec3	w0 = rt_coord_perpendicular_unit(&el->direction);
 	const t_vec3	u0 = rt_coord_turn_around_90(&w0, &el->direction);
 
-	return (1 - (atan2(
-				mr_vec3_dot(*pc, w0),
-				mr_vec3_dot(*pc, u0)
-			) / (2 * M_PI) - 0.5));
+	return (-atan2(mr_vec3_dot(*pc, w0), mr_vec3_dot(*pc, u0)) / (2 * M_PI));
 }
 
 static double	tangent_v(

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/26 23:37:49 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 15:31:12 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 04:21:53 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	set_tangent_coordinate_cone(t_hit_record *rec)
 	const double	dx = mr_vec3_dot(pc, u1);
 	const double	dz = mr_vec3_dot(pc, u2);
 
-	rec->u = (1 - atan2(dz, dx)) / (2 * M_PI) - 0.5;
+	rec->u = -atan2(dz, dx) / (2 * M_PI);
 	rec->v = mr_vec3_length(&pc);
 }
 

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 13:52:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 02:56:33 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 04:20:15 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static t_vec3	rt_color_checker(const t_hit_record *rec)
 	const double	v = rec->v;
 	const t_element	*el = rec->element.tex_el;
 	const int		sines = \
-			(int)(floor(el->freq_u * u) + floor(el->freq_v * v));
+			(int)(rt_floor(el->freq_u * u * 2) + rt_floor(el->freq_v * v * 2));
 
 	if (sines % 2 == 0)
 	{

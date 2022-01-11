@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/27 02:22:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 02:38:31 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 04:29:39 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,8 @@ static	void	uv_normal(
 
 t_vec3	rt_bumpnormal(double u, double v, t_img *bumpmap)
 {
-	const double	jd = fmod(u * bumpmap->width + 100000 * bumpmap->width,
-		bumpmap->width);
-	const double	id = fmod(v * bumpmap->height + 100000 * bumpmap->height,
-		bumpmap->height);
+	const double	jd = rt_fmod(u * bumpmap->width, bumpmap->width);
+	const double	id = rt_fmod(v * bumpmap->height, bumpmap->height);
 	t_vec3			n;
 	double			norm;
 

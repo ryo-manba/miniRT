@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:41:07 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/08 15:32:33 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 04:27:27 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ static void	set_tangent_coordinate_cylinder(t_hit_record *rec)
 	const t_vec3	w0 = rt_coord_perpendicular_unit(&v0);
 	const t_vec3	u0 = rt_coord_turn_around_90(&w0, &v0);
 
-	rec->u = 1 - (atan2(
-				mr_vec3_dot(pc, w0),
-				mr_vec3_dot(pc, u0)
-				) / (2 * M_PI) - 0.5);
+	rec->u = -atan2(mr_vec3_dot(pc, w0), mr_vec3_dot(pc, u0)) / (2 * M_PI);
 	rec->v = -mr_vec3_dot(pc, v0);
 }
 

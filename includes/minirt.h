@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 01:35:11 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 03:57:38 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,9 @@ bool			rt_is_shadowed_from(
 					const t_element *light,
 					t_scene *scene,
 					t_ray *ray);
+
+double			rt_fmod(double x, double y);
+double			rt_floor(double x);
 
 /* debug */
 void			vec3_debug(const t_vec3 *vec);
