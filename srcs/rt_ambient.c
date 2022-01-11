@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_ambient.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 23:28:57 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/12/22 23:30:01 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/12 02:31:40 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ static t_vec3	mr_vec3_mul(const t_vec3 *u, const t_vec3 *v)
 	return (mul);
 }
 
-t_vec3	rt_ambient(
+// color component by ambient light.
+t_vec3	rt_color_ambient(
 	const double ratio,
 	const t_vec3 *ambient_color,
 	const t_vec3 *obj_color)

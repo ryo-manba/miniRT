@@ -6,13 +6,22 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/27 02:22:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/07 20:42:51 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 02:38:31 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
-#define IMAGE_W 6
-#define IMAGE_H 6
+
+static double	grayscale_color_at(
+	t_img *image,
+	int x,
+	int y
+)
+{
+	const unsigned int	color = mr_mlx_pixel_get(image, x, y);
+
+	return ((color & 0xff) / 255.0);
+}
 
 static	void	uv_normal(
 	t_vec3 *n,
@@ -21,14 +30,14 @@ static	void	uv_normal(
 	double j
 )
 {
-	const double	h1 = rt_grayscale_color_at(bumpmap,
+	const double	h1 = grayscale_color_at(bumpmap,
 						(int)j, (int)i);
-	const double	h2 = rt_grayscale_color_at(bumpmap,
+	const double	h2 = grayscale_color_at(bumpmap,
 						(int)(j + 1) % bumpmap->width,
 						(int)i);
-	const double	h3 = rt_grayscale_color_at(bumpmap,
+	const double	h3 = grayscale_color_at(bumpmap,
 						(int)j, (int)(i + 1) % bumpmap->height);
-	const double	h4 = rt_grayscale_color_at(bumpmap,
+	const double	h4 = grayscale_color_at(bumpmap,
 						(int)(j + 1) % bumpmap->width,
 						(int)(i + 1) % bumpmap->height);
 	const double	c = 2;

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 11:10:43 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 16:47:44 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 02:31:07 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ static t_vec3	light_proc(
 	t_vec3	base_color;
 
 	mr_vec3_init(&base_color, 0, 0, 0);
-	if (actual->hit && !rt_is_shadow(actual, light, scene, r))
+	if (actual->hit && !rt_is_shadowed_from(actual, light, scene, r))
 	{
 		mr_vec3_add_comp(&base_color,
-			rt_diffuse(actual, light, &light->color));
+			rt_color_diffuse(actual, light, &light->color));
 		mr_vec3_add_comp(&base_color,
-			rt_specular(actual, &light->position, &light->color, r));
+			rt_color_specular(actual, &light->position, &light->color, r));
 	}
 	return (base_color);
 }
@@ -44,7 +44,7 @@ t_vec3	rt_reflect_ray(
 
 	rt_set_tangent_space(actual);
 	actual_0 = *actual;
-	base_color = rt_ambient(scene->ambient->ratio,
+	base_color = rt_color_ambient(scene->ambient->ratio,
 			&scene->ambient->color, &actual_0.color);
 	i = 0;
 	while (i < scene->n_spotlights)
