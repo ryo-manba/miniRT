@@ -67,9 +67,7 @@ bool			mr_read_image_files(t_info *info);
 void			mr_destroy_image_files(t_info *info);
 
 int				rt_create_trgb(int t, int r, int g, int b);
-t_vec3			rt_color_at(t_img *image, int x, int y);
-double			rt_grayscale_color_at(t_img *image, int x, int y);
-t_vec3			rt_element_color(double u, double v, t_element *el);
+t_vec3			rt_color_texture(double u, double v, t_element *el);
 
 void			rt_raytrace(t_info *info, t_scene *scene);
 
@@ -93,23 +91,23 @@ t_vec3			rt_reflect_ray(
 					t_scene *scene,
 					t_hit_record *actual);
 
-t_vec3			rt_ambient(
+t_vec3			rt_color_ambient(
 					const double ratio,
 					const t_vec3 *ambient_color,
 					const t_vec3 *obj_color);
 
-t_vec3			rt_diffuse(
+t_vec3			rt_color_diffuse(
 					const t_hit_record *rec,
 					const t_element *light,
 					const t_vec3 *light_color);
 
-t_vec3			rt_specular(
+t_vec3			rt_color_specular(
 					const t_hit_record *rec,
 					const t_vec3 *light,
 					const t_vec3 *light_color,
 					const t_ray *ray);
 
-bool			rt_is_shadow(
+bool			rt_is_shadowed_from(
 					const t_hit_record *actual,
 					const t_element *light,
 					t_scene *scene,

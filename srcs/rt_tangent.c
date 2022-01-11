@@ -29,7 +29,7 @@ static const t_object_tangent_setter	g_tangent_setters[] = {
  *  cylinder : 10.0
  *  sphere   : 10.0
  */
-static t_vec3	checker_texture(const t_hit_record *rec)
+static t_vec3	rt_color_checker(const t_hit_record *rec)
 {
 	const double	u = rec->u;
 	const double	v = rec->v;
@@ -61,7 +61,7 @@ void	rt_set_tangent_space(
 	if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_TEXTURE)
 		rec->color = rt_color_texture(rec->u, rec->v, rec->element.tex_el);
 	else if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_CHECKER)
-		rec->color = checker_texture(rec);
+		rec->color = rt_color_checker(rec);
 	else
 		rec->color = rec->element.color;
 }
