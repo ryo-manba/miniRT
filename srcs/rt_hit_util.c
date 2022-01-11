@@ -60,9 +60,9 @@ bool	rt_hit_object(
 	const t_object_hit_tester	hit_tester = g_hit_testers[el->etype];
 
 	rec->hit = false;
-	if (hit_tester)
-		return (hit_tester(el, ray, rec));
-	return (false);
+	if (!hit_tester)
+		return (false);
+	return (hit_tester(el, ray, rec));
 }
 
 t_hit_record	*rt_find_actual_hit(t_ray *r, t_scene *scene)

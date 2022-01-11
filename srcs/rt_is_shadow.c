@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/08 16:15:43 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/09 20:36:18 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static bool	is_obj_closer_than_light(
 		if (rt_hit_object(scene->objects[i], shadow_ray, &scene->recs[i]))
 		{
 			dist_to_obj = scene->recs[i].t - 1 + EPS;
-			if (dist_to_obj < dist_to_light \
-				|| fabs(dist_to_obj - dist_to_light) < EPS)
+			if (dist_to_obj < dist_to_light)
 			{
 				return (true);
 			}
@@ -74,8 +73,8 @@ bool	rt_is_shadow(
 	t_ray *ray)
 {
 	const t_vec3	v = mr_vec3_sub(light->position, actual->p);
-	const t_vec3	incident = mr_unit_vector(&v);
-	const double	dist_to_light = mr_vec3_length(&v);
+	const t_vec3	incident = mr_vec3_mul_double(&v, 1);
+	const double	dist_to_light = 1;
 	t_ray			shadow_ray;
 
 	if (!is_reflective_part(actual, light, ray))

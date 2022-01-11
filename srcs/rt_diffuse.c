@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rt_diffuse.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 22:03:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/05 00:24:15 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/08 18:01:05 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static double	intensity(
 						mr_unit_vector(&light_in), rec->normal);
 
 	return (fabs(cos_light / \
-			pow(LIGHT_DISTANCE_DECAY * mr_vec3_length_squared(&light_in), 1)));
+			(LIGHT_DISTANCE_DECAY * mr_vec3_length_squared(&light_in))));
 }
 
 t_vec3	rt_diffuse(
