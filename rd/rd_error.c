@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:05:37 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 19:07:13 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 21:27:54 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ bool	rd_print_error(const char *error, t_temp_scene *temp_scene)
 
 bool	rd_print_error_cur(t_file_cursor *cur, const char *error)
 {
-	(void)cur;
-	printf("\e[93mError(element: %zu", cur->line_number);
+	printf("\e[93mError\n(at element: %zu", cur->line_number);
 	if (cur->symbol)
 	{
 		printf(", symbol: %s", cur->symbol);

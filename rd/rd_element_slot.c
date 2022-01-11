@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 19:14:43 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 21:02:46 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 22:20:01 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,16 @@ static void	**field_memcpy(
 	return (dest);
 }
 
-static void	**element_pointers2(
+static void	**element_pointers_bonus(
 	void **dest,
 	t_element *el)
 {
+	if (el->etype == RD_ET_PARABOLOID)
+		return (field_memcpy(dest, (void *[]){&el->focalpoint, &el->position,
+				&el->direction, &el->color, NULL}));
+	if (el->etype == RD_ET_CONE)
+		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
+				&el->fov, &el->color, NULL}));
 	if (el->etype == RD_ET_SPOTLIGHT)
 		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
 				&el->fov, &el->ratio, &el->color, NULL}));
@@ -49,7 +55,7 @@ static void	**element_pointers2(
 	return (NULL);
 }
 
-static void	**element_pointers1(
+static void	**element_pointers_mandatory(
 	void **dest,
 	t_element *el)
 {
@@ -70,12 +76,6 @@ static void	**element_pointers1(
 	if (el->etype == RD_ET_CYLINDER)
 		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
 				&el->diameter, &el->height, &el->color, NULL}));
-	if (el->etype == RD_ET_PARABOLOID)
-		return (field_memcpy(dest, (void *[]){&el->focalpoint, &el->position,
-				&el->direction, &el->color, NULL}));
-	if (el->etype == RD_ET_CONE)
-		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
-				&el->fov, &el->color, NULL}));
 	return (NULL);
 }
 
@@ -85,8 +85,8 @@ void	**rd_get_element_slots(
 {
 	void	**fs;
 
-	fs = element_pointers1(dest, el);
+	fs = element_pointers_mandatory(dest, el);
 	if (!fs)
-		fs = element_pointers2(dest, el);
+		fs = element_pointers_bonus(dest, el);
 	return (fs);
 }

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 21:05:35 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 22:40:58 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,9 @@ void			rd_destroy_temp_scene_fail(t_temp_scene *temp_scene);
 void			rd_destroy_temp_scene_succ(t_temp_scene *temp_scene);
 
 void			rt_after_extraction(t_element *el);
+bool			rd_attach_attribute(
+					t_temp_scene *scene, t_element **list, t_element *el);
+bool			rd_after_read(
+					t_temp_scene *temp_scene, t_scene *scene);
 
 #endif

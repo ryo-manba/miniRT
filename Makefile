@@ -16,6 +16,7 @@ SRCS		:=	debug.c \
 				mr_vec3_operator2.c \
 				mr_vec3_operator_composit.c \
 				mr_reading_imagefile.c \
+				mr_error.c \
 				rt_raytracer.c \
 				rt_color.c \
 				rt_reflection.c \
@@ -38,8 +39,7 @@ SRCS		:=	debug.c \
 				rt_specular.c \
 				rt_coord_util.c \
 				rt_equation.c \
-				rt_bumpfunc.c \
-				rt_error.c
+				rt_bumpfunc.c
 
 
 OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
