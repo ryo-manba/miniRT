@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/07 21:01:04 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 09:24:37 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define RD_ID_TEXTURE		"tx"
 # define RD_ID_CHECKER		"ch"
 # define RD_ID_BUMPMAP		"bm"
+# define RD_ID_MATERIAL		"ma"
 
 typedef struct s_file_cursor
 {
@@ -90,6 +91,7 @@ double			rd_nan(void);
 
 t_element		*rd_extract_element(t_element_type etype,
 					const char **words);
+void			rd_destroy_element(t_element *el);
 
 void			rd_destroy_temp_scene(t_temp_scene *temp_scene);
 

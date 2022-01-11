@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 20:59:37 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 17:35:13 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 11:45:26 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,10 @@ void	rt_after_extraction(t_element *el)
 		after_extraction_paraboloid(el);
 	if (el->etype == RD_ET_LIGHT || el->etype == RD_ET_SPOTLIGHT)
 		after_extraction_light(el);
+	if (!el->gloss)
+		el->gloss = 30;
+	if (!el->k_diffuse)
+		el->k_diffuse = 1;
+	if (!el->k_specular)
+		el->k_specular = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:29:15 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 11:05:24 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 09:09:41 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ static const t_object_hit_tester	g_hit_testers[] = {
 	rt_hittest_cylinder,
 	rt_hittest_paraboloid,
 	rt_hittest_cone,
+	NULL,
 	NULL,
 	NULL,
 	NULL,

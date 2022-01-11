@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 23:57:53 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/10 11:44:57 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef enum e_element_type
 	RD_ET_TEXTURE,
 	RD_ET_CHECKER,
 	RD_ET_BUMPMAP,
+	RD_ET_MATERIAL,
 	RD_ET_UNEXPECTED,
 }	t_element_type;
 
@@ -51,6 +52,9 @@ typedef struct s_element
 	size_t				id;
 	struct s_element	*tex_el;
 	struct s_element	*bump_el;
+	double				gloss;
+	double				k_diffuse;
+	double				k_specular;
 
 	char				*xpm_file_path;
 	double				freq_u;
