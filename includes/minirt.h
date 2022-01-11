@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 16:57:03 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 01:35:11 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,16 @@
 /* keycode */
 # ifdef __linux__
 #  define KEY_ESC 65307
+#  define EVENT_KEY_PRESS 2
+#  define MASK_KEY_PRESS 1L
+#  define EVENT_CLOSE 17
+#  define MASK_CLOSE 131072L
 # else
-#  define KEY_ESC 53
+#  define KEY_ESC 65307
+#  define EVENT_KEY_PRESS 2
+#  define MASK_KEY_PRESS 1L
+#  define EVENT_CLOSE 17
+#  define MASK_CLOSE 131072L
 # endif
 
 /* colorcode */
@@ -54,6 +62,7 @@ void			mr_bailout(t_info *info, const char *error);
 void			mr_mlx_pixel_put(t_img *img, int x, int y, const t_vec3 v3);
 unsigned int	mr_mlx_pixel_get(t_img *img, int x, int y);
 int				mr_exit_window(t_info *info);
+int				mr_hook_key_press(int key, t_info *info);
 bool			mr_read_image_files(t_info *info);
 void			mr_destroy_image_files(t_info *info);
 

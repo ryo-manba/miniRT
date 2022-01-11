@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 23:43:35 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/11 18:56:57 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 01:35:51 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,12 @@ int	mr_exit_window(t_info *info)
 	mlx_destroy_window(info->mlx, info->win);
 	mlx_destroy_display(info->mlx);
 	exit(0);
+	return (0);
+}
+
+int	mr_hook_key_press(int key, t_info *info)
+{
+	if (key == KEY_ESC)
+		mr_exit_window(info);
 	return (0);
 }
