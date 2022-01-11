@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/10 11:44:57 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 21:44:36 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ typedef struct s_element
 	double				height;
 	double				fov;
 	struct s_element	*next;
-	size_t				id;
 	struct s_element	*tex_el;
 	struct s_element	*bump_el;
 	double				gloss;

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 23:43:35 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/08 00:13:55 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 18:56:57 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ unsigned int	mr_mlx_pixel_get(t_img *img, int x, int y)
 
 int	mr_exit_window(t_info *info)
 {
-	mr_destroy_image_files(info, info->scene);
+	mr_destroy_image_files(info);
+	rd_destroy_scene(info->scene);
 	mlx_destroy_window(info->mlx, info->win);
+	mlx_destroy_display(info->mlx);
 	exit(0);
+	return (0);
 }

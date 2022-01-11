@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/10 09:24:37 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 22:40:58 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ typedef struct s_temp_scene
 	t_element		*object_list;
 	t_element		*spotlight_list;
 	t_file_cursor	cur;
+
+	char			*content;
+	char			**lines;
+	char			**words;
+	t_element		*el;
 }	t_temp_scene;
 
 typedef union u_ull_double
@@ -63,8 +68,9 @@ typedef union u_ull_double
 typedef bool	(*t_element_info_predicate)(t_file_cursor *, const char*);
 typedef bool	(*t_element_info_extractor)(const char*, void*);
 
-bool			rd_print_error(const char *error);
+bool			rd_print_error(const char *error, t_temp_scene *temp_scene);
 bool			rd_print_error_cur(t_file_cursor *cur, const char *error);
+bool			rd_destroy_temp_scene_and_quit(t_temp_scene *temp_scene);
 char			*rd_read_file_content(const char *filename);
 void			debug_rd_print_words(char **words);
 void			debug_rd_print_element(t_element *element);
@@ -83,7 +89,7 @@ bool			rd_word_is_unit_vector(t_file_cursor *cur, const char *str);
 bool			rd_word_is_color_vector(t_file_cursor *cur, const char *str);
 
 void			rd_vectorize(const char *str, t_vec3 *vector);
-void			rd_free_strarray(char **strs);
+void			rd_free_strarray(char ***strs);
 
 double			rd_str_to_double(const char *str);
 bool			rd_is_finite(const double val);
@@ -92,9 +98,20 @@ double			rd_nan(void);
 t_element		*rd_extract_element(t_element_type etype,
 					const char **words);
 void			rd_destroy_element(t_element *el);
+void			**rd_get_element_slots(
+					void **dest,
+					t_element *el);
+bool			rd_extract_double_scalar(const char *str, void *slot);
+bool			rd_extract_double_vector(const char *str, void *slot);
+bool			rd_extract_string(const char *str, void *slot);
 
-void			rd_destroy_temp_scene(t_temp_scene *temp_scene);
+void			rd_destroy_temp_scene_fail(t_temp_scene *temp_scene);
+void			rd_destroy_temp_scene_succ(t_temp_scene *temp_scene);
 
 void			rt_after_extraction(t_element *el);
+bool			rd_attach_attribute(
+					t_temp_scene *scene, t_element **list, t_element *el);
+bool			rd_after_read(
+					t_temp_scene *temp_scene, t_scene *scene);
 
 #endif

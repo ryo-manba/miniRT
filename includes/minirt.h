@@ -45,15 +45,17 @@
 # define WHITE 0xffffff
 
 # ifndef SUBPIXEL
-#  define SUBPIXEL 3
+#  define SUBPIXEL 1
 # endif
+
+void			mr_bailout(t_info *info, const char *error);
 
 /* hooks */
 void			mr_mlx_pixel_put(t_img *img, int x, int y, const t_vec3 v3);
 unsigned int	mr_mlx_pixel_get(t_img *img, int x, int y);
 int				mr_exit_window(t_info *info);
-bool			mr_read_image_files(t_info *info, t_scene *scene);
-void			mr_destroy_image_files(t_info *info, t_scene *scene);
+bool			mr_read_image_files(t_info *info);
+void			mr_destroy_image_files(t_info *info);
 
 int				rt_create_trgb(int t, int r, int g, int b);
 t_vec3			rt_color_at(t_img *image, int x, int y);
