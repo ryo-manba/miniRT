@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 16:11:46 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 11:32:07 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,20 @@ int	main(int argc, char **argv)
 	t_info	info;
 	t_scene	scene;
 
-	if (argc != 2 || rd_read_scene(argv[1], &scene) == false)
+	if (argc != 2)
 	{
-		printf("Error\n");
+		printf("Error: Invalid Argument\n");
+		return (1);
+	}
+	if (rd_read_scene(argv[1], &scene) == false)
+	{
 		return (1);
 	}
 	if (setup_info(&info) == false)
 	{
-		printf("Error\n");
 		return (1);
 	}
-	scene.recs = (t_hit_record *)malloc(scene.n_objects * sizeof(t_hit_record));
+	scene.recs = (t_hit_record *)malloc((scene.n_objects + 1) * sizeof(t_hit_record));
 	scene.aspect_ratio = g_aspect_ratio;
 	scene.pixel_height = g_height;
 	scene.pixel_width = g_aspect_ratio * g_height;

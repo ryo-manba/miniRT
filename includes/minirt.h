@@ -45,7 +45,7 @@
 # define WHITE 0xffffff
 
 # ifndef SUBPIXEL
-#  define SUBPIXEL 3
+#  define SUBPIXEL 1
 # endif
 
 /* hooks */

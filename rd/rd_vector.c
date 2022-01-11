@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:04 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/03 00:17:31 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 11:30:10 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,23 @@ static size_t	strarraylen(char **strs)
 	return (i);
 }
 
-void	rd_free_strarray(char **strs)
+void	rd_free_strarray(char ***pstrs)
 {
 	size_t	i;
+	char	**strs;
 
-	i = 0;
-	while (strs[i])
-		free(strs[i++]);
-	free(strs);
+	if (pstrs)
+	{
+		strs = *pstrs;
+		if (strs)
+		{
+			i = 0;
+			while (strs[i])
+				free(strs[i++]);
+			free(strs);
+		}
+		*pstrs = NULL;
+	}
 }
 
 void	rd_vectorize(const char *str, t_vec3 *vector)
@@ -52,12 +61,12 @@ void	rd_vectorize(const char *str, t_vec3 *vector)
 		if (rd_is_finite(vector->x) && rd_is_finite(vector->y)
 			&& rd_is_finite(vector->z))
 		{
-			rd_free_strarray(splitted);
+			rd_free_strarray(&splitted);
 			return ;
 		}
 	}
 	vector->x = rd_nan();
 	vector->y = rd_nan();
 	vector->z = rd_nan();
-	rd_free_strarray(splitted);
+	rd_free_strarray(&splitted);
 }

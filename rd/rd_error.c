@@ -6,22 +6,24 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:05:37 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/09 10:12:44 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/11 11:42:42 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rd_read.h"
 
-bool	rd_print_error(const char *error)
+bool	rd_print_error(const char *error, t_temp_scene *temp_scene)
 {
-	printf("Error: %s\n", error);
+	printf("\e[93mError: %s\e[m\n", error);
+	if (temp_scene)
+		rd_destroy_temp_scene_fail(temp_scene);
 	return (false);
 }
 
 bool	rd_print_error_cur(t_file_cursor *cur, const char *error)
 {
 	(void)cur;
-	printf("Error(element: %zu", cur->line_number);
+	printf("\e[93mError(element: %zu", cur->line_number);
 	if (cur->symbol)
 	{
 		printf(", symbol: %s", cur->symbol);
@@ -30,6 +32,13 @@ bool	rd_print_error_cur(t_file_cursor *cur, const char *error)
 			printf(", word: %zu", cur->word_number);
 		}
 	}
-	printf(") %s\n", error);
+	printf(") %s\e[m\n", error);
+	return (false);
+}
+
+bool	rd_destroy_temp_scene_and_quit(t_temp_scene *temp_scene)
+{
+	if (temp_scene)
+		rd_destroy_temp_scene_fail(temp_scene);
 	return (false);
 }
