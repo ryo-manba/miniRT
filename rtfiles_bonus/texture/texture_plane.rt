@@ -1,0 +1,11 @@
+A  1.0             255,255,255
+L  0,0,10  0.1     255,255,255
+C  0,0,-5  0,0,1  100
+pl 3,0,0   1,0,0 250,0,0
+tx images/otoku.xpm 1 1
+pl -3,0,0  1,0,0 0,250,0
+tx images/circ.xpm 0.1 0.1
+pl 0,3,0   0,1,0 0,0,250
+tx images/terrain.xpm 0.5 0.5
+pl 0,-3,0  0,1,0 0,0,250
+tx images/dr.xpm 1 1
