@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mr_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:04:00 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 19:05:31 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 13:47:56 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,5 @@ void	mr_bailout(t_info *info, const char *error)
 		if (info->mlx)
 			mlx_destroy_display(info->mlx);
 	}
-	ft_malloc_balance();
 	exit(1);
 }

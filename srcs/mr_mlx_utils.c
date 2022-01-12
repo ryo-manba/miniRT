@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mr_mlx_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 23:43:35 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/12 02:46:32 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 13:48:09 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	mr_exit_window(t_info *info)
 	rd_destroy_scene(info->scene);
 	mlx_destroy_window(info->mlx, info->win);
 	mlx_destroy_display(info->mlx);
-	ft_malloc_balance();
 	exit(0);
 	return (0);
 }
