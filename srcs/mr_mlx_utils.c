@@ -47,6 +47,7 @@ int	mr_exit_window(t_info *info)
 	rd_destroy_scene(info->scene);
 	mlx_destroy_window(info->mlx, info->win);
 	mlx_destroy_display(info->mlx);
+	ft_malloc_balance();
 	exit(0);
 	return (0);
 }

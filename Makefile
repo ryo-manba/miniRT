@@ -39,7 +39,8 @@ SRCS		:=	debug.c \
 				rt_specular.c \
 				rt_coord_util.c \
 				rt_equation.c \
-				rt_bumpfunc.c
+				rt_bumpfunc.c \
+				rt_fmath.c
 
 
 OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
