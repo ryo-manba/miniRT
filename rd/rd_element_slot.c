@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 19:14:43 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 22:20:01 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 11:40:48 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,12 @@ static void	**element_pointers_bonus(
 	if (el->etype == RD_ET_SPOTLIGHT)
 		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
 				&el->fov, &el->ratio, &el->color, NULL}));
-	if (el->etype == RD_ET_TEXTURE || el->etype == RD_ET_BUMPMAP)
+	if (el->etype == RD_ET_TEXTURE)
 		return (field_memcpy(dest, (void *[]){&el->xpm_file_path, &el->freq_u,
 				&el->freq_v, NULL}));
+	if (el->etype == RD_ET_BUMPMAP)
+		return (field_memcpy(dest, (void *[]){&el->xpm_file_path, &el->height,
+				&el->freq_u, &el->freq_v, NULL}));
 	if (el->etype == RD_ET_CHECKER)
 		return (field_memcpy(dest, (void *[]){&el->freq_u, &el->freq_v,
 				&el->color, &el->subcolor, NULL}));

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/10 11:46:56 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 11:40:04 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ static const t_element_info_predicate	g_checker_predicates[] = {
 
 static const t_element_info_predicate	g_bumpmap_predicates[] = {
 	rd_word_is_xpm_file_path,
+	rd_word_is_positive_real,
 	rd_word_is_positive_real,
 	rd_word_is_positive_real,
 	NULL};

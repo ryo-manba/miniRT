@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 21:06:27 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 11:48:08 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ static const t_element_info_extractor	g_checker_extractors[] = {
 
 static const t_element_info_extractor	g_bumpmap_extractors[] = {
 	rd_extract_string, // xpm_file_path
+	rd_extract_double_scalar, // height
 	rd_extract_double_scalar, // freq_u
 	rd_extract_double_scalar, // freq_v
 	NULL,

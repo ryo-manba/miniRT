@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 22:47:00 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 02:52:50 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 11:39:51 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,11 @@ void	mr_destroy_image_files(t_info *info)
 	{
 		if (objects[i]->tex_el)
 		{
-			printf("destroying texture %zu: %s\n",
-				i, objects[i]->tex_el->xpm_file_path);
 			destroy_image(info, objects[i]->tex_el->image);
 			objects[i]->tex_el->image = NULL;
 		}
 		if (objects[i]->bump_el)
 		{
-			printf("destroying bumpmap %zu: %s\n",
-				i, objects[i]->bump_el->xpm_file_path);
 			destroy_image(info, objects[i]->bump_el->image);
 			objects[i]->bump_el->image = NULL;
 		}

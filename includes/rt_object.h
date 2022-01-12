@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:48:46 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 15:56:12 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 11:44:18 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,6 @@ t_vec3			rt_vec_tangent_to_global(
 					t_hit_record *rec,
 					const t_vec3 *vtangent);
 
-t_vec3			rt_bumpnormal(double u, double v, t_img *bumpmap);
+t_vec3			rt_bumpnormal(double u, double v, t_element *bump_el);
 
 #endif
