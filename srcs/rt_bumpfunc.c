@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/27 02:22:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 04:29:39 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 11:51:04 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,23 @@ static	void	uv_normal(
 	const double	h4 = grayscale_color_at(bumpmap,
 						(int)(j + 1) % bumpmap->width,
 						(int)(i + 1) % bumpmap->height);
-	const double	c = 2;
 
-	n->x = c * ((h1 - h2 - h3 + h4) * (i - floor(i)) + (h2 - h4));
-	n->y = c * ((h1 - h2 - h3 + h4) * (j - floor(j)) + (h3 - h4));
+	n->x = ((h1 - h2 - h3 + h4) * (i - floor(i)) + (h2 - h4));
+	n->y = ((h1 - h2 - h3 + h4) * (j - floor(j)) + (h3 - h4));
 }
 
-t_vec3	rt_bumpnormal(double u, double v, t_img *bumpmap)
+t_vec3	rt_bumpnormal(double u, double v, t_element *bump_el)
 {
-	const double	jd = rt_fmod(u * bumpmap->width, bumpmap->width);
-	const double	id = rt_fmod(v * bumpmap->height, bumpmap->height);
+	const double	jd = rt_fmod(u * bump_el->image->width * bump_el->freq_u,
+		bump_el->image->width);
+	const double	id = rt_fmod(v * bump_el->image->height * bump_el->freq_v,
+		bump_el->image->height);
 	t_vec3			n;
 	double			norm;
 
-	uv_normal(&n, bumpmap, id, jd);
+	uv_normal(&n, bump_el->image, id, jd);
+	n.x *= bump_el->height;
+	n.y *= bump_el->height;
 	norm = -1 / sqrt(pow(n.x, 2) + pow(n.y, 2) + 1);
 	n.x *= norm;
 	n.y *= norm;

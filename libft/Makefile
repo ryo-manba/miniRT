@@ -85,4 +85,7 @@ fclean:		clean
 
 re:			fclean all
 
-.PHONY:		all clean fclean re bonus
+.PHONY:		all clean fclean re bonus norm
+
+norm:
+		python3 -m norminette $(SRCS)

@@ -92,6 +92,8 @@ test: $(NAME)
 .PHONY: all clean fclean re bonus norm nm nm_grep
 
 norm:
+	$(MAKE) -C libft norm
+	$(MAKE) -C rd norm
 	python3 -m norminette $(SRCDIR) includes
 
 nm: $(NAME)

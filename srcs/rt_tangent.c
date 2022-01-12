@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 13:52:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 04:20:15 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 11:49:45 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ void	rt_set_tangent_space(
 {
 	g_tangent_setters[rec->element.etype](rec);
 	if (rec->element.bump_el && rec->element.bump_el->image)
-		rec->normal = rt_bumpnormal(
-				rec->u, rec->v, rec->element.bump_el->image);
+		rec->normal = rt_bumpnormal(rec->u, rec->v, rec->element.bump_el);
 	else
 		rec->normal = (t_vec3){0, 0, 1};
 	rec->normal = rt_vec_tangent_to_global(rec, &rec->normal);
