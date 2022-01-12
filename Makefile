@@ -39,7 +39,8 @@ SRCS		:=	debug.c \
 				rt_specular.c \
 				rt_coord_util.c \
 				rt_equation.c \
-				rt_bumpfunc.c
+				rt_bumpfunc.c \
+				rt_fmath.c
 
 
 OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
@@ -88,8 +89,15 @@ re: fclean all
 test: $(NAME)
 	./$(NAME)
 
-.PHONY: all clean fclean re bonus norm
+.PHONY: all clean fclean re bonus norm nm nm_grep
 
 norm:
 	python3 -m norminette $(SRCDIR) includes
 
+nm: $(NAME)
+	@nm -u $(NAME) \
+		| grep -E "^_" | grep -E "^_X" -v | grep -E "^__" -v | cut -b 2- \
+		| grep -E '^(open|close|read|write|printf|malloc|free|perror|strerror|exit|cos|sin|tan|asin|acos|atan2|log|pow|fmod|floor|ceil)' -v
+
+nm_grep:
+	$(MAKE) nm | xargs -I{} bash -c "echo '[[' {} ']]'; grep {} srcs libft rd -r -w --col -n"

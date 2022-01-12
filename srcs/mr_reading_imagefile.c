@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 22:47:00 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 18:58:14 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 02:52:50 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ static bool	read_xmp_image(t_info *info, t_element *el)
 	return (!!image->addr);
 }
 
+// destroy all (loaded) images for texture / bumpmap elements.
 void	mr_destroy_image_files(t_info *info)
 {
 	t_element	**objects;
@@ -77,6 +78,8 @@ void	mr_destroy_image_files(t_info *info)
 	}
 }
 
+// for all texture or bumpmap elements,
+// read images from attached xpm_file_path.
 bool	mr_read_image_files(t_info *info)
 {
 	t_element	**objects;

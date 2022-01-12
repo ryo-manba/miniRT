@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 13:52:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 15:56:07 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 04:20:15 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ static const t_object_tangent_setter	g_tangent_setters[] = {
  *  cylinder : 10.0
  *  sphere   : 10.0
  */
-static t_vec3	checker_texture(const t_hit_record *rec)
+static t_vec3	rt_color_checker(const t_hit_record *rec)
 {
 	const double	u = rec->u;
 	const double	v = rec->v;
 	const t_element	*el = rec->element.tex_el;
 	const int		sines = \
-			(int)(floor(el->freq_u * u) + floor(el->freq_v * v));
+			(int)(rt_floor(el->freq_u * u * 2) + rt_floor(el->freq_v * v * 2));
 
 	if (sines % 2 == 0)
 	{
@@ -47,14 +47,6 @@ static t_vec3	checker_texture(const t_hit_record *rec)
 	}
 }
 
-// 法線ベクトル(rec->normal)
-// バンプマップがある場合はそれをみる。
-// ない場合は(0,0,1)を接空間から通常空間に逆変換する。
-
-// 色ベクトル(rec->color)
-// テクスチャマップがある場合はそれをみる。
-// チェッカーを使う場合はチェッカーに従って計算。
-// どちらでもない場合はelementの色を使う。
 void	rt_set_tangent_space(
 	t_hit_record *rec
 )
@@ -67,14 +59,15 @@ void	rt_set_tangent_space(
 		rec->normal = (t_vec3){0, 0, 1};
 	rec->normal = rt_vec_tangent_to_global(rec, &rec->normal);
 	if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_TEXTURE)
-		rec->color = rt_element_color(rec->u, rec->v, rec->element.tex_el);
+		rec->color = rt_color_texture(rec->u, rec->v, rec->element.tex_el);
 	else if (rec->element.tex_el && rec->element.tex_el->etype == RD_ET_CHECKER)
-		rec->color = checker_texture(rec);
+		rec->color = rt_color_checker(rec);
 	else
 		rec->color = rec->element.color;
 }
 
-// 接空間上のベクトルを通常空間に変換する
+// transform a vector `vtangent` on tangent space
+// into global space.
 t_vec3	rt_vec_tangent_to_global(
 	t_hit_record *rec,
 	const t_vec3 *vtangent

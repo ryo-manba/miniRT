@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 18:58:14 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 00:53:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ int	main(int argc, char **argv)
 	setup(argc, argv, &info);
 	rt_raytrace(&info, &scene);
 	mlx_put_image_to_window(info.mlx, info.win, info.img.img, 0, 0);
-	mlx_hook(info.win, 17, 1L << 17, &mr_exit_window, &info);
+	mlx_hook(info.win,
+		EVENT_CLOSE, MASK_CLOSE, &mr_exit_window, &info);
+	mlx_hook(info.win,
+		EVENT_KEY_PRESS, MASK_KEY_PRESS, &mr_hook_key_press, &info);
 	mlx_loop(info.mlx);
 	return (0);
 }

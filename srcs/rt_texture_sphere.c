@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/21 13:39:11 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/08 15:34:00 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 04:21:46 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@ static void	set_tangent_coordinate_sphere(t_hit_record *rec)
 {
 	const t_vec3	*pos = &rec->element.position;
 
-	rec->u = 1 - (
-			atan2(rec->p.x - pos->x, rec->p.z - pos->z) / (2 * M_PI) - 0.5);
-	rec->v = acos((rec->p.y - pos->y) / rec->element.radius) / (M_PI);
+	rec->u = -atan2(rec->p.x - pos->x, rec->p.z - pos->z) / (2 * M_PI);
+	rec->v = acos((rec->p.y - pos->y) / rec->element.radius) / M_PI;
 }
 
 void	rt_set_tangent_sphere(

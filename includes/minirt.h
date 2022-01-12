@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 16:57:03 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 03:57:38 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,16 @@
 /* keycode */
 # ifdef __linux__
 #  define KEY_ESC 65307
+#  define EVENT_KEY_PRESS 2
+#  define MASK_KEY_PRESS 1L
+#  define EVENT_CLOSE 17
+#  define MASK_CLOSE 131072L
 # else
-#  define KEY_ESC 53
+#  define KEY_ESC 65307
+#  define EVENT_KEY_PRESS 2
+#  define MASK_KEY_PRESS 1L
+#  define EVENT_CLOSE 17
+#  define MASK_CLOSE 131072L
 # endif
 
 /* colorcode */
@@ -54,13 +62,12 @@ void			mr_bailout(t_info *info, const char *error);
 void			mr_mlx_pixel_put(t_img *img, int x, int y, const t_vec3 v3);
 unsigned int	mr_mlx_pixel_get(t_img *img, int x, int y);
 int				mr_exit_window(t_info *info);
+int				mr_hook_key_press(int key, t_info *info);
 bool			mr_read_image_files(t_info *info);
 void			mr_destroy_image_files(t_info *info);
 
 int				rt_create_trgb(int t, int r, int g, int b);
-t_vec3			rt_color_at(t_img *image, int x, int y);
-double			rt_grayscale_color_at(t_img *image, int x, int y);
-t_vec3			rt_element_color(double u, double v, t_element *el);
+t_vec3			rt_color_texture(double u, double v, t_element *el);
 
 void			rt_raytrace(t_info *info, t_scene *scene);
 
@@ -84,27 +91,30 @@ t_vec3			rt_reflect_ray(
 					t_scene *scene,
 					t_hit_record *actual);
 
-t_vec3			rt_ambient(
+t_vec3			rt_color_ambient(
 					const double ratio,
 					const t_vec3 *ambient_color,
 					const t_vec3 *obj_color);
 
-t_vec3			rt_diffuse(
+t_vec3			rt_color_diffuse(
 					const t_hit_record *rec,
 					const t_element *light,
 					const t_vec3 *light_color);
 
-t_vec3			rt_specular(
+t_vec3			rt_color_specular(
 					const t_hit_record *rec,
 					const t_vec3 *light,
 					const t_vec3 *light_color,
 					const t_ray *ray);
 
-bool			rt_is_shadow(
+bool			rt_is_shadowed_from(
 					const t_hit_record *actual,
 					const t_element *light,
 					t_scene *scene,
 					t_ray *ray);
+
+double			rt_fmod(double x, double y);
+double			rt_floor(double x);
 
 /* debug */
 void			vec3_debug(const t_vec3 *vec);
