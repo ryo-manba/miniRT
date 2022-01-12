@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   rt_equation.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/25 17:01:33 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/06 09:08:12 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/12 02:02:22 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #define EPS 1e-6
 
-// arg で定義される1次方程式 2b_half t + c = 0 を解き、答えの数(0, 1)を返す。
+// solve a given linear equation 2 * b_half * t + c = 0,
+// and returns the number of the equation.
 int	rt_solve_equation1(t_equation2 *arg)
 {
 	if (fabs(arg->b_half) < EPS)
@@ -26,7 +27,8 @@ int	rt_solve_equation1(t_equation2 *arg)
 	return (arg->solutions);
 }
 
-// arg で定義される2次方程式 at^2 + 2b_half t + c = 0 を解き、答えの数(0, 1, 2)を返す。
+// solve a given quadratic equation a * t^2 + 2 * b_half * t + c = 0,
+// and returns the number of the equation.
 int	rt_solve_equation2(t_equation2 *arg)
 {
 	const double	discriminant = arg->b_half * arg->b_half - arg->a * arg->c;

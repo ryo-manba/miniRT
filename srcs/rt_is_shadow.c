@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/09 20:36:18 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 01:59:13 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 #define EPS 1e-5
 #define EPS2 1e-2
 
-// 光源とカメラが反射面を挟んで逆側にいる時反射は起きない
+// reflection will only happen when
+// both light and camera are in same side to the surface
 static bool	is_reflective_part(
 	const t_hit_record *rec,
 	const t_element *light,
 	const t_ray *ray)
 {
 	const t_vec3	light_in = mr_vec3_sub(rec->p, light->position);
-	const double	cos_light = mr_vec3_dot(
-						light_in, rec->normal);
+	const double	cos_light = mr_vec3_dot(light_in, rec->normal);
 	const double	cos_ray = mr_vec3_dot(
 						ray->direction, rec->normal);
 	const bool		is_reflective = ((cos_light > 0 && cos_ray > 0) \
@@ -30,9 +30,13 @@ static bool	is_reflective_part(
 	t_vec3			pc;
 
 	if (!is_reflective)
+	{
 		return (false);
+	}
 	if (light->etype != RD_ET_SPOTLIGHT)
+	{
 		return (true);
+	}
 	pc = mr_vec3_sub(rec->p, light->position);
 	mr_normalize_comp(&pc);
 	return (mr_vec3_dot(pc, light->direction) >= cos(light->fov));
@@ -62,11 +66,7 @@ static bool	is_obj_closer_than_light(
 	return (false);
 }
 
-// v = 交点から光源へのベクトル
-// incident = 出射ベクトル
-// shadow_ray.originを入射方向に少しずらす
-// 物体との距離が光源よりも近い場合は影
-bool	rt_is_shadow(
+bool	rt_is_shadowed_from(
 	const t_hit_record *actual,
 	const t_element *light,
 	t_scene *scene,

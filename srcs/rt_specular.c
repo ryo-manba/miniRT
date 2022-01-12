@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 22:54:35 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/10 11:50:57 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/12 02:32:03 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 #define INTENSITY 30.0
 #define GLOSS 30.0
 
-// ray_inverse = レイの方向の逆向きの方向ベクトル(正規化済み)
-// light_out = 反射面から光源を見る方向ベクトル
-// reflect_of_light = light_out に対応する反射光のベクトル
-t_vec3	rt_specular(
+// color component by specular reflection.
+t_vec3	rt_color_specular(
 	const t_hit_record *rec,
 	const t_vec3 *light,
 	const t_vec3 *light_color,
