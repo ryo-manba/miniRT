@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/02 23:39:38 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/03 15:12:26 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 14:30:48 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,5 @@ char	**ft_rawsplit(char const *s, char c)
 	split_strs = (char **)malloc(sizeof(char *) * (split_len + 1));
 	if (split_strs == NULL)
 		return (NULL);
-	get_split(split_strs, s, c);
-	return (split_strs);
+	return (get_split(split_strs, s, c));
 }

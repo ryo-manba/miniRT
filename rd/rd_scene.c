@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/13 13:58:14 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 14:34:10 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ static void	next_line(t_temp_scene *temp_scene)
 {
 	rd_free_strarray(&temp_scene->words);
 	temp_scene->el = NULL;
+	temp_scene->cur.line_number += 1;
 }
 
 bool	rd_read_scene(const char *filename, t_scene *scene)
@@ -98,13 +99,14 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 	{
 		temp_scene.words
 			= ft_split(temp_scene.lines[temp_scene.cur.line_number], ' ');
+		if (!temp_scene.words)
+			return (rd_print_error("failed to split line", &temp_scene));
 		temp_scene.el
 			= element_from_words(&temp_scene, (const char **)temp_scene.words);
 		if (!temp_scene.el)
 			return (rd_destroy_temp_scene_and_quit(&temp_scene));
 		if (!assimilate_element(&temp_scene))
 			return (rd_destroy_temp_scene_and_quit(&temp_scene));
-		temp_scene.cur.line_number += 1;
 		next_line(&temp_scene);
 	}
 	return (rd_after_read(&temp_scene, scene));
