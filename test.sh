@@ -4,7 +4,7 @@ find ./rtfiles{,_bonus}/invalid_rtfiles -name "*.rt" | sort > tempfile
 echo "---INVALID RTFILE TEST---"
 while read line
 do
-    echo -en $CYAN[CASE]
+    echo -en $CYAN"[CASE] "
     filename=(${line//\// })
     echo ${filename[3]}
     ./miniRT $line
