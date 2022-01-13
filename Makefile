@@ -47,8 +47,12 @@ OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 OBJDIR		:=	./objs/
 
 MLX			:=	minilibx-linux
-MLX_A		:= 	./$(MLX)/libmlx_Darwin.a
-LIBS		:=	-L$(LIBFT) -L$(MLX) -Lrd -lmlx_Darwin -L/$(X11)/../lib -lXext -lX11 -lm -lread -lft
+MLX_BASE	:=	mlx
+ifdef FOR_MAC
+	MLX_BASE	:=	mlx_Darwin
+endif
+MLX_A		:= 	./$(MLX)/lib$(MLX_BASE).a
+LIBS		:=	-L$(LIBFT) -L$(MLX) -Lrd -l$(MLX_BASE) -L/$(X11)/../lib -lXext -lX11 -lm -lread -lft
 RM 			:=	rm -rf
 SRCDIR		:= ./srcs/
 
@@ -94,7 +98,7 @@ test: $(NAME)
 norm:
 	$(MAKE) -C libft norm
 	$(MAKE) -C rd norm
-	python3 -m norminette $(SRCDIR) includes
+	python3 -m norminette $(SRCDIR) includes common
 
 nm: $(NAME)
 	@nm -u $(NAME) \

@@ -6,7 +6,7 @@
 #    By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:59:59 by rmatsuka          #+#    #+#              #
-#    Updated: 2022/01/13 19:59:47 by corvvs           ###   ########.fr        #
+#    Updated: 2022/01/13 21:39:52 by corvvs           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -89,4 +89,4 @@ re:			fclean all
 .PHONY:		all clean fclean re bonus norm
 
 norm:
-		python3 -m norminette $(SRCS)
+		python3 -m norminette $(SRCS) libft.h
