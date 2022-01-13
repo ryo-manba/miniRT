@@ -87,7 +87,7 @@ bonus: all
 re: fclean all
 
 test: $(NAME)
-	./$(NAME)
+	./test.sh
 
 .PHONY: all clean fclean re bonus norm nm nm_grep
 
