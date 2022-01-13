@@ -6,7 +6,7 @@
 #    By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/04/07 12:59:59 by rmatsuka          #+#    #+#              #
-#    Updated: 2022/01/02 23:39:51 by corvvs           ###   ########.fr        #
+#    Updated: 2022/01/13 19:59:47 by corvvs           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,6 +49,7 @@ SRCS	=	ft_strlen.c \
 			ft_putnbr_fd.c \
 			ft_free_strjoin.c \
 			ft_safe_free.c \
+			ft_str_endswith.c \
 			get_next_line.c
 
 SRCS_B	=	ft_lstnew.c \

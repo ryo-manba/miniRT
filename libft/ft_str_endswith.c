@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rd_file.h                                          :+:      :+:    :+:   */
+/*   ft_str_endswith.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/01 11:37:12 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/13 19:47:22 by corvvs           ###   ########.fr       */
+/*   Created: 2022/01/13 19:30:29 by corvvs            #+#    #+#             */
+/*   Updated: 2022/01/13 19:57:17 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RD_FILE_H
-# define RD_FILE_H
+#include "libft.h"
 
-# include <unistd.h>
-# include <fcntl.h>
-# include <stdbool.h>
-# include <stdio.h>
-# include "../libft/libft.h"
-# define FT_BUFSIZ 4096
-
-typedef struct s_plastic_buffer
+bool	ft_str_endswith(const char *str, const char *suffix)
 {
-	char	*body;
-	size_t	cap;
-	size_t	used;
-}	t_plastic_buffer;
+	size_t	n_str;
+	size_t	n_suffix;
 
-#endif
+	if (!str || !suffix)
+		return (false);
+	n_str = ft_strlen(str);
+	n_suffix = ft_strlen(suffix);
+	if (n_str < n_suffix)
+		return (false);
+	return (ft_strcmp(str + (n_str - n_suffix), suffix) == 0);
+}
