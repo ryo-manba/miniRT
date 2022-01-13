@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 11:48:08 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 14:07:06 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,7 @@ t_element	*rd_extract_element(
 	fs = rd_get_element_slots(fields, el);
 	if (!fs || !extract_seq(words, g_list_of_extractors[el->etype], fs))
 	{
-		free(el);
+		rd_destroy_element(el);
 		return (NULL);
 	}
 	rt_after_extraction(el);
@@ -169,6 +169,8 @@ t_element	*rd_extract_element(
 // destroy all fields(excepts image) of a element and itself
 void	rd_destroy_element(t_element *el)
 {
+	if (!el)
+		return ;
 	if (el->tex_el)
 		rd_destroy_element(el->tex_el);
 	if (el->bump_el)
