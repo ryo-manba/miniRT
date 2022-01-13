@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 16:13:40 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 21:39:06 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,16 @@ typedef struct s_optics
 	t_vec3		screen_bottomleft;
 }	t_optics;
 
-typedef struct	s_ray
+typedef struct s_ray
 {
 	t_vec3	origin;
 	t_vec3	direction;
 	t_vec3	marking_color;
 	bool	for_shadow;
 	double	subpx;
-} t_ray;
-typedef struct	s_hit_record
+}	t_ray;
+
+typedef struct s_hit_record
 {
 	t_vec3		p;
 	t_vec3		normal;
@@ -48,7 +49,7 @@ typedef struct	s_hit_record
 	t_vec3		color;
 	t_element	element;
 
-	t_vec3		u0; // 接空間における正規直交基底; バンプマップで使う予定
+	t_vec3		u0;
 	t_vec3		v0;
 	t_vec3		w0;
 	double		u;
@@ -78,6 +79,6 @@ typedef struct s_info
 	void	*win;
 	t_img	img;
 	t_scene	*scene;
-} t_info;
+}	t_info;
 
 #endif

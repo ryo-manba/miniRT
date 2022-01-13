@@ -98,7 +98,7 @@ test: $(NAME)
 norm:
 	$(MAKE) -C libft norm
 	$(MAKE) -C rd norm
-	python3 -m norminette $(SRCDIR) includes
+	python3 -m norminette $(SRCDIR) includes common
 
 nm: $(NAME)
 	@nm -u $(NAME) \
