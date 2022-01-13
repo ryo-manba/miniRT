@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 22:41:29 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 12:47:57 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 		temp_scene.cur.line_number += 1;
 		rd_free_strarray(&temp_scene.words);
 	}
+	temp_scene.el = NULL;
 	return (rd_after_read(&temp_scene, scene));
 }
