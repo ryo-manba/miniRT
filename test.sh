@@ -1,6 +1,6 @@
 #!/bin/bash
 CYAN="\033[36m"
-find ./rtfiles/invalid_rtfiles -name "*.rt" | sort > tempfile
+find ./rtfiles{,_bonus}/invalid_rtfiles -name "*.rt" | sort > tempfile
 echo "---INVALID RTFILE TEST---"
 while read line
 do
