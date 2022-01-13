@@ -6,11 +6,17 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/13 15:07:10 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 20:00:39 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rd_file.h"
+
+static void	*quit_with_error(const char *error)
+{
+	printf("\e[93mError\n%s\e[m\n", error);
+	return (NULL);
+}
 
 static void	deploy_buffer(t_plastic_buffer *buffer)
 {
@@ -67,13 +73,18 @@ char	*rd_read_file_content(const char *filename)
 	int		fd;
 	char	*content;
 
+	if (!ft_str_endswith(filename, ".rt"))
+		return (quit_with_error("extension is not rt"));
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
-	{
-		return (NULL);
-	}
+		return (quit_with_error("failed to open file"));
 	content = read_from_fd(fd);
+	if (!content)
+		return (quit_with_error("failed to read file content"));
 	if (close(fd) == -1)
-		return (NULL);
+	{
+		free(content);
+		return (quit_with_error("failed to close file"));
+	}
 	return (content);
 }

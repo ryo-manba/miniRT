@@ -6,13 +6,14 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 10:08:43 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/02 23:40:49 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 19:57:27 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 # include <stdlib.h>
+# include <stdbool.h>
 # include <unistd.h>
 
 # define MAX_FD 256
@@ -65,6 +66,8 @@ void			safe_free(void *ptr);
 size_t			ft_strlen(const char *str);
 size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
 size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
+bool			ft_str_endswith(const char *str, const char *suffix);
+
 
 int				ft_lstsize(t_list *lst);
 void			ft_lstadd_front(t_list **lst, t_list *new);

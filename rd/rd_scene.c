@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/13 14:34:10 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 19:58:25 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 	ft_bzero(&temp_scene, sizeof(t_temp_scene));
 	temp_scene.content = rd_read_file_content(filename);
 	if (!temp_scene.content)
-		return (rd_print_error("failed to read file content", &temp_scene));
+		return (rd_destroy_temp_scene_and_quit(&temp_scene));
 	temp_scene.lines = ft_split(temp_scene.content, '\n');
 	if (!temp_scene.lines)
 		return (rd_print_error("failed to split content", &temp_scene));
