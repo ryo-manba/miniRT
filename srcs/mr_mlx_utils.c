@@ -45,8 +45,15 @@ int	mr_exit_window(t_info *info)
 {
 	mr_destroy_image_files(info);
 	rd_destroy_scene(info->scene);
+	if (info->mlx && info->img.img)
+	    mlx_destroy_image(info->mlx, info->img.img);
+	if (info->mlx && info->win)
+	  mlx_destroy_window(info->mlx, info->win);
+	if (info->mlx)
+	    mlx_destroy_display(info->mlx);
 	mlx_destroy_window(info->mlx, info->win);
 	mlx_destroy_display(info->mlx);
+	free(info->mlx);
 	exit(0);
 	return (0);
 }
