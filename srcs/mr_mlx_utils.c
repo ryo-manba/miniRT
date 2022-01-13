@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mr_mlx_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/04 23:43:35 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/12 13:48:09 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/13 16:45:57 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,13 @@ int	mr_exit_window(t_info *info)
 {
 	mr_destroy_image_files(info);
 	rd_destroy_scene(info->scene);
-	mlx_destroy_window(info->mlx, info->win);
-	mlx_destroy_display(info->mlx);
+	if (info->mlx && info->img.img)
+		mlx_destroy_image(info->mlx, info->img.img);
+	if (info->mlx && info->win)
+		mlx_destroy_window(info->mlx, info->win);
+	if (info->mlx)
+		mlx_destroy_display(info->mlx);
+	free(info->mlx);
 	exit(0);
 	return (0);
 }

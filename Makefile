@@ -1,6 +1,6 @@
 NAME		:=	miniRT
 CC			:=	gcc
-CFLAGS		=	-Werror -Wall -Wextra $(INC) -g -fsanitize=address
+CFLAGS		=	-Werror -Wall -Wextra $(INC) -g
 INC			=	-I$(X11) -I$(MLX) -I$(LIBFT) -Iincludes -Icommon -Ird
 X11			:=	/usr/X11/include
 LIBFT		:=	libft
