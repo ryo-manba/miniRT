@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/13 12:47:57 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 13:58:14 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,22 @@ static t_element	*element_from_words(t_temp_scene *scene, const char **words)
 	t_element		*el;
 	t_element_type	etype;
 
+	el = NULL;
 	etype = rd_detect_element_type(scene, words);
 	if (etype == RD_ET_UNEXPECTED)
 		return (NULL);
-	if (etype == RD_ET_AMBIENT && scene->ambient)
-	{
+	else if (etype == RD_ET_AMBIENT && scene->ambient)
 		rd_print_error_cur(&scene->cur, "found 2nd ambient");
-		return (NULL);
-	}
-	if (etype == RD_ET_CAMERA && scene->camera)
-	{
+	else if (etype == RD_ET_CAMERA && scene->camera)
 		rd_print_error_cur(&scene->cur, "found 2nd camera");
-		return (NULL);
-	}
-	if (etype == RD_ET_LIGHT && scene->light_list)
-	{
+	else if (etype == RD_ET_LIGHT && scene->light_list)
 		rd_print_error_cur(&scene->cur, "found 2nd light");
-		return (NULL);
+	else
+	{
+		el = rd_extract_element(etype, words);
+		if (!el)
+			rd_print_error_cur(&scene->cur, "failed to extract an element");
 	}
-	el = rd_extract_element(etype, words);
-	if (!el)
-		rd_print_error_cur(&scene->cur, "failed to extract an element");
 	return (el);
 }
 
@@ -70,7 +65,7 @@ static bool	assimilate_element(
 	{
 		if (!rd_attach_attribute(temp_scene,
 				&temp_scene->object_list, temp_scene->el))
-			return (rd_destroy_temp_scene_and_quit(temp_scene));
+			return (false);
 	}
 	else if (temp_scene->el->etype == RD_ET_LIGHT)
 		element_addback(&temp_scene->light_list, temp_scene->el);
@@ -79,6 +74,12 @@ static bool	assimilate_element(
 	else
 		element_addback(&temp_scene->object_list, temp_scene->el);
 	return (true);
+}
+
+static void	next_line(t_temp_scene *temp_scene)
+{
+	rd_free_strarray(&temp_scene->words);
+	temp_scene->el = NULL;
 }
 
 bool	rd_read_scene(const char *filename, t_scene *scene)
@@ -102,10 +103,9 @@ bool	rd_read_scene(const char *filename, t_scene *scene)
 		if (!temp_scene.el)
 			return (rd_destroy_temp_scene_and_quit(&temp_scene));
 		if (!assimilate_element(&temp_scene))
-			return (false);
+			return (rd_destroy_temp_scene_and_quit(&temp_scene));
 		temp_scene.cur.line_number += 1;
-		rd_free_strarray(&temp_scene.words);
+		next_line(&temp_scene);
 	}
-	temp_scene.el = NULL;
 	return (rd_after_read(&temp_scene, scene));
 }
