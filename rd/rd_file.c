@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rd_file.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/04 22:18:30 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/13 15:07:10 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,9 @@ static char	*read_from_fd(const int fd)
 		ft_memcpy(data_buf.body + data_buf.used, read_buf, read_size);
 		data_buf.used += read_size;
 	}
-	if (!data_buf.body)
+	if (read_size < 0 || !data_buf.body)
 	{
+		free(data_buf.body);
 		return (NULL);
 	}
 	data_buf.body[data_buf.used] = '\0';

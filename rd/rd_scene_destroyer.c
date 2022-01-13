@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rd_scene_utils.c                                   :+:      :+:    :+:   */
+/*   rd_scene_destroyer.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:20:24 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 11:42:42 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/13 14:00:45 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ static void	free_elemlist(t_element *elem)
 
 void	rd_destroy_scene(t_scene *scene)
 {
-	free(scene->ambient);
-	free(scene->camera);
+	rd_destroy_element(scene->ambient);
+	rd_destroy_element(scene->camera);
 	free_elemarray(scene->lights);
 	free_elemarray(scene->objects);
 	free_elemarray(scene->spotlights);
@@ -59,9 +59,9 @@ void	rd_destroy_temp_scene_succ(t_temp_scene *temp_scene)
 
 void	rd_destroy_temp_scene_fail(t_temp_scene *temp_scene)
 {
-	free(temp_scene->el);
-	free(temp_scene->ambient);
-	free(temp_scene->camera);
+	rd_destroy_element(temp_scene->el);
+	rd_destroy_element(temp_scene->ambient);
+	rd_destroy_element(temp_scene->camera);
 	free_elemlist(temp_scene->light_list);
 	free_elemlist(temp_scene->object_list);
 	free_elemlist(temp_scene->spotlight_list);
