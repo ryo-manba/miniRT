@@ -3,7 +3,7 @@ MLX			:=	../minilibx-linux
 X11			:=	/usr/X11/include
 INC			:=	-I$(X11) -I$(MLX) -I../includes -I../common -I../libft
 LIBS		:=	-L../libft -L$(MLX) -L/$(X11)/../lib -lXext -lX11 -lm
-CFLAGS		:=	-Wall -Wextra -Werror -g -fsanitize=address $(INC)
+CFLAGS		:=	-Wall -Wextra -Werror -g $(INC)
 NAME		:=	libread.a
 SRCS		:=	rd_file.c \
 				rd_error.c \
