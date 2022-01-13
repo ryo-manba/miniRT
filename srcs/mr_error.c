@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mr_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 18:04:00 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 16:01:53 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/13 16:46:46 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	mr_bailout(t_info *info, const char *error)
 		if (info->scene)
 			rd_destroy_scene(info->scene);
 		if (info->mlx && info->img.img)
-		    mlx_destroy_image(info->mlx, info->img.img);
+			mlx_destroy_image(info->mlx, info->img.img);
 		if (info->mlx && info->win)
 			mlx_destroy_window(info->mlx, info->win);
 		if (info->mlx)
