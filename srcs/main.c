@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 13:56:34 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 17:53:58 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "mr_camera.h"
 
 static const double	g_aspect_ratio = 16.0 / 9.0;
-static const int	g_height = 1080;
+static const int	g_height = 300;
 
 static bool	setup_info(t_info *info)
 {
@@ -74,6 +74,7 @@ int	main(int argc, char **argv)
 		EVENT_CLOSE, MASK_CLOSE, &mr_exit_window, &info);
 	mlx_hook(info.win,
 		EVENT_KEY_PRESS, MASK_KEY_PRESS, &mr_hook_key_press, &info);
+	mlx_hook(info.win, EVENT_EXPOSE, MASK_EXPOSE, &mr_expose_window, &info);
 	mlx_loop(info.mlx);
 	return (0);
 }
