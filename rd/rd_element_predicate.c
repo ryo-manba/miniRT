@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 11:40:04 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 16:36:10 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,12 @@ static const t_element_type				g_element_types[] = {
 	RD_ET_MATERIAL,
 	RD_ET_DUMMY};
 
+static t_element_type	print_and_quit(t_temp_scene *scene, const char *error)
+{
+	rd_print_error_cur(&scene->cur, error);
+	return (RD_ET_UNEXPECTED);
+}
+
 static t_element_type	matches_predicates(
 	t_element_type expected_type,
 	t_temp_scene *scene,
@@ -158,46 +164,35 @@ static t_element_type	matches_predicates(
 	}
 	while (words[scene->cur.word_number + 1])
 	{
-		if (!predicates[scene->cur.word_number]
-			|| !(predicates[scene->cur.word_number])
-			(&scene->cur, words[scene->cur.word_number + 1]))
-		{
+		if (!predicates[scene->cur.word_number])
+			return (print_and_quit(scene, "excess words"));
+		if (!(predicates[scene->cur.word_number])(
+			&scene->cur, words[scene->cur.word_number + 1]))
 			return (RD_ET_UNEXPECTED);
-		}
 		scene->cur.word_number += 1;
 	}
 	if (predicates[scene->cur.word_number])
-	{
-		rd_print_error_cur(&scene->cur, "less words");
-		return (RD_ET_UNEXPECTED);
-	}
+		return (print_and_quit(scene, "less words"));
 	scene->cur.word_number = 0;
 	return (expected_type);
 }
 
 t_element_type	rd_detect_element_type(t_temp_scene *scene, const char **words)
 {
-	size_t	i;
+	size_t			i;
 
 	scene->cur.symbol = NULL;
 	if (!words)
-	{
-		rd_print_error_cur(&scene->cur, "no words");
-		return (RD_ET_UNEXPECTED);
-	}
+		return (print_and_quit(scene, "no words"));
 	scene->cur.symbol = (char *)words[0];
 	scene->cur.word_number = 0;
 	i = 0;
 	while (g_element_ids[i])
 	{
 		if (ft_strcmp(scene->cur.symbol, g_element_ids[i]) == 0)
-		{
-			return (matches_predicates(
-					g_element_types[i], scene, words,
+			return (matches_predicates(g_element_types[i], scene, words,
 					g_element_predicate_array[i]));
-		}
 		i += 1;
 	}
-	rd_print_error_cur(&scene->cur, "unexpexcted symbol");
 	return (RD_ET_UNEXPECTED);
 }
