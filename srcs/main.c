@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 13:56:34 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 19:10:53 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int	main(int argc, char **argv)
 		EVENT_CLOSE, MASK_CLOSE, &mr_exit_window, &info);
 	mlx_hook(info.win,
 		EVENT_KEY_PRESS, MASK_KEY_PRESS, &mr_hook_key_press, &info);
+	mlx_hook(info.win, EVENT_EXPOSE, MASK_EXPOSE, &mr_expose_window, &info);
 	mlx_loop(info.mlx);
 	return (0);
 }

@@ -11,6 +11,7 @@ LIBREAD_A	:=	./rd/$(LIBREAD).a
 SRCS		:=	debug.c \
 				main.c \
 				mr_mlx_utils.c \
+				mr_mlx_hooks.c \
 				mr_vec3_utils.c \
 				mr_vec3_operator.c \
 				mr_vec3_operator2.c \

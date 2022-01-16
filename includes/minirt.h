@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 03:57:38 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 17:53:33 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,16 @@
 #  define KEY_ESC 65307
 #  define EVENT_KEY_PRESS 2
 #  define MASK_KEY_PRESS 1L
+#  define EVENT_EXPOSE 12
+#  define MASK_EXPOSE 32768L
 #  define EVENT_CLOSE 17
 #  define MASK_CLOSE 131072L
 # else
 #  define KEY_ESC 65307
 #  define EVENT_KEY_PRESS 2
 #  define MASK_KEY_PRESS 1L
+#  define EVENT_EXPOSE 12
+#  define MASK_EXPOSE 32768L
 #  define EVENT_CLOSE 17
 #  define MASK_CLOSE 131072L
 # endif
@@ -65,6 +69,7 @@ int				mr_exit_window(t_info *info);
 int				mr_hook_key_press(int key, t_info *info);
 bool			mr_read_image_files(t_info *info);
 void			mr_destroy_image_files(t_info *info);
+int				mr_expose_window(t_info *info);
 
 int				rt_create_trgb(int t, int r, int g, int b);
 t_vec3			rt_color_texture(double u, double v, t_element *el);
