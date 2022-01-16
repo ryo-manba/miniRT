@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 21:44:36 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 20:29:51 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef enum e_element_type
 	RD_ET_PARABOLOID,
 	RD_ET_CONE,
 	RD_ET_SPOTLIGHT,
+	RD_ET_PYRAMIDLIGHT,
 	RD_ET_TEXTURE,
 	RD_ET_CHECKER,
 	RD_ET_BUMPMAP,
@@ -48,6 +49,8 @@ typedef struct s_element
 	double				diameter;
 	double				height;
 	double				fov;
+	double				fov2;
+	double				role;
 	struct s_element	*next;
 	struct s_element	*tex_el;
 	struct s_element	*bump_el;
@@ -59,6 +62,8 @@ typedef struct s_element
 	double				freq_u;
 	double				freq_v;
 	t_vec3				subcolor;
+	t_vec3				direction_u;
+	t_vec3				direction_v;
 	t_img				*image;
 }	t_element;
 

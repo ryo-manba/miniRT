@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 11:40:04 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 22:20:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,16 +59,27 @@ static const t_element_info_predicate	g_paraboloid_predicates[] = {
 static const t_element_info_predicate	g_cone_predicates[] = {
 	rd_word_is_vector,
 	rd_word_is_unit_vector,
-	rd_word_is_positive_real,
+	rd_word_is_fov_angle,
 	rd_word_is_color_vector,
 	NULL};
 
 static const t_element_info_predicate	g_spotlight_predicates[] = {
 	rd_word_is_vector,
 	rd_word_is_unit_vector,
-	rd_word_is_positive_real,
+	rd_word_is_fov_angle,
 	rd_word_is_ratio,
 	rd_word_is_color_vector,
+	NULL};
+
+static const t_element_info_predicate	g_pyramidlight_predicates[] = {
+	rd_word_is_vector,
+	rd_word_is_unit_vector,
+	rd_word_is_fov_angle,
+	rd_word_is_fov_angle,
+	rd_word_is_role_angle,
+	rd_word_is_ratio,
+	rd_word_is_color_vector,
+	rd_word_is_xpm_file_path,
 	NULL};
 
 static const t_element_info_predicate	g_texture_predicates[] = {
@@ -107,6 +118,7 @@ static const t_element_info_predicate	*g_element_predicate_array[] = {
 	g_paraboloid_predicates,
 	g_cone_predicates,
 	g_spotlight_predicates,
+	g_pyramidlight_predicates,
 	g_texture_predicates,
 	g_checker_predicates,
 	g_bumpmap_predicates,
@@ -123,6 +135,7 @@ static const char						*g_element_ids[] = {
 	RD_ID_PARABOLOID,
 	RD_ID_CONE,
 	RD_ID_SPOTLIGHT,
+	RD_ID_PYRAMIDLIGHT,
 	RD_ID_TEXTURE,
 	RD_ID_CHECKER,
 	RD_ID_BUMPMAP,
@@ -139,6 +152,7 @@ static const t_element_type				g_element_types[] = {
 	RD_ET_PARABOLOID,
 	RD_ET_CONE,
 	RD_ET_SPOTLIGHT,
+	RD_ET_PYRAMIDLIGHT,
 	RD_ET_TEXTURE,
 	RD_ET_CHECKER,
 	RD_ET_BUMPMAP,

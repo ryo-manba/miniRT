@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 03:57:38 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 22:57:11 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ bool			mr_read_image_files(t_info *info);
 void			mr_destroy_image_files(t_info *info);
 
 int				rt_create_trgb(int t, int r, int g, int b);
-t_vec3			rt_color_texture(double u, double v, t_element *el);
+t_vec3			rt_color_image(double u, double v, t_element *el);
 
 void			rt_raytrace(t_info *info, t_scene *scene);
 

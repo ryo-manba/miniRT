@@ -6,13 +6,32 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/12 01:59:13 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 01:52:37 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
 #define EPS 1e-5
 #define EPS2 1e-2
+
+static bool	is_in_pyramid_light(
+	const t_hit_record *rec,
+	const t_element *light)
+{
+	const t_vec3	q = mr_vec3_sub(rec->p, light->position);
+	const t_vec3	ru = mr_vec3_sub(q,
+		mr_vec3_mul_double(&light->direction_v,
+			mr_vec3_dot(q, light->direction_v)));
+	const t_vec3	rv = mr_vec3_sub(q,
+		mr_vec3_mul_double(&light->direction_u,
+			mr_vec3_dot(q, light->direction_u)));
+
+	if (mr_vec3_dot(light->direction, mr_unit_vector(&ru)) < cos(light->fov))
+		return (false);
+	if (mr_vec3_dot(light->direction, mr_unit_vector(&rv)) < cos(light->fov2))
+		return (false);
+	return (true);
+}
 
 // reflection will only happen when
 // both light and camera are in same side to the surface
@@ -33,13 +52,15 @@ static bool	is_reflective_part(
 	{
 		return (false);
 	}
-	if (light->etype != RD_ET_SPOTLIGHT)
+	if (light->etype == RD_ET_SPOTLIGHT)
 	{
-		return (true);
+		pc = mr_vec3_sub(rec->p, light->position);
+		mr_normalize_comp(&pc);
+		return (mr_vec3_dot(pc, light->direction) >= cos(light->fov));
 	}
-	pc = mr_vec3_sub(rec->p, light->position);
-	mr_normalize_comp(&pc);
-	return (mr_vec3_dot(pc, light->direction) >= cos(light->fov));
+	if (light->etype == RD_ET_PYRAMIDLIGHT)
+		return (is_in_pyramid_light(rec, light));
+	return (true);
 }
 
 static bool	is_obj_closer_than_light(
