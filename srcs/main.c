@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:00:14 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/14 17:53:58 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/17 08:58:48 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "mr_camera.h"
 
 static const double	g_aspect_ratio = 16.0 / 9.0;
-static const int	g_height = 300;
+static const int	g_height = 1080;
 
 static bool	setup_info(t_info *info)
 {
