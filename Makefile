@@ -8,6 +8,8 @@ LIBFT_A		:=	./$(LIBFT)/$(LIBFT).a
 LIBREAD		:=	libread
 LIBREAD_A	:=	./rd/$(LIBREAD).a
 
+fileexists = $(shell ls | grep $(NAME))
+ifneq ($(fileexists),$(NAME))
 SRCS		:=	debug.c \
 				main.c \
 				mr_mlx_utils.c \
@@ -42,7 +44,7 @@ SRCS		:=	debug.c \
 				rt_equation.c \
 				rt_bumpfunc.c \
 				rt_fmath.c
-
+endif
 
 OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 OBJDIR		:=	./objs/
@@ -57,8 +59,8 @@ LIBS		:=	-L$(LIBFT) -L$(MLX) -Lrd -l$(MLX_BASE) -L/$(X11)/../lib -lXext -lX11 -l
 RM 			:=	rm -rf
 SRCDIR		:= ./srcs/
 
-
-all: $(OBJDIR) $(NAME)
+#all : $(OBJDIR) $(NAME)
+all: dir $(NAME)
 
 $(NAME): $(OBJS) $(MLX_A) $(LIBFT_A) $(LIBREAD_A)
 	$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
@@ -72,14 +74,18 @@ $(LIBREAD_A):
 $(MLX_A):
 	make -C $(MLX)
 
-$(OBJDIR):
-	mkdir -p objs
-
 $(OBJDIR)%.o: $(SRCDIR)%.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
+ifneq ($(fileexists), $(NAME))
+dir :
+	mkdir -p $(OBJDIR)
+else
+dir :
+endif
+
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJDIR)
 
 cleanlib:
 	make clean -C ./libft
@@ -89,7 +95,8 @@ fclean: clean
 
 bonus: all
 
-re: fclean all
+re: fclean
+	make -C .
 
 test: $(NAME)
 	./test.sh
