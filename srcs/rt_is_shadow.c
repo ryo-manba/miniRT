@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/17 12:38:36 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 19:56:10 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static bool	is_reflective_part(
 	bool	is_reflective;
 	t_vec3	pc;
 
-	light_in = rt_get_incident_vector(rec, light, false);
+	light_in = rt_get_incident_vector(rec, light);
 	cos_light = mr_vec3_dot(light_in, rec->normal);
 	cos_ray = mr_vec3_dot(ray->direction, rec->normal);
 	is_reflective
@@ -64,20 +64,22 @@ static bool	is_reflective_part(
 }
 
 static bool	is_obj_closer_than_light(
-	const t_scene *scene,
+	const t_subscene *subscene,
 	const t_ray *shadow_ray,
 	const double dist_to_light)
 {
 	size_t	i;
 	double	dist_to_obj;
 
-	ft_bzero(scene->recs, scene->n_objects * sizeof(t_hit_record));
+	ft_bzero(subscene->recs,
+		subscene->info->scene->n_objects * sizeof(t_hit_record));
 	i = 0;
-	while (i < scene->n_objects)
+	while (i < subscene->info->scene->n_objects)
 	{
-		if (rt_hit_object(scene->objects[i], shadow_ray, &scene->recs[i]))
+		if (rt_hit_object(subscene->info->scene->objects[i],
+				shadow_ray, &subscene->recs[i]))
 		{
-			dist_to_obj = scene->recs[i].t - 1 + EPS;
+			dist_to_obj = subscene->recs[i].t - 1 + EPS;
 			if (dist_to_obj < dist_to_light)
 			{
 				return (true);
@@ -91,7 +93,7 @@ static bool	is_obj_closer_than_light(
 bool	rt_is_shadowed_from(
 	const t_hit_record *actual,
 	const t_element *light,
-	t_scene *scene,
+	t_subscene *subscene,
 	t_ray *ray)
 {
 	t_vec3	incident;
@@ -100,7 +102,7 @@ bool	rt_is_shadowed_from(
 
 	if (!is_reflective_part(actual, light, ray))
 		return (true);
-	incident = rt_get_incident_vector(actual, light, false);
+	incident = rt_get_incident_vector(actual, light);
 	mr_vec3_mul_double_comp(&incident, -1);
 	if (light->etype == RD_ET_SUNLIGHT)
 		dist_to_light = rd_inf(true);
@@ -111,7 +113,7 @@ bool	rt_is_shadowed_from(
 	shadow_ray.direction = incident;
 	shadow_ray.for_shadow = true;
 	shadow_ray.subpx = 1;
-	if (is_obj_closer_than_light(scene, &shadow_ray, dist_to_light))
+	if (is_obj_closer_than_light(subscene, &shadow_ray, dist_to_light))
 		return (true);
 	return (false);
 }

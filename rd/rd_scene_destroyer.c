@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/02 10:20:24 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/13 14:00:45 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 20:24:38 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,23 @@ static void	free_elemlist(t_element *elem)
 
 void	rd_destroy_scene(t_scene *scene)
 {
+	int	i;
+
 	rd_destroy_element(scene->ambient);
 	rd_destroy_element(scene->camera);
 	free_elemarray(scene->lights);
 	free_elemarray(scene->objects);
 	free_elemarray(scene->spotlights);
-	free(scene->recs);
+	if (scene->recss)
+	{
+		i = 0;
+		while (i < scene->threads)
+		{
+			free(scene->recss[i]);
+			i += 1;
+		}
+		free(scene->recss);
+	}
 }
 
 void	rd_destroy_temp_scene_succ(t_temp_scene *temp_scene)

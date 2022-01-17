@@ -6,11 +6,23 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 00:01:16 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/14 23:01:34 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 20:16:28 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minirt.h"
+
+t_vec3	rt_sky_blue(const t_vec3 direction)
+{
+	const t_vec3	c2 = {1.0, 1.0, 1.0};
+	const t_vec3	c1 = {0.5, 0.7, 1.0};
+	const t_vec3	unit_direction = mr_unit_vector(&direction);
+	const double	t = 0.5 * (unit_direction.y + 1.0);
+
+	return (mr_vec3_add(
+			mr_vec3_mul_double(&c1, t),
+			mr_vec3_mul_double(&c2, 1 - t)));
+}
 
 static t_vec3	color_at(
 	t_img *image,
