@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   co_geometric_structure.h                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:59:52 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:00:49 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 16:38:59 by rmatsuka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CO_GEOMETRIC_STRUCTURE_H
 # define CO_GEOMETRIC_STRUCTURE_H
 
-typedef struct vec3
+typedef struct s_vec3
 {
 	double	x;
 	double	y;
