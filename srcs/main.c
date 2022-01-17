@@ -37,6 +37,8 @@ static bool	setup_mlx(t_info *info)
 			&info->img.bpp,
 			&info->img.line_len,
 			&info->img.endian);
+	if (!info->img.addr)
+		mr_bailout(info, "bad mlx(image data addr)");
 	return (true);
 }
 
