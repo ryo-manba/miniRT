@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 10:04:00 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 10:32:47 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,5 +217,5 @@ t_element_type	rd_detect_element_type(t_temp_scene *scene, const char **words)
 					g_element_predicate_array[i]));
 		i += 1;
 	}
-	return (RD_ET_UNEXPECTED);
+	return (print_and_quit(scene, "no element for given identifier"));
 }
