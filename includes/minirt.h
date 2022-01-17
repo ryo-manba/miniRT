@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minirt.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/14 17:53:33 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/17 12:38:16 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void			mr_destroy_image_files(t_info *info);
 int				mr_expose_window(t_info *info);
 
 int				rt_create_trgb(int t, int r, int g, int b);
-t_vec3			rt_color_texture(double u, double v, t_element *el);
+t_vec3			rt_color_image(double u, double v, t_element *el);
 
 void			rt_raytrace(t_info *info, t_scene *scene);
 
@@ -108,7 +108,7 @@ t_vec3			rt_color_diffuse(
 
 t_vec3			rt_color_specular(
 					const t_hit_record *rec,
-					const t_vec3 *light,
+					const t_element *light,
 					const t_vec3 *light_color,
 					const t_ray *ray);
 
@@ -117,6 +117,11 @@ bool			rt_is_shadowed_from(
 					const t_element *light,
 					t_scene *scene,
 					t_ray *ray);
+
+t_vec3			rt_get_incident_vector(
+					const t_hit_record *rec,
+					const t_element *light,
+					bool inversed);
 
 double			rt_fmod(double x, double y);
 double			rt_floor(double x);

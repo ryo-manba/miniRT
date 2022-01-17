@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/11 22:40:58 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 02:07:44 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # define RD_ID_PARABOLOID	"pa"
 # define RD_ID_CONE			"co"
 # define RD_ID_SPOTLIGHT	"sl"
+# define RD_ID_PYRAMIDLIGHT	"py"
+# define RD_ID_SUNLIGHT		"su"
 # define RD_ID_TEXTURE		"tx"
 # define RD_ID_CHECKER		"ch"
 # define RD_ID_BUMPMAP		"bm"
@@ -82,6 +84,8 @@ t_element_type	rd_detect_element_type(t_temp_scene *scene, const char **words);
 bool			rd_word_is_positive_real(t_file_cursor *cur, const char *str);
 bool			rd_word_is_ratio(t_file_cursor *cur, const char *str);
 bool			rd_word_is_fov_angle(t_file_cursor *cur, const char *str);
+bool			rd_word_is_role_angle(t_file_cursor *cur, const char *str);
+
 bool			rd_word_is_xpm_file_path(t_file_cursor *cur, const char *str);
 
 bool			rd_word_is_vector(t_file_cursor *cur, const char *str);
@@ -113,5 +117,7 @@ bool			rd_attach_attribute(
 					t_temp_scene *scene, t_element **list, t_element *el);
 bool			rd_after_read(
 					t_temp_scene *temp_scene, t_scene *scene);
+
+void			debug_rd_print_vector(t_vec3 *vec);
 
 #endif

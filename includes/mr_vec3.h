@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:36:17 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 15:29:08 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 21:20:27 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@ void	mr_vec3_init(t_vec3 *vec3, double x, double y, double z);
 
 /* mr_vec3_utils */
 t_vec3	mr_vec3_mul_double(const t_vec3 *u, const double t);
-t_vec3	mr_vec3_div_double(const t_vec3 *v, const double t);
 t_vec3	mr_unit_vector(const t_vec3 *v);
 double	mr_vec3_length(const t_vec3 *v);
 double	mr_vec3_length_squared(const t_vec3 *v);
+t_vec3	mr_rot_around_axis(const t_vec3 *r, const t_vec3 *n,
+			const double angle);
 
 t_vec3	mr_vec3_product(const t_vec3 u, const t_vec3 v);
 void	mr_normalize_color(t_vec3 *p);

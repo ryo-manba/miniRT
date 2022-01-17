@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:13 by corvvs            #+#    #+#             */
-/*   Updated: 2021/12/08 20:53:05 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 21:55:12 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	debug_rd_print_words(char *words[])
 
 void	debug_rd_print_vector(t_vec3 *vec)
 {
-	printf("(%f, %f, %f)", vec->x, vec->y, vec->z);
+	printf("(%f, %f, %f)\n", vec->x, vec->y, vec->z);
 }
 
 void	debug_rd_print_element(t_element *element)

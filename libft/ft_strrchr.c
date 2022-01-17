@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strrchr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rmatsuka < rmatsuka@student.42tokyo.jp>    +#+  +:+       +#+        */
+/*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/07 20:10:59 by rmatsuka          #+#    #+#             */
-/*   Updated: 2021/11/25 22:30:25 by rmatsuka         ###   ########.fr       */
+/*   Updated: 2022/01/17 10:05:58 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*ft_strrchr(const char *s, int c)
 	{
 		if (s[i] == (char)c)
 			return ((char *)s + i);
+		if (i == 0)
+			break ;
 		i--;
 	}
 	return (NULL);

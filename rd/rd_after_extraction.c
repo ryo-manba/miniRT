@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 20:59:37 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/10 11:45:26 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 12:11:47 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,28 @@ static void	after_extraction_paraboloid(t_element *el)
 		el->direction = mr_vec3_mul_double(&n0, -1);
 }
 
+static void	after_extraction_pyramidlight(t_element *el)
+{
+	const t_vec3	dy = {0, 1, 0};
+	const double	t = mr_vec3_dot(dy, el->direction);
+	t_vec3			dv0;
+	t_vec3			du0;
+
+	if (fabs(fabs(t) - 1) > 1e-6)
+		dv0 = mr_vec3_sub(dy, mr_vec3_mul_double(&el->direction, t));
+	else
+		dv0 = (t_vec3){1, 0, 0};
+	mr_normalize_comp(&dv0);
+	du0 = mr_vec3_cross(&dv0, &el->direction);
+	el->direction_u = mr_rot_around_axis(&du0, &el->direction, el->role);
+	el->direction_v = mr_rot_around_axis(&dv0, &el->direction, el->role);
+}
+
 static void	after_extraction_light(t_element *el)
 {
 	el->color = mr_vec3_mul_double(&el->color, el->ratio);
+	if (el->etype == RD_ET_PYRAMIDLIGHT)
+		after_extraction_pyramidlight(el);
 }
 
 void	rt_after_extraction(t_element *el)
@@ -40,14 +59,17 @@ void	rt_after_extraction(t_element *el)
 	if (el->etype == RD_ET_CONE && fabs(el->fov - 180) < 1e-6)
 		el->etype = RD_ET_PLANE;
 	el->fov *= M_PI / 360;
-	if (el->etype == RD_ET_PARABOLOID)
-		after_extraction_paraboloid(el);
-	if (el->etype == RD_ET_LIGHT || el->etype == RD_ET_SPOTLIGHT)
-		after_extraction_light(el);
+	el->fov2 *= M_PI / 360;
+	el->role *= M_PI / 180;
 	if (!el->gloss)
 		el->gloss = 30;
 	if (!el->k_diffuse)
 		el->k_diffuse = 1;
 	if (!el->k_specular)
 		el->k_specular = 1;
+	if (el->etype == RD_ET_PARABOLOID)
+		after_extraction_paraboloid(el);
+	if (el->etype == RD_ET_LIGHT || el->etype == RD_ET_SPOTLIGHT
+		|| el->etype == RD_ET_PYRAMIDLIGHT || el->etype == RD_ET_SUNLIGHT)
+		after_extraction_light(el);
 }

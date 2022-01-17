@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 19:14:43 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/12 11:40:48 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 11:58:14 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,23 @@ static void	**field_memcpy(
 	return (dest);
 }
 
+static void	**element_pointers_bonus_light(
+	void **dest,
+	t_element *el)
+{
+	if (el->etype == RD_ET_SPOTLIGHT)
+		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
+				&el->fov, &el->ratio, &el->color, NULL}));
+	if (el->etype == RD_ET_PYRAMIDLIGHT)
+		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
+				&el->fov, &el->fov2, &el->role, &el->ratio, &el->xpm_file_path,
+				NULL}));
+	if (el->etype == RD_ET_SUNLIGHT)
+		return (field_memcpy(dest, (void *[]){&el->direction,
+				&el->ratio, &el->color, NULL}));
+	return (NULL);
+}
+
 static void	**element_pointers_bonus(
 	void **dest,
 	t_element *el)
@@ -40,9 +57,6 @@ static void	**element_pointers_bonus(
 	if (el->etype == RD_ET_CONE)
 		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
 				&el->fov, &el->color, NULL}));
-	if (el->etype == RD_ET_SPOTLIGHT)
-		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
-				&el->fov, &el->ratio, &el->color, NULL}));
 	if (el->etype == RD_ET_TEXTURE)
 		return (field_memcpy(dest, (void *[]){&el->xpm_file_path, &el->freq_u,
 				&el->freq_v, NULL}));
@@ -91,5 +105,7 @@ void	**rd_get_element_slots(
 	fs = element_pointers_mandatory(dest, el);
 	if (!fs)
 		fs = element_pointers_bonus(dest, el);
+	if (!fs)
+		fs = element_pointers_bonus_light(dest, el);
 	return (fs);
 }

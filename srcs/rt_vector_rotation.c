@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 19:10:16 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/08 15:27:02 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/14 21:20:11 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,25 +32,6 @@ static double	get_elevation(const t_vec3 *vec)
 	return (theta);
 }
 
-// rotate vector r around axis n with given angle.
-static t_vec3	rot_around_axis(const t_vec3 *r, const t_vec3 *n,
-	const double angle)
-{
-	t_vec3	temp;
-
-	temp = mr_vec3_cross(n, r);
-	mr_vec3_mul_double_comp(&temp, sin(angle));
-	return (mr_vec3_add(
-			mr_vec3_add(
-				mr_vec3_mul_double(r, cos(angle)),
-				mr_vec3_mul_double(
-					n,
-					mr_vec3_dot(*n, *r) * (1 - cos(angle))
-				)
-			), temp
-		));
-}
-
 // transform a vector v by transformation
 // that takes the vector (0, 0, +1) to vector orient.
 t_vec3	rt_orient_vector(const t_vec3 *v, const t_vec3 *orient)
@@ -58,8 +39,8 @@ t_vec3	rt_orient_vector(const t_vec3 *v, const t_vec3 *orient)
 	const t_vec3	az_axis = {0, 1, 0};
 	const t_vec3	el_axis = {-1, 0, 0};
 	const double	az = get_azimuth(orient);
-	const t_vec3	v2 = rot_around_axis(v, &az_axis, az);
-	const t_vec3	el_axis2 = rot_around_axis(&el_axis, &az_axis, az);
+	const t_vec3	v2 = mr_rot_around_axis(v, &az_axis, az);
+	const t_vec3	el_axis2 = mr_rot_around_axis(&el_axis, &az_axis, az);
 
-	return (rot_around_axis(&v2, &el_axis2, get_elevation(orient)));
+	return (mr_rot_around_axis(&v2, &el_axis2, get_elevation(orient)));
 }
