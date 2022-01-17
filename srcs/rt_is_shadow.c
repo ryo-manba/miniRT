@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/17 02:50:29 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 12:38:36 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static bool	is_reflective_part(
 	bool	is_reflective;
 	t_vec3	pc;
 
-	light_in = rt_get_incident_vector(rec, light);
+	light_in = rt_get_incident_vector(rec, light, false);
 	cos_light = mr_vec3_dot(light_in, rec->normal);
 	cos_ray = mr_vec3_dot(ray->direction, rec->normal);
 	is_reflective
@@ -100,7 +100,7 @@ bool	rt_is_shadowed_from(
 
 	if (!is_reflective_part(actual, light, ray))
 		return (true);
-	incident = rt_get_incident_vector(actual, light);
+	incident = rt_get_incident_vector(actual, light, false);
 	mr_vec3_mul_double_comp(&incident, -1);
 	if (light->etype == RD_ET_SUNLIGHT)
 		dist_to_light = rd_inf(true);

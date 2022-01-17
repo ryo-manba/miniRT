@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 03:30:11 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 11:56:31 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ static const t_element_info_extractor	g_pyramidlight_extractors[] = {
 	rd_extract_double_scalar, // fovv
 	rd_extract_double_scalar, // role
 	rd_extract_double_scalar, // ratio
-	rd_extract_double_vector, // color
 	rd_extract_string, // xpm
 	NULL,
 };

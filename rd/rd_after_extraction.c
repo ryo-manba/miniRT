@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 20:59:37 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 02:24:04 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 12:11:47 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	after_extraction_pyramidlight(t_element *el)
 	t_vec3			dv0;
 	t_vec3			du0;
 
-	if (t > 0)
+	if (fabs(fabs(t) - 1) > 1e-6)
 		dv0 = mr_vec3_sub(dy, mr_vec3_mul_double(&el->direction, t));
 	else
 		dv0 = (t_vec3){1, 0, 0};

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 02:39:32 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 02:45:58 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 12:38:54 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,21 @@
 // returns vector from source of light to collision point.
 t_vec3	rt_get_incident_vector(
 	const t_hit_record *rec,
-	const t_element *light)
+	const t_element *light,
+	bool inversed)
 {
 	if (light->etype == RD_ET_SUNLIGHT)
-		return (light->direction);
+	{
+		if (inversed)
+			return (light->direction);
+		else
+			return (mr_vec3_mul_double(&light->direction, -1));
+	}
 	else
-		return (mr_vec3_sub(rec->p, light->position));
+	{
+		if (inversed)
+			return (mr_vec3_sub(light->position, rec->p));
+		else
+			return (mr_vec3_sub(rec->p, light->position));
+	}
 }

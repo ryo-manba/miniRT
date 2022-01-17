@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 09:44:05 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 12:38:16 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,8 @@ bool			rt_is_shadowed_from(
 
 t_vec3			rt_get_incident_vector(
 					const t_hit_record *rec,
-					const t_element *light);
+					const t_element *light,
+					bool inversed);
 
 double			rt_fmod(double x, double y);
 double			rt_floor(double x);

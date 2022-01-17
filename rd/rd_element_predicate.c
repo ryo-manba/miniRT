@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:36:19 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 10:32:47 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 11:56:24 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ static const t_element_info_predicate	g_pyramidlight_predicates[] = {
 	rd_word_is_fov_angle,
 	rd_word_is_role_angle,
 	rd_word_is_ratio,
-	rd_word_is_color_vector,
 	rd_word_is_xpm_file_path,
 	NULL};
 

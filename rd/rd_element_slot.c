@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/11 19:14:43 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 03:00:42 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 11:58:14 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ static void	**element_pointers_bonus_light(
 				&el->fov, &el->ratio, &el->color, NULL}));
 	if (el->etype == RD_ET_PYRAMIDLIGHT)
 		return (field_memcpy(dest, (void *[]){&el->position, &el->direction,
-				&el->fov, &el->fov2, &el->role, &el->ratio, &el->color,
-				&el->xpm_file_path, NULL}));
+				&el->fov, &el->fov2, &el->role, &el->ratio, &el->xpm_file_path,
+				NULL}));
 	if (el->etype == RD_ET_SUNLIGHT)
 		return (field_memcpy(dest, (void *[]){&el->direction,
 				&el->ratio, &el->color, NULL}));
