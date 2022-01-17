@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 19:38:27 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 09:05:54 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 09:44:05 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ t_vec3			rt_color_diffuse(
 
 t_vec3			rt_color_specular(
 					const t_hit_record *rec,
-					const t_vec3 *light,
+					const t_element *light,
 					const t_vec3 *light_color,
 					const t_ray *ray);
 
@@ -117,6 +117,10 @@ bool			rt_is_shadowed_from(
 					const t_element *light,
 					t_scene *scene,
 					t_ray *ray);
+
+t_vec3			rt_get_incident_vector(
+					const t_hit_record *rec,
+					const t_element *light);
 
 double			rt_fmod(double x, double y);
 double			rt_floor(double x);

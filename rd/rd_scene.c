@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 15:02:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/14 19:31:24 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 02:08:00 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,8 @@ static bool	assimilate_element(
 	else if (temp_scene->el->etype == RD_ET_LIGHT)
 		element_addback(&temp_scene->light_list, temp_scene->el);
 	else if (temp_scene->el->etype == RD_ET_SPOTLIGHT
-		|| temp_scene->el->etype == RD_ET_PYRAMIDLIGHT)
+		|| temp_scene->el->etype == RD_ET_PYRAMIDLIGHT
+		|| temp_scene->el->etype == RD_ET_SUNLIGHT)
 		element_addback(&temp_scene->spotlight_list, temp_scene->el);
 	else
 		element_addback(&temp_scene->object_list, temp_scene->el);

@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 22:03:25 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/12 02:31:51 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 02:52:31 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static double	intensity(
 	const t_hit_record *rec,
 	const t_element *light)
 {
-	const t_vec3	light_in = mr_vec3_sub(rec->p, light->position);
+	const t_vec3	light_in = rt_get_incident_vector(rec, light);
 	const double	cos_light = mr_vec3_dot(
 						mr_unit_vector(&light_in), rec->normal);
 

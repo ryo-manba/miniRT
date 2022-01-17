@@ -22,6 +22,7 @@ SRCS		:=	debug.c \
 				mr_error.c \
 				rt_raytracer.c \
 				rt_color.c \
+				rt_light_utils.c \
 				rt_reflection.c \
 				rt_tangent.c \
 				rt_object_sphere.c \

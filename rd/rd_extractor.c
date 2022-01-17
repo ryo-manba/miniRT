@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:51 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/14 22:21:16 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 03:30:11 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,13 @@ static const t_element_info_extractor	g_pyramidlight_extractors[] = {
 	NULL,
 };
 
+static const t_element_info_extractor	g_sunlight_extractors[] = {
+	rd_extract_double_vector, // direction
+	rd_extract_double_scalar, // ratio
+	rd_extract_double_vector, // color
+	NULL,
+};
+
 static const t_element_info_extractor	g_texture_extractors[] = {
 	rd_extract_string, // xpm_file_path
 	rd_extract_double_scalar, // freq_u
@@ -151,6 +158,7 @@ static const t_element_info_extractor	*g_list_of_extractors[] = {
 	g_cone_extractors,
 	g_spotlight_extractors,
 	g_pyramidlight_extractors,
+	g_sunlight_extractors,
 	g_texture_extractors,
 	g_checker_extractors,
 	g_bumpmap_extractors,

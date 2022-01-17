@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 11:10:43 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 01:55:25 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 02:53:33 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static t_vec3	light_proc(
 		mr_vec3_add_comp(&base_color,
 			rt_color_diffuse(actual, light, &light_color));
 		mr_vec3_add_comp(&base_color,
-			rt_color_specular(actual, &light->position, &light_color, r));
+			rt_color_specular(actual, light, &light_color, r));
 	}
 	return (base_color);
 }

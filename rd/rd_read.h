@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/01 11:35:57 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/14 21:53:23 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 02:07:44 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define RD_ID_CONE			"co"
 # define RD_ID_SPOTLIGHT	"sl"
 # define RD_ID_PYRAMIDLIGHT	"py"
+# define RD_ID_SUNLIGHT		"su"
 # define RD_ID_TEXTURE		"tx"
 # define RD_ID_CHECKER		"ch"
 # define RD_ID_BUMPMAP		"bm"

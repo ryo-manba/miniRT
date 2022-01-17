@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:02:10 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/14 20:29:51 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 02:05:07 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef enum e_element_type
 	RD_ET_CONE,
 	RD_ET_SPOTLIGHT,
 	RD_ET_PYRAMIDLIGHT,
+	RD_ET_SUNLIGHT,
 	RD_ET_TEXTURE,
 	RD_ET_CHECKER,
 	RD_ET_BUMPMAP,

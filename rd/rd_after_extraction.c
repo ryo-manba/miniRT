@@ -70,6 +70,6 @@ void	rt_after_extraction(t_element *el)
 	if (el->etype == RD_ET_PARABOLOID)
 		after_extraction_paraboloid(el);
 	if (el->etype == RD_ET_LIGHT || el->etype == RD_ET_SPOTLIGHT
-		|| el->etype == RD_ET_PYRAMIDLIGHT)
+		|| el->etype == RD_ET_PYRAMIDLIGHT || el->etype == RD_ET_SUNLIGHT)
 		after_extraction_light(el);
 }
