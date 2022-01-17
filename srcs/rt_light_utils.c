@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 02:39:32 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 12:38:54 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 17:07:06 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ t_vec3	rt_get_incident_vector(
 	if (light->etype == RD_ET_SUNLIGHT)
 	{
 		if (inversed)
-			return (light->direction);
-		else
 			return (mr_vec3_mul_double(&light->direction, -1));
+		else
+			return (light->direction);
 	}
 	else
 	{
