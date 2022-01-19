@@ -1,6 +1,9 @@
 NAME		:=	miniRT
 CC			:=	gcc
-CFLAGS		=	-Werror -Wall -Wextra $(INC) -g
+CFLAGS		=	-Werror -Wall -Wextra $(INC) -g -fsanitize=thread
+ifeq ($(BONUS), 1)
+CFLAGS		+=	-D BONUS=1 -D THREADS=16
+endif
 INC			=	-I$(X11) -I$(MLX) -I$(LIBFT) -Iincludes -Icommon -Ird
 X11			:=	/usr/X11/include
 LIBFT		:=	libft
@@ -43,6 +46,8 @@ SRCS		:=	debug.c \
 				rt_equation.c \
 				rt_bumpfunc.c \
 				rt_fmath.c
+
+SRCS		+=	test_malloc.c
 
 
 OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
@@ -88,14 +93,17 @@ cleanlib:
 fclean: clean
 	$(RM) $(NAME) $(LIBFT_A) $(LIBREAD_A) $(OBJDIR)
 
-bonus: all
-
 re: fclean all
+
+bonus:
+	$(MAKE) BONUS=1
+
+re_bonus: fclean bonus
 
 test: $(NAME)
 	./test.sh
 
-.PHONY: all clean fclean re bonus norm nm nm_grep
+.PHONY: all clean fclean re bonus re_bonus norm nm nm_grep
 
 norm:
 	$(MAKE) -C libft norm

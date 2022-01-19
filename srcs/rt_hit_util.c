@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 20:29:15 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/10 09:09:41 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 19:55:51 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,24 @@ bool	rt_hit_object(
 	return (hit_tester(el, ray, rec));
 }
 
-t_hit_record	*rt_find_actual_hit(t_ray *r, t_scene *scene)
+t_hit_record	*rt_find_actual_hit(t_ray *r, t_subscene *subscene)
 {
 	t_hit_record	*actual;
 	size_t			i;
 
-	ft_bzero(scene->recs, scene->n_objects * sizeof(t_hit_record));
+	ft_bzero(subscene->recs,
+		subscene->info->scene->n_objects * sizeof(t_hit_record));
 	i = 0;
 	actual = NULL;
-	while (i < scene->n_objects)
+	while (i < subscene->info->scene->n_objects)
 	{
-		if (rt_hit_object(scene->objects[i], r, &scene->recs[i]))
+		if (rt_hit_object(
+				subscene->info->scene->objects[i], r, &subscene->recs[i]))
 		{
-			if (scene->recs[i].hit && (!actual || scene->recs[i].t < actual->t))
+			if (subscene->recs[i].hit
+				&& (!actual || subscene->recs[i].t < actual->t))
 			{
-				actual = &scene->recs[i];
+				actual = &subscene->recs[i];
 			}
 		}
 		i += 1;

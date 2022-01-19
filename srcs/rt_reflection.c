@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 11:10:43 by corvvs            #+#    #+#             */
-/*   Updated: 2022/01/17 02:53:33 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/17 19:55:05 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,31 @@ static void	set_light_color(t_vec3 *light_color,
 
 static t_vec3	light_proc(
 	t_ray *r,
-	t_scene *scene,
+	t_subscene *subscene,
 	const t_hit_record *actual,
 	t_element *light
 )
 {
 	t_vec3	base_color;
 	t_vec3	light_color;
+	t_vec3	light_incident;
 
 	mr_vec3_init(&base_color, 0, 0, 0);
-	if (actual->hit && !rt_is_shadowed_from(actual, light, scene, r))
+	if (actual->hit && !rt_is_shadowed_from(actual, light, subscene, r))
 	{
 		set_light_color(&light_color, actual, light);
+		light_incident = rt_get_incident_vector(actual, light);
 		mr_vec3_add_comp(&base_color,
-			rt_color_diffuse(actual, light, &light_color));
+			rt_color_diffuse(actual, &light_incident, &light_color));
 		mr_vec3_add_comp(&base_color,
-			rt_color_specular(actual, light, &light_color, r));
+			rt_color_specular(actual, &light_incident, &light_color, r));
 	}
 	return (base_color);
 }
 
 t_vec3	rt_reflect_ray(
 	t_ray *r,
-	t_scene *scene,
+	t_subscene *subscene,
 	t_hit_record *actual
 )
 {
@@ -66,20 +68,22 @@ t_vec3	rt_reflect_ray(
 
 	rt_set_tangent_space(actual);
 	actual_0 = *actual;
-	base_color = rt_color_ambient(scene->ambient->ratio,
-			&scene->ambient->color, &actual_0.color);
+	base_color = rt_color_ambient(subscene->info->scene->ambient->ratio,
+			&subscene->info->scene->ambient->color, &actual_0.color);
 	i = 0;
-	while (i < scene->n_spotlights)
+	while (i < subscene->info->scene->n_spotlights)
 	{
 		mr_vec3_add_comp(&base_color,
-			light_proc(r, scene, &actual_0, scene->spotlights[i]));
+			light_proc(r, subscene, &actual_0,
+				subscene->info->scene->spotlights[i]));
 		i += 1;
 	}
 	i = 0;
-	while (i < scene->n_lights)
+	while (i < subscene->info->scene->n_lights)
 	{
 		mr_vec3_add_comp(&base_color,
-			light_proc(r, scene, &actual_0, scene->lights[i]));
+			light_proc(r, subscene, &actual_0,
+				subscene->info->scene->lights[i]));
 		i += 1;
 	}
 	return (base_color);
