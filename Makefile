@@ -47,9 +47,6 @@ SRCS		:=	debug.c \
 				rt_bumpfunc.c \
 				rt_fmath.c
 
-SRCS		+=	test_malloc.c
-
-
 OBJS		=	$(addprefix $(OBJDIR), $(SRCS:.c=.o))
 OBJDIR		:=	./objs/
 
