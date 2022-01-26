@@ -6,7 +6,7 @@
 /*   By: corvvs <corvvs@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/09 16:56:38 by rmatsuka          #+#    #+#             */
-/*   Updated: 2022/01/17 19:56:10 by corvvs           ###   ########.fr       */
+/*   Updated: 2022/01/20 09:37:30 by corvvs           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static bool	is_obj_closer_than_light(
 		if (rt_hit_object(subscene->info->scene->objects[i],
 				shadow_ray, &subscene->recs[i]))
 		{
-			dist_to_obj = subscene->recs[i].t - 1 + EPS;
+			dist_to_obj = subscene->recs[i].t - 1;
 			if (dist_to_obj < dist_to_light)
 			{
 				return (true);
