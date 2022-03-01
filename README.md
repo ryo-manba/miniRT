@@ -13,7 +13,7 @@ A Raytracer written in C and MiniLibX.
 git clone https://github.com/ryo-manba/miniRT
 cd miniRT && make
 ```
-An executable named fractol will be created.
+An executable named miniRT will be created.
 ```
 ./miniRT [RTFILE_PATH]
 ```
